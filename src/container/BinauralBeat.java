@@ -9,31 +9,31 @@ package container;
  */
 public class BinauralBeat {
 	//Attributes
-	private int freq1_start, freq2_start;
-	private int freq1_target, freq2_target;
+	private double freq1_start, freq2_start;
+	private double freq1_target, freq2_target;
 	//Getters and Setters
-	public int getFreq1_start() {
+	public double getFreq1_start() {
 		return freq1_start;
 	}
-	public void setFreq1_start(int freq1_start) {
+	public void setFreq1_start(double freq1_start) {
 		this.freq1_start = freq1_start;
 	}
-	public int getFreq2_start() {
+	public double getFreq2_start() {
 		return freq2_start;
 	}
-	public void setFreq2_start(int freq2_start) {
+	public void setFreq2_start(double freq2_start) {
 		this.freq2_start = freq2_start;
 	}
-	public int getFreq1_target() {
+	public double getFreq1_target() {
 		return freq1_target;
 	}
-	public void setFreq1_target(int freq1_target) {
+	public void setFreq1_target(double freq1_target) {
 		this.freq1_target = freq1_target;
 	}
-	public int getFreq2_target() {
+	public double getFreq2_target() {
 		return freq2_target;
 	}
-	public void setFreq2_target(int freq2_target) {
+	public void setFreq2_target(double freq2_target) {
 		this.freq2_target = freq2_target;
 	}
 	
@@ -44,8 +44,25 @@ public class BinauralBeat {
 	 */
 	public String getMood(){
 		//TODO: implement this!
-		// switch-case to select moods from frequencies?
-		return "Happy";
+		String lMood = "unknown";
+		// If not a transient (wakeup or slow down segment)
+		if(freq1_start == freq1_target && freq2_start == freq2_target){
+			double b = freq1_start - freq2_start; //calculate beat (Schwebung)
+			b = (b < 0 ? b * (-1) : b); //quick calculation of absolute value
+			//Cannot switch on a value of type double. Only convertible int values or enum constants are switchable 
+			if(b>=0.1 && b<4){
+				lMood = "delta";
+			}else if(b>=4 && b<8){
+				lMood = "theta";
+			}else if(b>=8 && b<=13){
+				lMood = "alpha";
+			}else if(b>13 && b<=30){
+				lMood = "beta";
+			}else if(b>30){
+				lMood = "gamma";
+			}
+		}
+		return lMood;
 	}
 
 }
