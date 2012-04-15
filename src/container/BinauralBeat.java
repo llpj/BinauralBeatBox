@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.helit.binbox.container;
+package container;
 
 /**
  * @author AI10MABR

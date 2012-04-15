@@ -1,4 +1,4 @@
-package com.helit.binbox.container;
+package container;
 
 import java.io.Serializable;
 import java.util.ArrayList;
