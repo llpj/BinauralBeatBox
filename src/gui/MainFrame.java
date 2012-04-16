@@ -5,6 +5,7 @@ import gui.playerGui.SessionlistPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridBagLayout;
 
 import javax.swing.JFrame;
@@ -49,6 +50,10 @@ public class MainFrame extends JFrame {
 		GuiFunctionLib.addGridBagContainer(this, gbl, listPnl,			0, 2, 1, 1, 1, 0);
 		
 		repaint();
+	}
+	
+	public Graphics getGraphicsForVirtualization() {
+		return virtualizationPnl.getGraphics();
 	}
 	
 }

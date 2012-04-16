@@ -1,4 +1,6 @@
-package container;
+package logic;
+
+import container.Session;
 
 /**
  * @author Boris Beck
@@ -9,15 +11,14 @@ package container;
 public class SessionWiedergabe {
 	
 	// define variables
-	private int currentduration = 0;
-	private int currentfrequenz;
-	private Session current_session;
+	private int currentDuration = 0;
+	private int currentFrequenz;
+	private Session currentSession;
 	private int volumn;
 	private int balance;
 	
-	public Session loadSession() {
+	public void setSession(Session session) {
 		// TODO load session
-		return current_session;
 	}
 	
 	public void playSession() {
@@ -32,15 +33,12 @@ public class SessionWiedergabe {
 		// TODO stop Session
 	}
 	
-	public int getcurrentduration() {
-		return currentduration;
+	public int getCurrentDuration() {
+		//würde ich in der Session abfragen lassen
+		return currentDuration;
 	}
 	
-	public void setcurrentduration(int currentdurration) {
-		this.currentduration = currentdurration;
-	}
-	
-	private void transition(int currentfrequenz, int beginfreq) {
+	private void transition(int endFreq, int beginFeq) {
 		// TODO Uebergang zwischen den Segmenten berechnen
 	}
 	
