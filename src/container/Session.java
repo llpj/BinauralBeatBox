@@ -6,36 +6,39 @@ import java.util.Iterator;
 
 /**
  * @author Magnus Brühl
- *
+ * 
  */
 public class Session implements Serializable {
 
-	//Attributes
+	// Attribute
 	private static final long serialVersionUID = 3318158115697418966L;
-	private String Hintergrundklang; //path to background noise
+	private String Hintergrundklang; // path to background noise
 	private ArrayList<Segment> segments;
 	private int duration;
-	
-	//Constructors
-	public Session(){
-		//TODO: Add correct path to default background noise.
-		Hintergrundklang = "Path to default background noise.";
+
+	// Konstruktoren
+	public Session() {
+		// TODO: Korrekten Pfad zum Standard-Hintergrundklang hinzufügen
+		Hintergrundklang = "Pfad";
 		segments = new ArrayList<Segment>();
 		duration = calcDuration();
 	}
-	public Session(String Hintergrundklang, ArrayList<Segment> segments){
+
+	public Session(String Hintergrundklang, ArrayList<Segment> segments) {
 		this.Hintergrundklang = Hintergrundklang;
 		this.segments = segments;
 	}
-	public Session(String Hintergrundklang, Segment segment){
+
+	public Session(String Hintergrundklang, Segment segment) {
 		this.Hintergrundklang = Hintergrundklang;
 		this.addSegment(segment);
 	}
-	
-	// Getters and setters
+
+	// Getter und Setter
 	public void setHintergrundklang(String hintergrundklang) {
 		Hintergrundklang = hintergrundklang;
 	}
+
 	public String getHintergrundklang() {
 		return Hintergrundklang;
 	}
@@ -43,34 +46,37 @@ public class Session implements Serializable {
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
+
 	public int getDuration() {
 		return duration;
 	}
-	
-	// Calculations and methods
-	public void addSegment(Segment segment){
+
+	// Kalkulationen und Methoden
+	public void addSegment(Segment segment) {
 		this.segments.add(segment);
 	}
-	public void removeSegment(int position){
+
+	public void removeSegment(int position) {
 		this.segments.remove(position);
 	}
+
 	/**
-	 * Iterates through the list of segments and adds up the durations
-	 * @return the duration of the complete Session
+	 * Iteriert durch die Liste von Segmenten und addiert die jeweiligen Längen
+	 * 
+	 * @return Die Dauer der kompletten Session
 	 */
-	private int calcDuration(){
+	private int calcDuration() {
 		int lDuration = 0;
-		if(this.segments.isEmpty()){
+		if (this.segments.isEmpty()) {
 			return lDuration;
-		}else{
+		} else {
 			// iterate through the list of segments and add the durations
 			Iterator<Segment> itr = this.segments.iterator();
-			while(itr.hasNext()){
+			while (itr.hasNext()) {
 				lDuration = itr.next().getDuration();
 			}
 			return lDuration;
 		}
 	}
-	
 
 }
