@@ -3,10 +3,9 @@
  */
 package container;
 
-import org.omg.CORBA.UserException;
 
 /**
- * @author Magnus Brühl
+ * @author Magnus Brï¿½hl
  * 
  */
 public class Segment {
@@ -23,7 +22,7 @@ public class Segment {
 
 	// Konstruktoren
 	/**
-	 * Erstellt ein neues Segment mit den Standard-Parametern. Länge: 60
+	 * Erstellt ein neues Segment mit den Standard-Parametern. Lï¿½nge: 60
 	 * Sekunden Schwebungsfrequenz: 21.5Hz
 	 */
 	public Segment() {
@@ -37,19 +36,19 @@ public class Segment {
 	 * @param duration
 	 *            Dauer des Segments
 	 * @param freq1_start
-	 *            Startfrequenz für den Linkskanal
+	 *            Startfrequenz fï¿½r den Linkskanal
 	 * @param freq1_target
-	 *            Zielfrequenz für den Linkskanal
+	 *            Zielfrequenz fï¿½r den Linkskanal
 	 * @param freq2_start
-	 *            Startfrequenz für den Rechtskanal
+	 *            Startfrequenz fï¿½r den Rechtskanal
 	 * @param freq2_target
-	 *            Zielfrequenz für den Rechtskanal
+	 *            Zielfrequenz fï¿½r den Rechtskanal
 	 * @throws UserException
 	 *             Wird in der Klasse BinauralBeat auf korrekte Frequenzen
 	 *             validiert.
 	 */
 	public Segment(int duration, double freq1_start, double freq1_target,
-			double freq2_start, double freq2_target) throws UserException {
+			double freq2_start, double freq2_target) throws IllegalArgumentException {
 		this.duration = duration;
 		this.beat = new BinauralBeat(freq1_start, freq1_target, freq2_start,
 				freq2_target);
@@ -60,15 +59,15 @@ public class Segment {
 	 * 
 	 * @param duration
 	 * @param freq1
-	 *            Stetige Frequenz für den Linkskanal
+	 *            Stetige Frequenz fï¿½r den Linkskanal
 	 * @param freq2
-	 *            Stetige Frequenz für den Rechtskanal
+	 *            Stetige Frequenz fï¿½r den Rechtskanal
 	 * @throws UserException
 	 *             Wird in der Klasse BinauralBeat auf korrekte Frequenzen
 	 *             validiert.
 	 */
 	public Segment(int duration, double freq1, double freq2)
-			throws UserException {
+			throws IllegalArgumentException {
 		this.duration = duration;
 		this.beat = new BinauralBeat(freq1, freq2);
 	}

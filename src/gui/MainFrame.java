@@ -1,6 +1,6 @@
 package gui;
 
-import gui.editorGui.EditorPanel;
+import gui.editorGui.SessionEditorPanel;
 import gui.playerGui.PlayerPanel;
 import gui.playerGui.SessionlistPanel;
 
@@ -25,7 +25,7 @@ public class MainFrame extends JFrame {
 	private PlayerPanel			playerPnl;
 	private JPanel				virtualizationPnl;
 	private SessionlistPanel	listPnl;
-	private EditorPanel			editorPnl;
+	private SessionEditorPanel			editorPnl;
 
 
 	public MainFrame() {
@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
 		},SessionlistPanel.ADD_BUTTON);
 		
 		virtualizationPnl	= new JPanel();
-		editorPnl			= new EditorPanel();
+		editorPnl			= new SessionEditorPanel();
 		
 		virtualizationPnl.setBackground(Color.BLUE);
 

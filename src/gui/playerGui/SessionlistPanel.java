@@ -23,8 +23,6 @@ public class SessionlistPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1413877908493049019L;
 
-	private static final int Elements = 0;
-
 	private JList			categoryList;
 	private JList			sessionList;
 	private JPanel			menuPnl;

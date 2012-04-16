@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-public class EditorPanel extends JPanel {
+public class SessionEditorPanel extends JPanel {
 	
 	/**
 	 * 
@@ -12,14 +12,15 @@ public class EditorPanel extends JPanel {
 	private static final long serialVersionUID = -3961327885810979762L;
 	private JTabbedPane			tabPane;
 	private GlobalSettingPanel	settingPnl;
+	private SegmentEditorPanel	segmentPnl;
 	
-	public EditorPanel() {
+	public SessionEditorPanel() {
 		settingPnl = new GlobalSettingPanel();
-		JPanel p = new JPanel();
+		segmentPnl = new SegmentEditorPanel();
 		
 		tabPane = new JTabbedPane();
 		tabPane.addTab("Globale Einstellungen", settingPnl);
-		tabPane.addTab("Segmenteditor", p);
+		tabPane.addTab("Segmenteditor", segmentPnl);
 		
 		setLayout( new BorderLayout() );
 		add( tabPane, BorderLayout.CENTER );
