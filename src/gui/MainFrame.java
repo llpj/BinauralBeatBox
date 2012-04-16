@@ -1,5 +1,8 @@
 package gui;
 
+import gui.playerGui.PlayerPanel;
+import gui.playerGui.SessionlistPanel;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
@@ -15,14 +18,14 @@ public class MainFrame extends JFrame {
 	private static final long serialVersionUID = -5636677183953711899L;
 	
 	
-	private PlayerPnl			playerPnl;
+	private PlayerPanel			playerPnl;
 	private JPanel				virtualizationPnl;
 	private SessionlistPanel	listPnl;
 //	private SessioneditorPanel	editorPnl;
 
 
 	public MainFrame() {
-		playerPnl			= new PlayerPnl();
+		playerPnl			= new PlayerPanel();
 		listPnl				= new SessionlistPanel();
 		virtualizationPnl	= new JPanel();
 		
