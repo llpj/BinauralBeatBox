@@ -1,4 +1,7 @@
-package gui;
+package gui.playerGui;
+
+import gui.GuiFunctionLib;
+import gui.ToggleButton;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

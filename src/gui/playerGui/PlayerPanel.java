@@ -1,4 +1,6 @@
-package gui;
+package gui.playerGui;
+
+import gui.ToggleButton;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,7 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 
-public class PlayerPnl extends JPanel {
+public class PlayerPanel extends JPanel {
 
 	/**
 	 * 
@@ -30,7 +32,7 @@ public class PlayerPnl extends JPanel {
 	 */
 	private JProgressBar	muteBar;
 
-	public PlayerPnl() {
+	public PlayerPanel() {
 		initElements();
 		
 		add(playBtn);
