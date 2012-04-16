@@ -5,8 +5,6 @@ package container;
 
 //Imports to allow UserExceptions
 import org.omg.CORBA.UserException;
-import org.omg.CORBA.DynAnyPackage.InvalidValue;
-
 import interfaces.Mood;
 
 /**
@@ -75,7 +73,7 @@ public class BinauralBeat {
 	 *            Rechtskanal
 	 * @throws UserException
 	 */
-	public BinauralBeat(double freq1, double freq2) throws UserException {
+	public BinauralBeat(double freq1, double freq2) throws IllegalArgumentException {
 		this(freq1, freq1, freq2, freq2);
 	}
 
