@@ -40,7 +40,6 @@ public class MainFrame extends JFrame {
 		setVisible(true);
 	}
 	
-	
 	private void virtualizationLayout() {
 		GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
