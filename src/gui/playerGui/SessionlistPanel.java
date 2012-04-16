@@ -22,8 +22,9 @@ public class SessionlistPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1413877908493049019L;
-	
-	
+
+	private static final int Elements = 0;
+
 	private JList			categoryList;
 	private JList			sessionList;
 	private JPanel			menuPnl;
@@ -34,6 +35,23 @@ public class SessionlistPanel extends JPanel {
 	
 	private DefaultListModel	categoryListModel;
 	private DefaultListModel	sessionListModel;
+	
+
+	public static final int ADD_BUTTON 		= 0;
+	public static final int EDIT_BUTTON 	= 1;
+	public static final int REMOVE_BUTTON 	= 2;
+//	public static final int CATEGORY_LIST 	= 3;
+//	public static final int SESSION_LIST 	= 4;
+//	public static final int OPEN_BTN	 	= 5;
+	
+//	public enum Elements {
+////		CATEGORY_LIST,
+////		SESSION_LIST,
+////		OPEN_BTN,
+//		ADD_BUTTON,
+//		EDIT_BUTTON,
+//		REMOVE_BUTTON
+//	}
 
 	public SessionlistPanel() {
 		initMenuPnl();
@@ -95,6 +113,20 @@ public class SessionlistPanel extends JPanel {
 		add(openBtn, BorderLayout.NORTH);
 		
 		updateUI();
+	}
+	
+	public void addActionListenerToElement(ActionListener al, int element) {
+		switch(element) {
+			case ADD_BUTTON:
+				addBtn.addActionListener(al);
+				break;
+			case EDIT_BUTTON:
+				editBtn.addActionListener(al);
+				break;
+			case REMOVE_BUTTON:
+				removeBtn.addActionListener(al);
+				break;
+		}
 	}
 	
 }
