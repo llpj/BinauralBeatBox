@@ -3,6 +3,10 @@
  */
 package container;
 
+//Imports to allow UserExceptions
+import org.omg.CORBA.UserException;
+import org.omg.CORBA.DynAnyPackage.InvalidValue;
+
 import interfaces.Mood;
 
 /**
@@ -26,7 +30,9 @@ public class BinauralBeat {
 	}
 
 	/**
-	 * Erstellt einen binauralen Beat mit den angegebenen Parametern
+	 * Erstellt einen binauralen Beat mit den angegebenen Parametern. Die
+	 * Frequenzen müssen ungleich und nicht negativ sein. Der Unterschied zw.
+	 * den Frequenzen darf nicht größer sein als 30Hz.
 	 * 
 	 * @param freq1_start
 	 *            Startfrequenz für den Linkskanal
@@ -38,13 +44,21 @@ public class BinauralBeat {
 	 *            Zielfrequenz für den Rechtskanal
 	 */
 	public BinauralBeat(double freq1_start, double freq1_target,
-			double freq2_start, double freq2_target) {
-		// TODO: Inputvalidierung
-		/*
-		 * Die Frequenzen dürfen nicht gleich sein, die Frequenzen dürfen nicht
-		 * negativ sein der Unterschied zwischen den Frequenzen darf nicht
-		 * größer sein als 30Hz
-		 */
+			double freq2_start, double freq2_target) throws UserException {
+		// Inputvalidierung
+		if (freq1_start < 0 || freq1_target < 0 || freq2_start < 0
+				|| freq2_target < 0) {
+			throw new InvalidValue("Frequenzen dürfen nicht negativ sein.");
+		}
+		if (freq1_start == freq2_start || freq1_target == freq2_target) {
+			throw new InvalidValue("Frequenzen dürfen nicht gleich sein.");
+		}
+		if (freq1_start - freq2_start > 30 || freq2_start - freq1_start > 30
+				|| freq1_target - freq2_target > 30
+				|| freq2_target - freq1_target > 30) {
+			throw new InvalidValue(
+					"Der Unterschied zwischen den Frequenzen darf nicht größer sein als 30Hz");
+		}
 		this.freq1_start = freq1_start;
 		this.freq1_target = freq1_target;
 		this.freq2_start = freq2_start;
@@ -59,13 +73,10 @@ public class BinauralBeat {
 	 *            Linkskanal
 	 * @param freq2
 	 *            Rechtskanal
+	 * @throws UserException
 	 */
-	public BinauralBeat(double freq1, double freq2) {
-		// TODO: Selbe Inputvalidierung wie im oberen Konstruktor
-		this.freq1_start = freq1;
-		this.freq1_target = freq1;
-		this.freq2_start = freq2;
-		this.freq2_target = freq2;
+	public BinauralBeat(double freq1, double freq2) throws UserException {
+		this(freq1, freq1, freq2, freq2);
 	}
 
 	// Getters and Setters

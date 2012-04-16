@@ -3,6 +3,8 @@
  */
 package container;
 
+import org.omg.CORBA.UserException;
+
 /**
  * @author Magnus Brühl
  * 
@@ -42,9 +44,12 @@ public class Segment {
 	 *            Startfrequenz für den Rechtskanal
 	 * @param freq2_target
 	 *            Zielfrequenz für den Rechtskanal
+	 * @throws UserException
+	 *             Wird in der Klasse BinauralBeat auf korrekte Frequenzen
+	 *             validiert.
 	 */
 	public Segment(int duration, double freq1_start, double freq1_target,
-			double freq2_start, double freq2_target) {
+			double freq2_start, double freq2_target) throws UserException {
 		this.duration = duration;
 		this.beat = new BinauralBeat(freq1_start, freq1_target, freq2_start,
 				freq2_target);
@@ -58,8 +63,12 @@ public class Segment {
 	 *            Stetige Frequenz für den Linkskanal
 	 * @param freq2
 	 *            Stetige Frequenz für den Rechtskanal
+	 * @throws UserException
+	 *             Wird in der Klasse BinauralBeat auf korrekte Frequenzen
+	 *             validiert.
 	 */
-	public Segment(int duration, double freq1, double freq2) {
+	public Segment(int duration, double freq1, double freq2)
+			throws UserException {
 		this.duration = duration;
 		this.beat = new BinauralBeat(freq1, freq2);
 	}
