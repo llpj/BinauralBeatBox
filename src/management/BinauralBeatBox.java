@@ -1,10 +1,14 @@
-package snippet;
-
+package management;
 import gui.MainFrame;
 
-public class Snippet {
+
+public class BinauralBeatBox {
+
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		new MainFrame();
 	}
-}
 
+}
