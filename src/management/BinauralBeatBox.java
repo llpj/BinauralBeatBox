@@ -10,6 +10,7 @@ public class BinauralBeatBox {
 	 */
 	public static void main(String[] args) {
 		MainFrame m = new MainFrame();
+		System.out.println("aha");
 	}
 
 }
