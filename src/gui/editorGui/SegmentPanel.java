@@ -84,18 +84,21 @@ public class SegmentPanel extends JPanel {
 		
 		GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
+//																						x, y, w, h, wx,wy
+		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Start Frquenz:"),		0, 0, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Ziel Frequenz"),		0, 1, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Lautstärke:"),		0, 2, 1, 1, 0, 0);
+
+		GuiFunctionLib.addGridBagContainer(this, gbl, leftFreqPnl,						1, 0, 1, 3, 1, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Länge des Segments"),	1, 3, 1, 1, 0, 0);
 		
-		GuiFunctionLib.addGridBagContainer(this, gbl, leftFreqPnl,						0, 0, 1, 1, 1, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, rightFreqPnl,						1, 0, 1, 1, 1, 0);
-		
-		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Länge des Segments"),	0, 1, 1, 1, 0, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, durationSpin,						1, 1, 1, 1, 0, 0);
-		
-		GuiFunctionLib.addGridBagContainer(this, gbl, removeBtn,						2, 0, 1, 1, 1, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, editBtn,							2, 1, 1, 1, 1, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, rightFreqPnl,						2, 0, 1, 3, 1, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, durationSpin,						2, 3, 1, 1, 0, 0);
 		
 		GuiFunctionLib.addGridBagContainer(this, gbl, moveUpBtn,						3, 0, 1, 1, 0, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, moveDownBtn,						3, 1, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, removeBtn,						3, 1, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, editBtn,							3, 2, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, moveDownBtn,						3, 3, 1, 1, 0, 0);
 		
 		updateUI();
 	}
@@ -115,18 +118,18 @@ public class SegmentPanel extends JPanel {
 	private void initProfiModeElements() {
 		leftFreqPnl		= new JPanel();
 		leftFreqPnl.setBorder( new TitledBorder("Linke Frequenz:") );
-		leftFreqPnl.setLayout( new GridLayout(3, 2) );
+		leftFreqPnl.setLayout( new GridLayout(3, 1) );
 		
 		startLeftFreq	= new JSpinner();
-		leftFreqPnl.add( new JLabel("Start Frquenz:") );
+//		leftFreqPnl.add( new JLabel("Start Frquenz:") );
 		leftFreqPnl.add(startLeftFreq);
 		
 		targetLeftFreq	= new JSpinner();
-		leftFreqPnl.add( new JLabel("Ziel Frequenz") );
+//		leftFreqPnl.add( new JLabel("Ziel Frequenz") );
 		leftFreqPnl.add(targetLeftFreq);
 		
 		leftVolume		= new JSlider();
-		leftFreqPnl.add( new JLabel("Lautstärke:") );
+//		leftFreqPnl.add( new JLabel("Lautstärke:") );
 		leftFreqPnl.add(leftVolume);
 
 
@@ -136,15 +139,15 @@ public class SegmentPanel extends JPanel {
 		rightFreqPnl.setLayout( new GridLayout(3, 1) );
 		
 		startRightFreq	= new JSpinner();
-		rightFreqPnl.add( new JLabel("Start Frquenz:") );
+//		rightFreqPnl.add( new JLabel("Start Frquenz:") );
 		rightFreqPnl.add(startRightFreq);
 
 		targetRightFreq	= new JSpinner();
-		rightFreqPnl.add( new JLabel("Ziel Frequenz") );
+//		rightFreqPnl.add( new JLabel("Ziel Frequenz") );
 		rightFreqPnl.add(targetRightFreq);
 
 		rightVolume		= new JSlider();
-		rightFreqPnl.add( new JLabel("Lautstärke:") );
+//		rightFreqPnl.add( new JLabel("Lautstärke:") );
 		rightFreqPnl.add(rightVolume);
 	}
 }

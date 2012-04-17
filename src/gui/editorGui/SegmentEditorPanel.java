@@ -23,8 +23,7 @@ public class SegmentEditorPanel extends JPanel {
 
 	public SegmentEditorPanel() {
 		segmentPane	= new JPanel();
-		segmentPane.setBackground( Color.BLUE );
-		segmentPane.setLayout( new GridLayout(3,1) );
+		segmentPane.setLayout( new GridLayout(3,1,0,10) );
 		segmentPane.add( new SegmentPanel("Segment 1") );
 		segmentPane.add( new SegmentPanel("Segment 2") );
 		segmentPane.add( new SegmentPanel("Segment 3") );
