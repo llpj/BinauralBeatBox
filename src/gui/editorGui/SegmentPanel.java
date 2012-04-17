@@ -1,9 +1,12 @@
 package gui.editorGui;
 
 import gui.GuiFunctionLib;
+import gui.ToggleButton;
 
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -23,26 +26,26 @@ public class SegmentPanel extends JPanel {
 	private String		title;
 	
 	//basic Elemente (casual mode)
-	private JList		startMood;
-	private JList		targetModd;
-	private JSpinner	durationSpin;
+	private JList			startMood;
+	private JList			targetModd;
+	private JSpinner		durationSpin;
 	
-	private JButton		removeBtn;
-	private	JButton		editBtn;
+	private JButton			removeBtn;
+	private	ToggleButton	editBtn;
 	
-	private JButton		moveUpBtn;
-	private JButton		moveDownBtn;
+	private JButton			moveUpBtn;
+	private JButton			moveDownBtn;
 	
 	//zusätzliche profi mode Elemente für linke und rechte Frequenz
-	private JPanel		leftFreqPnl;
-	private JSpinner	startLeftFreq;
-	private JSpinner	targetLeftFreq;
-	private JSlider		leftVolume;
+	private JPanel			leftFreqPnl;
+	private JSpinner		startLeftFreq;
+	private JSpinner		targetLeftFreq;
+	private JSlider			leftVolume;
 	
-	private JPanel		rightFreqPnl;
-	private JSpinner	startRightFreq;
-	private JSpinner	targetRightFreq;
-	private JSlider		rightVolume;
+	private JPanel			rightFreqPnl;
+	private JSpinner		startRightFreq;
+	private JSpinner		targetRightFreq;
+	private JSlider			rightVolume;
 	
 	public SegmentPanel(String title) {
 		this.title = title;
@@ -51,8 +54,7 @@ public class SegmentPanel extends JPanel {
 		initBasicElements();
 		initProfiModeElements();
 
-//		casualModeLayout();
-		profiModeLayout();
+		casualModeLayout();
 	}
 	
 	private void casualModeLayout() {
@@ -109,7 +111,17 @@ public class SegmentPanel extends JPanel {
 		durationSpin	= new JSpinner();
 		
 		removeBtn		= new JButton("-");
-		editBtn			= new JButton("0");
+		editBtn			= new ToggleButton("P","C");
+		editBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if( editBtn.isSelected() ) {
+					profiModeLayout();
+				} else {
+					casualModeLayout();
+				}
+			}
+		});
 		
 		moveUpBtn		= new JButton("^");
 		moveDownBtn		= new JButton("v");

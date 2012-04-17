@@ -17,7 +17,6 @@ public class SegmentEditorPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 5333016067647810660L;
 
-//	private JScrollPane	segmentPane;
 	private JPanel		segmentPane;
 	private JPanel		segmentDia;
 
