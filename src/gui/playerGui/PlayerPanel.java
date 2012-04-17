@@ -5,8 +5,6 @@ import gui.ToggleButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiUnavailableException;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -58,7 +56,7 @@ public class PlayerPanel extends JPanel {
 			// TODO actionPeformed Aktion soll nach dem Button Text wechsel stattfinden
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				SessionWiedergabe.playSession(0,100); // TODO: Test frequenzen
+				SessionWiedergabe.playSession(500,1000); // TODO: Test frequenzen
 			}
 		});
 	

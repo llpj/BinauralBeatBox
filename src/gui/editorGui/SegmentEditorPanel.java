@@ -5,6 +5,7 @@ import gui.GuiFunctionLib;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,6 +24,7 @@ public class SegmentEditorPanel extends JPanel {
 	public SegmentEditorPanel() {
 		segmentPane	= new JPanel();
 		segmentPane.setBackground( Color.BLUE );
+		segmentPane.setLayout( new GridLayout(3,1) );
 		segmentPane.add( new SegmentPanel("Segment 1") );
 		segmentPane.add( new SegmentPanel("Segment 2") );
 		segmentPane.add( new SegmentPanel("Segment 3") );
