@@ -9,9 +9,10 @@ import container.Category;
 import container.Session;
 
 /**
- * Der SessionManager stellt die Sessions und Kategorien fuer den Controller
- * bereit. Ausserden sendet er Veraenderungen an den Kategorien an den
- * FileManager, damit dieser diese Aenderungen persistieren kann.
+ * !!-- Die Funktionalitaeten dieser Klasse werden in die Klasse FileManager
+ * ausgelagert --!! Der SessionManager stellt die Sessions und Kategorien fuer
+ * den Controller bereit. Ausserden sendet er Veraenderungen an den Kategorien
+ * an den FileManager, damit dieser diese Aenderungen persistieren kann.
  * 
  * @author Magnus Bruehl
  * 
