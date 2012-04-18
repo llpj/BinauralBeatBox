@@ -13,8 +13,8 @@ import interfaces.Mood;
  */
 public class BinauralBeat {
 	// Attribute
-	private double freq1_start, freq2_start;
-	private double freq1_target, freq2_target;
+	private int freq1_start, freq2_start;
+	private int freq1_target, freq2_target;
 
 	// Konstruktoren
 	/**
@@ -41,15 +41,17 @@ public class BinauralBeat {
 	 * @param freq2_target
 	 *            Zielfrequenz fuer den Rechtskanal
 	 */
-	public BinauralBeat(double freq1_start, double freq1_target,
-			double freq2_start, double freq2_target) throws IllegalArgumentException {
+	public BinauralBeat(int freq1_start, int freq1_target, int freq2_start,
+			int freq2_target) throws IllegalArgumentException {
 		// Inputvalidierung
 		if (freq1_start < 0 || freq1_target < 0 || freq2_start < 0
 				|| freq2_target < 0) {
-			throw new IllegalArgumentException("Frequenzen duerfen nicht negativ sein.");
+			throw new IllegalArgumentException(
+					"Frequenzen duerfen nicht negativ sein.");
 		}
 		if (freq1_start == freq2_start || freq1_target == freq2_target) {
-			throw new IllegalArgumentException("Frequenzen duerfen nicht gleich sein.");
+			throw new IllegalArgumentException(
+					"Frequenzen duerfen nicht gleich sein.");
 		}
 		if (freq1_start - freq2_start > 30 || freq2_start - freq1_start > 30
 				|| freq1_target - freq2_target > 30
@@ -73,40 +75,40 @@ public class BinauralBeat {
 	 *            Rechtskanal
 	 * @throws UserException
 	 */
-	public BinauralBeat(double freq1, double freq2) throws IllegalArgumentException {
+	public BinauralBeat(int freq1, int freq2) throws IllegalArgumentException {
 		this(freq1, freq1, freq2, freq2);
 	}
 
 	// Getters and Setters
-	public double getFreq1_start() {
+	public int getFreq1_start() {
 		return freq1_start;
 	}
 
-	public void setFreq1_start(double freq1_start) {
+	public void setFreq1_start(int freq1_start) {
 		this.freq1_start = freq1_start;
 	}
 
-	public double getFreq2_start() {
+	public int getFreq2_start() {
 		return freq2_start;
 	}
 
-	public void setFreq2_start(double freq2_start) {
+	public void setFreq2_start(int freq2_start) {
 		this.freq2_start = freq2_start;
 	}
 
-	public double getFreq1_target() {
+	public int getFreq1_target() {
 		return freq1_target;
 	}
 
-	public void setFreq1_target(double freq1_target) {
+	public void setFreq1_target(int freq1_target) {
 		this.freq1_target = freq1_target;
 	}
 
-	public double getFreq2_target() {
+	public int getFreq2_target() {
 		return freq2_target;
 	}
 
-	public void setFreq2_target(double freq2_target) {
+	public void setFreq2_target(int freq2_target) {
 		this.freq2_target = freq2_target;
 	}
 
