@@ -4,16 +4,20 @@
  */
 
 package logic;
+import container.Session;
+import gui.*;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import container.Session;
+import javax.swing.JPanel;
 
 class AnimationFreq extends Animation {
 /**
  * Klassenname wurde geändert von Frequenz zu AnimationFreq - Grund: Somit ist der Bezeichner eindeutig
  */
-//	private String [] [] color = new  String [3][3];
+	private String [] [] color = new  String [3][3];
 	private double [][] values; //Koordinaten auf der Sinuskurve
 	private int count;   //Anzahl der Bildpunkte
 	
@@ -22,43 +26,45 @@ class AnimationFreq extends Animation {
 		
 	}
 	
-	public AnimationFreq (int [] freq, int count)
+	public AnimationFreq (int [] freq, int count, Session session)
 	{
 		super.setFreq(freq);
+		//rot
+		this.color [1][1] = "ff";
+		this.color [1][2] = "00";
+		this.color [1][3] = "00"; 
+		//grün
+		this.color [2][1] = "00";
+		this.color [2][2] = "ff"; 
+		this.color [2][3] = "00"; 
+		//blau
+		this.color [3][1] = "00"; 
+		this.color [3][2] = "00";
+		this.color [3][2] = "ff"; 
+		//Sinus-Werte
 		this.count = count;
 		this.values = new double [count][3];
-//		this.color [1][] = {"ff", "00", "00"}; //rot
-//		this.color [2][] = {"00", "ff", "00"}; //grün
-//		this.color [3][] = {"00", "00", "ff"}; //blau
+		//Initialisierung
+		init(session);
+	
 		
 	}
 	
-//	public String [] getColor ()
-//	{
-//		return color;
-//	}
-	
-//	public void setColor (String [] color)
-//	{
-//		this.color = color;
-//	}
-	
-	public void setValues(double [][] values) {
-		this.values = values;
-	}
-
-	public double [][] getValues() {
-		return values;
-	}
-
-	protected void sin ()
-	{
+	protected void sin (Graphics2D animationPnl)
+	{	 
 		// TODO in: freq
+		int h = 0;
 		for( int j = 0; j < 3; j++)
 		{
-			for( int i = 0; i < count; i++ )
+			for( double i = 0; i < count; i++ )
 			{
-				values[j][i] =  Math.sin( 2*Math.PI*i/count )+ super.getFreq()[j] ;
+				values[j][(int) i] =  Math.sin( 2*Math.PI*i/count )*super.getFreq()[j] ;
+				int sin = (int) values[j][(int) i];
+				animationPnl.setColor(new Color(sin, sin, sin));
+				animationPnl.drawRect((int) i, 0, 1, 200);
+				animationPnl.setColor(new Color(0,0,0));
+				animationPnl.drawRect((int)i, sin+265, 1, 1);
+					
 			}
 		}
 	}
@@ -68,7 +74,8 @@ class AnimationFreq extends Animation {
 	@Override
 	public void init (Session session) {
 		// TODO Auto-generated method stub
-
+		MainFrame mf = new MainFrame();
+		setHandle((Graphics2D)mf.getGraphicsForVirtualization()); //Felix fragen...wie er sich setHandle vorgestellt hat
 	}
 
 	@Override
@@ -86,7 +93,26 @@ class AnimationFreq extends Animation {
 	@Override
 	public void setHandle (Graphics2D animationpnl) {
 		// TODO Auto-generated method stub
-
+		sin(animationpnl);
+	}
+//getter & setter
+	public String [][] getColor ()
+	{
+		return color;
+	}
+	
+	public void setColor (String [][] color)
+	{
+		this.color = color;
+	}
+	
+	public void setValues(double [][] values) {
+		this.values = values;
 	}
 
+	public double [][] getValues() {
+		return values;
+	}
+
+	
 }
