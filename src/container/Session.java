@@ -18,7 +18,7 @@ public class Session implements Serializable {
 
 	// Konstruktoren
 	public Session() {
-		// TODO: Korrekten Pfad zum Standard-Hintergrundklang hinzufügen
+		// TODO: Korrekten Pfad zum Standard-Hintergrundklang hinzufuegen
 		Hintergrundklang = "Pfad";
 		segments = new ArrayList<Segment>();
 		duration = calcDuration();
