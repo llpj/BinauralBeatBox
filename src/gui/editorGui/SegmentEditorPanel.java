@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
