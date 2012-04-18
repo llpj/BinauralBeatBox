@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * @author Magnus Brühl
+ * @author Magnus Brï¿½hl
  * 
  */
 public class Session implements Serializable {
@@ -18,7 +18,7 @@ public class Session implements Serializable {
 
 	// Konstruktoren
 	public Session() {
-		// TODO: Korrekten Pfad zum Standard-Hintergrundklang hinzufügen
+		// TODO: Korrekten Pfad zum Standard-Hintergrundklang hinzufuegen
 		Hintergrundklang = "Pfad";
 		segments = new ArrayList<Segment>();
 		duration = calcDuration();
@@ -61,7 +61,7 @@ public class Session implements Serializable {
 	}
 
 	/**
-	 * Iteriert durch die Liste von Segmenten und addiert die jeweiligen Längen
+	 * Iteriert durch die Liste von Segmenten und addiert die jeweiligen Lï¿½ngen
 	 * 
 	 * @return Die Dauer der kompletten Session
 	 */

@@ -33,7 +33,7 @@ public class BinauralBeatBox {
 			public void actionPerformed(ActionEvent ae) {
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
 					//PLAY:
-					SessionWiedergabe.playSession(500,1000);
+					SessionWiedergabe.playSession(500,1000,10);
 				} else {
 					//PAUSE:
 				}

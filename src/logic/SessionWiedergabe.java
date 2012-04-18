@@ -30,21 +30,23 @@ public class SessionWiedergabe {
 	
 	
 	/**
-	  * playSession()
+	  * public static void playSession(int freqLinks, int  freqRechts, int freqDauer)
 	  * 
-	  * @param frequenzLinks:  linke Frequenz. Wenn 0, dann spielt der linke Lautsprecher keine Frequenz ab. 
-	  * @param frequenzRechts: rechte Frequenz. Wenn 0, dann spielt der rechte Lautsprecher keine Frequenz ab.
+	  * @param freqLinks:  linke Frequenz. Wenn 0, dann kein Ton 
+	  * @param freqRechts: rechte Frequenz. Wenn 0, dann kein Ton
+	  * @param freDsuer: Frequennz Wiederholungen
 	  */
-	public static void playSession(int frequenzLinks, int  frequenzRechts)  {
+	public static void playSession(int freqLinks, int  freqRechts, int freqDauer)  {
         AudioFormat playme = new AudioFormat(44100, 16, 2, true, false); // Parameter 1: Samplerate, 2: SampleBits, 3: Kanaele)
-        byte[] data = getStereoSinusTone(frequenzLinks, frequenzRechts, playme);
+        byte[] data = getStereoSinusTone(freqLinks, freqRechts, playme);
         try {
             Clip c = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
             c.open(playme, data, 0, data.length);
-            c.loop(1);
+            c.loop(freqDauer);
             while(c.isRunning()) {
                 try {
                     Thread.sleep(50);
+                	
                 } catch (Exception ex) {}
             }
         } catch (LineUnavailableException ex) {
@@ -53,13 +55,13 @@ public class SessionWiedergabe {
     }		
 		
 		//Berechnung
-	   public static byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat af) {
-	        byte sampleSize = (byte) (af.getSampleSizeInBits() / 8);
-	        byte[] data = new byte[(int) af.getSampleRate() * sampleSize  * 2];
-	        double stepWidth = (2 * Math.PI) / af.getSampleRate();
+	   public static byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat playme) {
+	        byte sampleSize = (byte) (playme.getSampleSizeInBits() / 8);
+	        byte[] data = new byte[(int) playme.getSampleRate() * sampleSize  * 2];
+	        double stepWidth = (2 * Math.PI) / playme.getSampleRate();
 	        double x = 0;
 	        for (int i = 0; i < data.length; i += sampleSize * 2) {
-	            int sample_max_value = (int) Math.pow(2, af.getSampleSizeInBits()) / 2 - 1;
+	            int sample_max_value = (int) Math.pow(2, playme.getSampleSizeInBits()) / 2 - 1;
 	            int value = (int) (sample_max_value * Math.sin(frequency1 * x));
 	            for (int j = 0; j < sampleSize; j++) {
 	                byte sampleByte = (byte) ((value >> (8 * j)) & 0xff);

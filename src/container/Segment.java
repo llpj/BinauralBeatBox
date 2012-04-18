@@ -5,7 +5,7 @@ package container;
 
 
 /**
- * @author Magnus Br�hl
+ * @author Magnus Bruehl
  * 
  */
 public class Segment {
@@ -22,7 +22,7 @@ public class Segment {
 
 	// Konstruktoren
 	/**
-	 * Erstellt ein neues Segment mit den Standard-Parametern. L�nge: 60
+	 * Erstellt ein neues Segment mit den Standard-Parametern. Luenge: 60
 	 * Sekunden Schwebungsfrequenz: 21.5Hz
 	 */
 	public Segment() {
@@ -36,14 +36,14 @@ public class Segment {
 	 * @param duration
 	 *            Dauer des Segments
 	 * @param freq1_start
-	 *            Startfrequenz f�r den Linkskanal
+	 *            Startfrequenz fuer den Linkskanal
 	 * @param freq1_target
-	 *            Zielfrequenz f�r den Linkskanal
+	 *            Zielfrequenz fuer den Linkskanal
 	 * @param freq2_start
-	 *            Startfrequenz f�r den Rechtskanal
+	 *            Startfrequenz fuer den Rechtskanal
 	 * @param freq2_target
-	 *            Zielfrequenz f�r den Rechtskanal
-	 * @throws UserException
+	 *            Zielfrequenz fuer den Rechtskanal
+	 * @throws IllegalArgumentException
 	 *             Wird in der Klasse BinauralBeat auf korrekte Frequenzen
 	 *             validiert.
 	 */
@@ -59,10 +59,10 @@ public class Segment {
 	 * 
 	 * @param duration
 	 * @param freq1
-	 *            Stetige Frequenz f�r den Linkskanal
+	 *            Stetige Frequenz fuer den Linkskanal
 	 * @param freq2
-	 *            Stetige Frequenz f�r den Rechtskanal
-	 * @throws UserException
+	 *            Stetige Frequenz fuer den Rechtskanal
+	 * @throws IllegalArgumentException
 	 *             Wird in der Klasse BinauralBeat auf korrekte Frequenzen
 	 *             validiert.
 	 */

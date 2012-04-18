@@ -8,7 +8,7 @@ import org.omg.CORBA.UserException;
 import interfaces.Mood;
 
 /**
- * @author Magnus Br�hl
+ * @author Magnus Bruehl
  * 
  */
 public class BinauralBeat {
@@ -18,7 +18,7 @@ public class BinauralBeat {
 
 	// Konstruktoren
 	/**
-	 * Erstellt den kleinstm�glichen h�rbaren binauralen Beat von 21.5Hz
+	 * Erstellt den kleinstmueglichen huerbaren binauralen Beat von 21.5Hz
 	 */
 	public BinauralBeat() {
 		freq1_start = 21;
@@ -29,33 +29,33 @@ public class BinauralBeat {
 
 	/**
 	 * Erstellt einen binauralen Beat mit den angegebenen Parametern. Die
-	 * Frequenzen m�ssen ungleich und nicht negativ sein. Der Unterschied zw.
-	 * den Frequenzen darf nicht gr��er sein als 30Hz.
+	 * Frequenzen muessen ungleich und nicht negativ sein. Der Unterschied zw.
+	 * den Frequenzen darf nicht groesser sein als 30Hz.
 	 * 
 	 * @param freq1_start
-	 *            Startfrequenz f�r den Linkskanal
+	 *            Startfrequenz fuer den Linkskanal
 	 * @param freq1_target
-	 *            Zielfrequenz f�r den Linkskanal
+	 *            Zielfrequenz fuer den Linkskanal
 	 * @param freq2_start
-	 *            Startfrequenz f�r den Rechtskanal
+	 *            Startfrequenz fuer den Rechtskanal
 	 * @param freq2_target
-	 *            Zielfrequenz f�r den Rechtskanal
+	 *            Zielfrequenz fuer den Rechtskanal
 	 */
 	public BinauralBeat(double freq1_start, double freq1_target,
 			double freq2_start, double freq2_target) throws IllegalArgumentException {
 		// Inputvalidierung
 		if (freq1_start < 0 || freq1_target < 0 || freq2_start < 0
 				|| freq2_target < 0) {
-			throw new IllegalArgumentException("Frequenzen d�rfen nicht negativ sein.");
+			throw new IllegalArgumentException("Frequenzen duerfen nicht negativ sein.");
 		}
 		if (freq1_start == freq2_start || freq1_target == freq2_target) {
-			throw new IllegalArgumentException("Frequenzen d�rfen nicht gleich sein.");
+			throw new IllegalArgumentException("Frequenzen duerfen nicht gleich sein.");
 		}
 		if (freq1_start - freq2_start > 30 || freq2_start - freq1_start > 30
 				|| freq1_target - freq2_target > 30
 				|| freq2_target - freq1_target > 30) {
 			throw new IllegalArgumentException(
-					"Der Unterschied zwischen den Frequenzen darf nicht gr��er sein als 30Hz");
+					"Der Unterschied zwischen den Frequenzen darf nicht groesser sein als 30Hz");
 		}
 		this.freq1_start = freq1_start;
 		this.freq1_target = freq1_target;
@@ -65,7 +65,7 @@ public class BinauralBeat {
 
 	/**
 	 * Erstellt einen binauralen Beat, bei dem die Start- und die Endfrequenz
-	 * gleich ist, also der kein �bergang ist.
+	 * gleich ist, also der kein Uebergang ist.
 	 * 
 	 * @param freq1
 	 *            Linkskanal
@@ -114,13 +114,13 @@ public class BinauralBeat {
 
 	/**
 	 * @return Die Schwebungsfrequenz-Klasse, die durch den Unterschied der
-	 *         beiden Frequenzen generiert wird. M�gliche R�ckgabewerte sind
+	 *         beiden Frequenzen generiert wird. Moegliche Rueckgabewerte sind
 	 *         DELTA, THETA, ALPHA, BETA, GAMMA, SLOWDOWN, WAKEUP, INVALID,
 	 *         UNKNOWN
 	 */
 	public Mood getMood() {
 		Mood lMood = Mood.UNKNOWN;
-		// Wenn kein �bergang und Links- und Rechtsfrequenz nicht gleich
+		// Wenn kein Uebergang und Links- und Rechtsfrequenz nicht gleich
 		if (freq1_start == freq1_target && freq2_start == freq2_target
 				&& freq1_start != freq2_start) {
 			double b = (freq1_start + freq2_start) / 2; // berechne Schwebung
