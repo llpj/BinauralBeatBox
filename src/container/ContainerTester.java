@@ -40,7 +40,6 @@ public class ContainerTester {
 		category.addSession(session2);
 
 		System.out.println(category.toString());
->>>>>>> ae5b5620e132b9d329b77270b90a0af3d6daf0f0
 	}
 
 }
