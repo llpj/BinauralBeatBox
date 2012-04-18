@@ -1,5 +1,6 @@
 package gui.playerGui;
 
+import gui.ActionListenerAddable;
 import gui.GuiFunctionLib;
 import gui.ToggleButton;
 
@@ -16,7 +17,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-public class SessionlistPanel extends JPanel {
+public class SessionlistPanel extends JPanel implements ActionListenerAddable {
 
 	/**
 	 * 
@@ -112,7 +113,8 @@ public class SessionlistPanel extends JPanel {
 		
 		updateUI();
 	}
-	
+
+	@Override
 	public void addActionListenerToElement(ActionListener al, int element) {
 		switch(element) {
 			case ADD_BUTTON:
@@ -126,5 +128,5 @@ public class SessionlistPanel extends JPanel {
 				break;
 		}
 	}
-	
+
 }

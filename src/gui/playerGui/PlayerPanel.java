@@ -1,5 +1,6 @@
 package gui.playerGui;
 
+import gui.ActionListenerAddable;
 import gui.ToggleButton;
 
 import java.awt.event.ActionEvent;
@@ -10,9 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 
-import logic.SessionWiedergabe;
-
-public class PlayerPanel extends JPanel {
+public class PlayerPanel extends JPanel implements ActionListenerAddable {
 
 	/**
 	 * 
@@ -33,6 +32,9 @@ public class PlayerPanel extends JPanel {
 	 * Gesamtlautstärke der Sessionwiedergabe
 	 */
 	private JProgressBar	muteBar;
+	
+	public static final int PLAY_BUTTON 	= 0;
+	public static final int STOP_BUTTON 	= 1;
 
 	public PlayerPanel() {
 		initElements();
@@ -50,16 +52,6 @@ public class PlayerPanel extends JPanel {
 	private void initElements() {
 		
 		playBtn = new ToggleButton(" Play ", "Pause");
-		playBtn.addActionListener( new ActionListener() {
-			
-			// Wenn 'play' Button aktiv, dann spele Session ab
-			// TODO actionPeformed Aktion soll nach dem Button Text wechsel stattfinden
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				SessionWiedergabe.playSession(500,1000); // TODO: Test frequenzen
-			}
-		});
-	
 		stopBtn = new JButton("Stop");
 		stopBtn.addActionListener( new ActionListener() {
 			@Override
@@ -77,6 +69,18 @@ public class PlayerPanel extends JPanel {
 		timeSlider.setMaximum(3);
 		
 		muteBar = new JProgressBar();
+	}
+
+	@Override
+	public void addActionListenerToElement(ActionListener al, int element) {
+		switch(element) {
+			case PLAY_BUTTON:
+				playBtn.addActionListener(al);
+				break;
+			case STOP_BUTTON:
+				stopBtn.addActionListener(al);
+				break;
+		}
 	}
 
 }
