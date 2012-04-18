@@ -17,7 +17,7 @@ import javax.sound.sampled.AudioFormat;
 
 public class SessionWiedergabe {
 	
-	// define variables
+	// definiere Variablen
 	private int currentDuration = 0;
 	private int currentFrequenz;
 	private Session currentSession;
@@ -28,10 +28,16 @@ public class SessionWiedergabe {
 		// TODO load session
 	}
 	
-	// Session abspielen
-	public static void playSession(int frequenzyLeft, int  frequencyRight)  {
+	
+	/**
+	  * playSession()
+	  * 
+	  * @param frequenzLinks:  linke Frequenz. Wenn 0, dann spielt der linke Lautsprecher keine Frequenz ab. 
+	  * @param frequenzRechts: rechte Frequenz. Wenn 0, dann spielt der rechte Lautsprecher keine Frequenz ab.
+	  */
+	public static void playSession(int frequenzLinks, int  frequenzRechts)  {
         AudioFormat playme = new AudioFormat(44100, 16, 2, true, false); // Parameter 1: Samplerate, 2: SampleBits, 3: Kanaele)
-        byte[] data = getStereoSinusTone(frequenzyLeft, frequencyRight, playme);
+        byte[] data = getStereoSinusTone(frequenzLinks, frequenzRechts, playme);
         try {
             Clip c = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
             c.open(playme, data, 0, data.length);
