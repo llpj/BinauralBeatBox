@@ -25,7 +25,7 @@ public class MainFrame extends JFrame {
 	private PlayerPanel			playerPnl;
 	private JPanel				virtualizationPnl;
 	private SessionlistPanel	listPnl;
-	private SessionEditorPanel			editorPnl;
+	private SessionEditorPanel	editorPnl;
 
 
 	public MainFrame() {
@@ -33,7 +33,7 @@ public class MainFrame extends JFrame {
 		listPnl				= new SessionlistPanel();
 		listPnl.addActionListenerToElement(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent ae) {
 				editorLayout();
 			}
 		},SessionlistPanel.ADD_BUTTON);
@@ -80,4 +80,7 @@ public class MainFrame extends JFrame {
 		return virtualizationPnl.getGraphics();
 	}
 	
+	public PlayerPanel getPlayerPanel() {
+		return playerPnl;
+	}
 }
