@@ -1,3 +1,8 @@
+/**
+ * @author Fabian Schäfer
+ *
+ */
+
 package logic;
 
 import java.awt.Graphics2D;
@@ -8,7 +13,7 @@ class AnimationFreq extends Animation {
 /**
  * Klassenname wurde geändert von Frequenz zu AnimationFreq - Grund: Somit ist der Bezeichner eindeutig
  */
-	private String [] color = new  String [3];
+//	private String [] [] color = new  String [3][3];
 	private double [][] values; //Koordinaten auf der Sinuskurve
 	private int count;   //Anzahl der Bildpunkte
 	
@@ -22,21 +27,21 @@ class AnimationFreq extends Animation {
 		super.setFreq(freq);
 		this.count = count;
 		this.values = new double [count][3];
-		this.color [1] = "blue";
-		this.color [2] = "red";
-		this.color [3] = "green";
+//		this.color [1][] = {"ff", "00", "00"}; //rot
+//		this.color [2][] = {"00", "ff", "00"}; //grün
+//		this.color [3][] = {"00", "00", "ff"}; //blau
 		
 	}
 	
-	public String [] getColor ()
-	{
-		return color;
-	}
+//	public String [] getColor ()
+//	{
+//		return color;
+//	}
 	
-	public void setColor (String [] color)
-	{
-		this.color = color;
-	}
+//	public void setColor (String [] color)
+//	{
+//		this.color = color;
+//	}
 	
 	public void setValues(double [][] values) {
 		this.values = values;
@@ -48,7 +53,7 @@ class AnimationFreq extends Animation {
 
 	protected void sin ()
 	{
-		// TODO in: freq + color
+		// TODO in: freq
 		for( int j = 0; j < 3; j++)
 		{
 			for( int i = 0; i < count; i++ )
