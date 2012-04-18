@@ -18,6 +18,8 @@ public class BinauralBeatBox {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		// hall0
 		new BinauralBeatBox();
 	}
 	
