@@ -69,23 +69,23 @@ public class FileManager {
 	 * exportiert werden kann. Damn! --- Neue Info: ich hab eine externe Klasse
 	 * WavFile gefunden, die uns das Ganze stark erleichtert.
 	 */
-	public void exportAsWav() {
-		// TODO: AudioInputStream und so raushauen und das ganze ueber
-		// interfaces.wavFile.WavFile regeln
-		InputStream inputStream = "musch";
-		// Hole Audioinformationen, um einen AudioInputStream zu generieren
-		AudioInputStream audioInputStream = AudioSystem
-				.getAudioInputStream(inputStream);
-		// Neue WAVE-Datei im Filesystem erstellen
-		File fileOut = new File("test.wav"); // TODO: Hier muss der Pfad rein,
-												// den der User spezifiziert
-		WaveFileWriter writer = new WaveFileWriter();
-		// Check, ob das Hostsystem ueberhaupt WAVE-Dateien schreiben kann.
-		if (AudioSystem.isFileTypeSupported(AudioFileFormat.Type.WAVE,
-				audioInputStream)) {
-			writer.write(audioInputStream, AudioFileFormat.Type.WAVE, fileOut);
-		}
-
-	}
+//	public void exportAsWav() {
+//		// TODO: AudioInputStream und so raushauen und das ganze ueber
+//		// interfaces.wavFile.WavFile regeln
+//		InputStream inputStream = "musch";
+//		// Hole Audioinformationen, um einen AudioInputStream zu generieren
+//		AudioInputStream audioInputStream = AudioSystem
+//				.getAudioInputStream(inputStream);
+//		// Neue WAVE-Datei im Filesystem erstellen
+//		File fileOut = new File("test.wav"); // TODO: Hier muss der Pfad rein,
+//												// den der User spezifiziert
+//		WaveFileWriter writer = new WaveFileWriter();
+//		// Check, ob das Hostsystem ueberhaupt WAVE-Dateien schreiben kann.
+//		if (AudioSystem.isFileTypeSupported(AudioFileFormat.Type.WAVE,
+//				audioInputStream)) {
+//			writer.write(audioInputStream, AudioFileFormat.Type.WAVE, fileOut);
+//		}
+//
+//	}
 
 }
