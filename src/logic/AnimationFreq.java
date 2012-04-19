@@ -1,5 +1,5 @@
 /**
- * @author Fabian Schäfer
+ * @author Fabian Schï¿½fer
  *
  */
 
@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 public class AnimationFreq extends Animation {
 /**
- * Klassenname wurde geändert von Frequenz zu AnimationFreq - Grund: Somit ist der Bezeichner eindeutig
+ * Klassenname wurde geï¿½ndert von Frequenz zu AnimationFreq - Grund: Somit ist der Bezeichner eindeutig
  */
 	private String [] [] color = new  String [3][3];
 	private double [][] values; //Koordinaten auf der Sinuskurve
@@ -30,17 +30,17 @@ public class AnimationFreq extends Animation {
 	{
 		super.setFreq(freq);
 		//rot
-		this.color [0][0] = "ff";
-		this.color [0][1] = "00";
-		this.color [0][2] = "00"; 
-		//grün
-		this.color [1][0] = "00";
-		this.color [1][1] = "ff"; 
-		this.color [1][2] = "00"; 
-		//blau
-		this.color [2][0] = "00"; 
+		this.color [1][1] = "ff";
+		this.color [1][2] = "00";
+		this.color [1][3] = "00"; 
+		//grï¿½n
 		this.color [2][1] = "00";
 		this.color [2][2] = "ff"; 
+		this.color [2][3] = "00"; 
+		//blau
+		this.color [3][1] = "00"; 
+		this.color [3][2] = "00";
+		this.color [3][2] = "ff"; 
 		//Sinus-Werte
 		this.count = count;
 		this.values = new double [count][3];
