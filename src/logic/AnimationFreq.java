@@ -13,7 +13,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
-class AnimationFreq extends Animation {
+public class AnimationFreq extends Animation {
 /**
  * Klassenname wurde geändert von Frequenz zu AnimationFreq - Grund: Somit ist der Bezeichner eindeutig
  */
@@ -26,7 +26,7 @@ class AnimationFreq extends Animation {
 		
 	}
 	
-	public AnimationFreq (int [] freq, int count, Session session)
+	public AnimationFreq (int [] freq, int count )//TODO Session session
 	{
 		super.setFreq(freq);
 		//rot
@@ -45,7 +45,7 @@ class AnimationFreq extends Animation {
 		this.count = count;
 		this.values = new double [count][3];
 		//Initialisierung
-		init(session);
+		init();//TODO session
 	
 		
 	}
@@ -72,7 +72,7 @@ class AnimationFreq extends Animation {
 	
 	//Vererbte Methoden
 	@Override
-	public void init (Session session) {
+	public void init() {//TODO Session session
 		// TODO Auto-generated method stub
 		MainFrame mf = new MainFrame();
 		setHandle((Graphics2D)mf.getGraphicsForVirtualization()); //Felix fragen...wie er sich setHandle vorgestellt hat

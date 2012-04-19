@@ -21,7 +21,7 @@ abstract class Animation {
 		this.freq = freq;
 	}
 	
-	public abstract void init (Session session);
+	public abstract void init ();//TODO session 
 	public abstract boolean pause (); //"pause" an Stelle von "break", da Java bereits break benutzt
 	public abstract boolean finish ();
 	public abstract void setHandle (Graphics2D animationpnl); //Klasse Graphics aus java.awt.* könnte auch verwendet werden

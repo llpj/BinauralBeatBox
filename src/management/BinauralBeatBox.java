@@ -3,7 +3,9 @@ package management;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import logic.SessionWiedergabe;
+import logic.*;
+import container.*;
+
 
 import gui.MainFrame;
 import gui.ToggleButton;
@@ -35,7 +37,10 @@ public class BinauralBeatBox {
 			public void actionPerformed(ActionEvent ae) {
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
 					//PLAY:
-					SessionWiedergabe.playSession(500,1000,10);
+					//SessionWiedergabe.playSession(500,1000,10);
+					int [] freq={0,30,60};
+					//Session ses = new Session ();
+					AnimationFreq aniFreq = new AnimationFreq (freq,20); 
 				} else {
 					//PAUSE:
 				}

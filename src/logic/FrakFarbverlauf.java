@@ -103,7 +103,7 @@ class FrakFarbverlauf extends Animation {
 
 	//Vererbte Methoden
 	@Override
-	public void init(Session session) {
+	public void init() {//TODO Session session
 		// TODO Auto-generated method stub
 
 	}
