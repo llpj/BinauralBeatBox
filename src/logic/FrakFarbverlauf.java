@@ -102,6 +102,10 @@ class FrakFarbverlauf extends Animation {
 	}
 
 	//Vererbte Methoden
+	public void run()
+	{
+		
+	}
 	@Override
 	public void init() {//TODO Session session
 		// TODO Auto-generated method stub
@@ -109,13 +113,13 @@ class FrakFarbverlauf extends Animation {
 	}
 
 	@Override
-	public boolean pause() {
+	public boolean pause(boolean state) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean finish() {
+	public boolean finish(boolean state) {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -1,5 +1,6 @@
 package management;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,6 +16,7 @@ import gui.playerGui.PlayerPanel;
 public class BinauralBeatBox {
 
 	private MainFrame	mf; 
+	AnimationFreq aniFreq;
 	
 	/**
 	 * @param args
@@ -23,6 +25,7 @@ public class BinauralBeatBox {
 		
 		// hall0
 		new BinauralBeatBox();
+		
 	}
 	
 	private BinauralBeatBox() {
@@ -38,11 +41,14 @@ public class BinauralBeatBox {
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
 					//PLAY:
 					//SessionWiedergabe.playSession(500,1000,10);
-					int [] freq={0,30,60};
+					int [] freq={-30,0,30};
 					//Session ses = new Session ();
-					AnimationFreq aniFreq = new AnimationFreq (freq,20); 
+					
+						aniFreq = new AnimationFreq (freq); 
+					
 				} else {
 					//PAUSE:
+					aniFreq.pause(true);
 				}
 			}
 		}, PlayerPanel.PLAY_BUTTON);
@@ -51,6 +57,7 @@ public class BinauralBeatBox {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:
+				aniFreq.finish(true);
 			}
 		}, PlayerPanel.STOP_BUTTON);
 	}

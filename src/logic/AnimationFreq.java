@@ -1,117 +1,166 @@
 /**
- * @author Fabian Schï¿½fer
+ * @author Fabian Schäfer
  *
  */
 
 package logic;
 import container.Session;
 import gui.*;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.applet.*;
+import java.awt.*;
 
 import javax.swing.JPanel;
 
 public class AnimationFreq extends Animation {
 /**
- * Klassenname wurde geï¿½ndert von Frequenz zu AnimationFreq - Grund: Somit ist der Bezeichner eindeutig
+ * Klassenname wurde geändert von Frequenz zu AnimationFreq - Grund: Somit ist der Bezeichner eindeutig
  */
-	private String [] [] color = new  String [3][3];
-	private double [][] values; //Koordinaten auf der Sinuskurve
-	private int count;   //Anzahl der Bildpunkte
-	
+	Color colors[] = { Color.RED, Color.GREEN,Color.BLUE}; // ersetzt das Attribut String color, da weniger code und einfacheres Handle
+//	private double [][] values; 
+//	private int count;   //Anzahl der Bildpunkte
+	private Thread animation;
+	private Graphics2D animationPnl;
+	//Koordinaten auf der Sinuskurve
+	int[] x = new int[720];
+	int[] y = new int[720];
+	   
 	public AnimationFreq ()
 	{
 		
 	}
 	
-	public AnimationFreq (int [] freq, int count )//TODO Session session
+	public AnimationFreq (int [] freq)//TODO Session session
 	{
 		super.setFreq(freq);
-		//rot
-//		this.color [0][0] = "ff";
-//		this.color [0][1] = "00";
-//		this.color [0][2] = "00"; 
-//		//grï¿½n
-//		this.color [1][0] = "00";
-//		this.color [1][1] = "ff"; 
-//		this.color [1][2] = "00"; 
-//		//blau
-//		this.color [2][0] = "00"; 
-//		this.color [2][1] = "00";
-//		this.color [2][2] = "ff"; 
-		//Sinus-Werte
-		this.count = count;
-		this.values = new double [count][3];
 		//Initialisierung
 		init();//TODO session
 	
 		
 	}
 	
-	protected void sin (Graphics2D animationPnl)
+	protected void sin ()
 	{	 
 		// TODO in: freq
-		int h = 0;
+		
 		for( int j = 0; j < 3; j++)
 		{
-			for( double i = 0; i < count; i++ )
+			for( int i = 0; i < y.length; i++ )
 			{
-				values[j][(int) i] =  Math.sin( 2*Math.PI*i/count )*super.getFreq()[j] ;
-				int sin = (int) values[j][(int) i];
-				animationPnl.setColor(new Color(sin, sin, sin));
-				animationPnl.drawRect((int) i, 0, 1, 200);
-				animationPnl.setColor(new Color(0,0,0));
-				animationPnl.drawRect((int)i, sin+265, 1, 1);
+				y[i]=(100-(int)Math.round(Math.sin(Math.toRadians(i))*super.getFreq()[j]));
+				x[i]=i;
+				if(j == 0)y[i]-=20;
+				else if (j==1) y[i]+=30;
+				else y[i]+=80;
+				
+				//animationPnl.draw();
+				//animationPnl. (colors[j]);
+				//animationPnl.drawLine(0,sin,0,sin);
+
 					
 			}
+			animationPnl.drawPolyline(x, y, x.length);
 		}
+//		for (int j=0; j<3; j++)
+//		{
+//		for(int i=0;i<y.length;i++)
+//	      {
+//	         y[i]=100-(int)Math.round(Math.sin(Math.toRadians(i))*super.getFreq()[j]);
+//	         x[i]=i;
+//	      }
+//		}
 	}
 	
 	
+	 public void start () {
+	        animation = new Thread (this);
+	        animation.start ();
+	    }
+
+	
 	//Vererbte Methoden
+	
 	@Override
 	public void init() {//TODO Session session
 		// TODO Auto-generated method stub
+		// Initialisierung der Werte
+		
+//		this.count = 50;
+//		this.values = new double [3][count];
 		MainFrame mf = new MainFrame();
-		setHandle((Graphics2D)mf.getGraphicsForVirtualization()); //Felix fragen...wie er sich setHandle vorgestellt hat
+		setHandle((Graphics2D)mf.getGraphicsForVirtualization()); 
+		animation = new Thread();
+		start();
 	}
 
 	@Override
-	public boolean pause () {
+	public boolean pause (boolean state) {
 		// TODO Auto-generated method stub
-		return false;
+		if(state == false)return false;
+		else 	
+		{
+			try {
+				animation.sleep(0); //TODO pause
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return true;
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public boolean finish (boolean state) {
+		// TODO Auto-generated method stub
+		if(state == false)
+		{
+			return false;
+		}
+		else 	
+		{
+			animation.stop();
+			return true;
+		}
+		
 	}
 
 	@Override
-	public boolean finish () {
+	public void setHandle (Graphics2D animationPnl) {
 		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setHandle (Graphics2D animationpnl) {
-		// TODO Auto-generated method stub
-		sin(animationpnl);
+		this.animationPnl = animationPnl;
 	}
 //getter & setter
-	public String [][] getColor ()
+	public Color [] getColor ()
 	{
-		return color;
+		return colors;
 	}
 	
-	public void setColor (String [][] color)
+	public void setColor (Color[] color)
 	{
-		this.color = color;
+		this.colors = color;
 	}
 	
-	public void setValues(double [][] values) {
-		this.values = values;
-	}
+//	public void setValues(double [][] values) {
+//		this.values = values;
+//	}
+//
+//	public double [][] getValues() {
+//		return values;
+//	}
 
-	public double [][] getValues() {
-		return values;
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+//		while (true) {
+            try {
+                Thread.sleep (30);
+            }
+            catch (InterruptedException e) {
+            }
+            sin();
+//            animationPnl.drawPolyline(x, y, x.length);
+       // }
+
 	}
 
 	
