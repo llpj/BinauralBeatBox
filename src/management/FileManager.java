@@ -66,11 +66,16 @@ public class FileManager {
 	 * Oh Shit, das wird schwierig. Wir muessen die Audioinformationen aus der
 	 * Session irgendwie auf eine DataLine schreiben, damit daraus ein
 	 * AudioInputStream generiert werden kann, der dann in ein WaveFile
-	 * exportiert werden kann. Damn!
+	 * exportiert werden kann. Damn! --- Neue Info: ich hab eine externe Klasse
+	 * WavFile gefunden, die uns das Ganze stark erleichtert.
 	 */
 	public void exportAsWav() {
+		// TODO: AudioInputStream und so raushauen und das ganze ueber
+		// interfaces.wavFile.WavFile regeln
+		InputStream inputStream = "musch";
 		// Hole Audioinformationen, um einen AudioInputStream zu generieren
-		AudioInputStream audioInputStream = new AudioInputStream(targetDataLine);
+		AudioInputStream audioInputStream = AudioSystem
+				.getAudioInputStream(inputStream);
 		// Neue WAVE-Datei im Filesystem erstellen
 		File fileOut = new File("test.wav"); // TODO: Hier muss der Pfad rein,
 												// den der User spezifiziert
