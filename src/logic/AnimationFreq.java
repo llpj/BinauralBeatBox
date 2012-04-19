@@ -30,17 +30,17 @@ public class AnimationFreq extends Animation {
 	{
 		super.setFreq(freq);
 		//rot
-		this.color [0][0] = "ff";
-		this.color [0][1] = "00";
-		this.color [0][2] = "00"; 
-		//grün
-		this.color [1][0] = "00";
-		this.color [1][1] = "ff"; 
-		this.color [1][2] = "00"; 
-		//blau
-		this.color [2][0] = "00"; 
-		this.color [2][1] = "00";
-		this.color [2][2] = "ff"; 
+//		this.color [0][0] = "ff";
+//		this.color [0][1] = "00";
+//		this.color [0][2] = "00"; 
+//		//grün
+//		this.color [1][0] = "00";
+//		this.color [1][1] = "ff"; 
+//		this.color [1][2] = "00"; 
+//		//blau
+//		this.color [2][0] = "00"; 
+//		this.color [2][1] = "00";
+//		this.color [2][2] = "ff"; 
 		//Sinus-Werte
 		this.count = count;
 		this.values = new double [count][3];
