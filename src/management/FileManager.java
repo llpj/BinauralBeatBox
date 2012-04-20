@@ -110,9 +110,9 @@ public class FileManager {
 							.getFreq2_start();
 
 					buffer[0][s] = Math.sin(2.0 * Math.PI * freq1
-							* frameCounter);
+							* frameCounter / sampleRate);
 					buffer[1][s] = Math.sin(2.0 * Math.PI * freq2
-							* frameCounter);
+							* frameCounter / sampleRate);
 
 				}
 

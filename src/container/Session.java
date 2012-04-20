@@ -37,6 +37,7 @@ public class Session implements Serializable {
 		this();
 		this.Hintergrundklang = Hintergrundklang;
 		this.addSegment(segment);
+		this.duration = this.calcDuration();
 	}
 
 	// Getter und Setter
@@ -53,7 +54,7 @@ public class Session implements Serializable {
 	}
 
 	public int getDuration() {
-		this.calcDuration(); // zur Sicherheit nochmal nachrechnen
+		this.duration = this.calcDuration(); // zur Sicherheit nochmal nachrechnen
 		return duration;
 	}
 
