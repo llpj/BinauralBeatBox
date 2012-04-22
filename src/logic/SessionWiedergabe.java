@@ -53,31 +53,30 @@ public class SessionWiedergabe {
             ex.printStackTrace();
         }
     }		
-		
-		//Berechnung
-	   public static byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat playme) {
-	        byte sampleSize = (byte) (playme.getSampleSizeInBits() / 8);
-	        byte[] data = new byte[(int) playme.getSampleRate() * sampleSize  * 2];
-	        double stepWidth = (2 * Math.PI) / playme.getSampleRate();
-	        double x = 0;
-	        for (int i = 0; i < data.length; i += sampleSize * 2) {
-	            int sample_max_value = (int) Math.pow(2, playme.getSampleSizeInBits()) / 2 - 1;
-	            int value = (int) (sample_max_value * Math.sin(frequency1 * x));
-	            for (int j = 0; j < sampleSize; j++) {
-	                byte sampleByte = (byte) ((value >> (8 * j)) & 0xff);
-	                data[i + j] = sampleByte;
-	            }
-	            value = (int) (sample_max_value * Math.sin(frequency2 * x));
-	            for (int j = 0; j < sampleSize; j++) {
-	                byte sampleByte = (byte) ((value >> (8 * j)) & 0xff);
-	                int index = i + j + sampleSize;
-	                data[index] = sampleByte;
-	            }
-	            x += stepWidth;
-	        }
-	        return data;
-	    }
-	   
+	
+	//Berechnung, um die Frequenzen auf die Boxen zu verteilen
+	public static byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat playme) {
+        byte sampleSize = (byte) (playme.getSampleSizeInBits() / 8);
+        byte[] data = new byte[(int) playme.getSampleRate() * sampleSize  * 2];
+        double stepWidth = (2 * Math.PI) / playme.getSampleRate();
+        double x = 0;
+        for (int i = 0; i < data.length; i += sampleSize * 2) {
+            int sample_max_value = (int) Math.pow(2, playme.getSampleSizeInBits()) / 2 - 1;
+            int value = (int) (sample_max_value * Math.sin(frequency1 * x));
+            for (int j = 0; j < sampleSize; j++) {
+                byte sampleByte = (byte) ((value >> (8 * j)) & 0xff);
+                data[i + j] = sampleByte;
+            }
+            value = (int) (sample_max_value * Math.sin(frequency2 * x));
+            for (int j = 0; j < sampleSize; j++) {
+                byte sampleByte = (byte) ((value >> (8 * j)) & 0xff);
+                int index = i + j + sampleSize;
+                data[index] = sampleByte;
+            }
+            x += stepWidth;
+        }
+        return data;
+    }		   
 	
 	
 	public void pauseSession() {
