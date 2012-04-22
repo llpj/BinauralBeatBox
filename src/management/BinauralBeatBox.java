@@ -13,14 +13,13 @@ import gui.playerGui.PlayerPanel;
 public class BinauralBeatBox {
 
 	private MainFrame	mf; 
-	private Animation animation;
+	private Animation	animation;
 	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
-		// hall0
+
 		new BinauralBeatBox();
 		
 	}
@@ -40,9 +39,8 @@ public class BinauralBeatBox {
 					//SessionWiedergabe.playSession(500,1000,10);
 					int [] freq={-30,0,30};
 					//Session ses = new Session ();
-					
-						animation = new AnimationFreq (freq); 
-						animation.setHandle( (Graphics2D)mf.getGraphicsForVirtualization() );
+					animation = new AnimationFreq (freq);
+					animation.setHandle( (Graphics2D)mf.getGraphicsForVirtualization() );
 					
 				} else {
 					//PAUSE:
