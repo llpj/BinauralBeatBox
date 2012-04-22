@@ -3,11 +3,7 @@ package logic;
 import container.Session;
 
 // Java Sound API
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Line;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.*;
 
 /**
  * @author Boris Beck
@@ -18,12 +14,18 @@ import javax.sound.sampled.AudioFormat;
 public class SessionWiedergabe {
 	
 	// definiere Variablen
-	private int currentDuration = 0;
 	private int currentFrequenz;
 	private Session currentSession;
-	private int volumn;
-	private int balance;
+	private int balance;	
+	private static Clip c;
+    
+    // Testvariablen
+    static int i= 0;
+	static int j=1;
 	
+	static AudioFormat playme = new AudioFormat(44100, 16, 2, true, false); // Parameter 1: Samplerate, 2: SampleBits, 3: Kanaele)
+
+    
 	public void setSession(Session session) {
 		// TODO load session
 	}
@@ -35,24 +37,35 @@ public class SessionWiedergabe {
 	  * @param freqLinks:  linke Frequenz. Wenn 0, dann kein Ton 
 	  * @param freqRechts: rechte Frequenz. Wenn 0, dann kein Ton
 	  * @param freDsuer: Frequennz Wiederholungen
+	  * 
+	  * mit Hilfe von c.getFramePosition() ist es moeglich, die aktuelle Zeit zu bestimmen
 	  */
-	public static void playSession(int freqLinks, int  freqRechts, int freqDauer)  {
-        AudioFormat playme = new AudioFormat(44100, 16, 2, true, false); // Parameter 1: Samplerate, 2: SampleBits, 3: Kanaele)
+	public static void playSession(int freqLinks, int  freqRechts)  {
+		i++;
+		System.out.print("Funktion aufgerufen: "+i);
+
         byte[] data = getStereoSinusTone(freqLinks, freqRechts, playme);
         try {
-            Clip c = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
+            c = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
             c.open(playme, data, 0, data.length);
-            c.loop(freqDauer);
+            c.start();
+            System.out.println(" loop: " +j);
+            c.loop(Clip.LOOP_CONTINUOUSLY);
+            j++;
             while(c.isRunning()) {
                 try {
-                    Thread.sleep(50);
+                	System.out.println("spielt "+ c.getFramePosition());
+                    //Thread.sleep(50);
                 	
-                } catch (Exception ex) {}
+                } 
+                catch (Exception ex) {}
             }
-        } catch (LineUnavailableException ex) {
+        }
+        catch (LineUnavailableException ex) {
             ex.printStackTrace();
         }
-    }		
+        System.out.println("Ende...");
+    }
 	
 	//Berechnung, um die Frequenzen auf die Boxen zu verteilen
 	public static byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat playme) {
@@ -77,27 +90,55 @@ public class SessionWiedergabe {
         }
         return data;
     }		   
+
 	
-	
+	/**
+	  *	pauseSession()
+	  *
+	  *	Session Pausieren. Nur moeglich, wenn die Session schon einmal abgespielt worden ist, d.h. wenn die aktuelle Zeit bei 0
+	  * steht, dann soll der Pause Knopf nix tun		
+	  * 
+	  */
 	public void pauseSession() {
-		// TODO pause
+		if (c.isRunning()) {
+			c.stop();   		
+         	c.setFramePosition(c.getFramePosition()); // Session pausieren
+		}
+		else {
+			c.getFramePosition();
+			
+			if (c.getFramePosition()!=0) {
+				c.start();
+			}
+			else {
+				// nix tun
+				System.out.println("Pausenbuttontest");
+			}
+		}
 	}
 	
 	public void stopSession() {
-		// TODO stop Session
+		if (c.isRunning()) {
+			c.stop();
+		}
+         	c.setFramePosition(0); // Session auf den Anfang setzen
 	}
 	
-	public int getCurrentDuration() {
-		//würde ich in der Session abfragen lassen
-		return currentDuration;
-	}
-	
-	private void transition(int endFreq, int beginFeq) {
+	private void transition(int endFreq, int beginFreq) {
 		// TODO Uebergang zwischen den Segmenten berechnen
 	}
 	
-	private void changeVolumn(int volumn) {
-		this.volumn = volumn;
+	
+	/**
+	 * 
+	 * private void changeVolumn(int volumn)
+	 * 
+	 * @param volumn: floet, Wert um wieviel die Lautstärke veringert (Negativer Wert) oder erhöht werden soll)
+	 * zB -10.0f veringert die Lautsätke um -10 Decibel
+	 */
+	private void changeVolumn(float volumn) {
+		FloatControl gainControl = (FloatControl) c.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl.setValue(volumn); //  veringert die Lautsärke um 10 Decibel
 	}
 	
 	private void changeBalance(int balance) {
