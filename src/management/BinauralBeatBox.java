@@ -1,14 +1,10 @@
 package management;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import logic.*;
-import container.*;
-
-
 import gui.MainFrame;
 import gui.ToggleButton;
 import gui.playerGui.PlayerPanel;
@@ -17,7 +13,7 @@ import gui.playerGui.PlayerPanel;
 public class BinauralBeatBox {
 
 	private MainFrame	mf; 
-	private AnimationFreq aniFreq;
+	private Animation animation;
 	
 	/**
 	 * @param args
@@ -45,12 +41,12 @@ public class BinauralBeatBox {
 					int [] freq={-30,0,30};
 					//Session ses = new Session ();
 					
-						aniFreq = new AnimationFreq (freq); 
-						aniFreq.setHandle( (Graphics2D)mf.getGraphicsForVirtualization() );
+						animation = new AnimationFreq (freq); 
+						animation.setHandle( (Graphics2D)mf.getGraphicsForVirtualization() );
 					
 				} else {
 					//PAUSE:
-					aniFreq.pause(true);
+					animation.pause(true);
 				}
 			}
 		}, PlayerPanel.PLAY_BUTTON);
@@ -59,7 +55,7 @@ public class BinauralBeatBox {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:
-				aniFreq.finish(true);
+				animation.finish(true);
 			}
 		}, PlayerPanel.STOP_BUTTON);
 	}
