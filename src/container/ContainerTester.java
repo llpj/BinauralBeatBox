@@ -1,6 +1,7 @@
 package container;
 
 import logic.SessionWiedergabe;
+import management.FileManager;
 
 public class ContainerTester {
 
@@ -9,14 +10,11 @@ public class ContainerTester {
 	 */
 	public static void main(String[] args) {
 		// Testing getMood in connection with the enum
-		BinauralBeat beat = new BinauralBeat(25, 23);
+		BinauralBeat beat = new BinauralBeat(12, 14);
 		System.out.println("Gewaehlte Stimmung: " + beat.getMood());
 
-		for(int i = 0; i<1000; i++){
-			System.out.println("Links: " + (int)beat.getFreq1_start() + " Rechts: " + (int)beat.getFreq2_start() + " i: " +i);
-			SessionWiedergabe.playSession((int)beat.getFreq1_start(), (int)beat.getFreq2_start(), 1000);
-			if(i%1000 == 0) System.out.println("Spielt...");
-		}		
+		/*SessionWiedergabe.playSession((int) beat.getFreq1_start(),
+				(int) beat.getFreq2_start(), 1000);*/
 
 		/*
 		 * for(int i = 0; i<1000; i++){
@@ -25,6 +23,7 @@ public class ContainerTester {
 		 * System.out.println("Spielt..."); } System.out.println("Fertig.");
 		 */
 
+		// Test Categories
 		Segment segment1 = new Segment(10, beat);
 		Segment segment2 = new Segment(10, 30, 33);
 		Segment slowdown = new Segment(10, 100, 30, 110, 40);
@@ -40,6 +39,16 @@ public class ContainerTester {
 		category.addSession(session2);
 
 		System.out.println(category.toString());
+		
+		// Test Wav-Export
+		Segment steadySegment = new Segment(40, 155, 160);
+		Session exportableSession = new Session("Hintergrundklang", steadySegment);
+		
+		FileManager fm = new FileManager();
+		fm.setActiveSession(exportableSession);
+		System.out.println("Erstelle Wavefile...");
+		fm.exportAsWav();
+		System.out.println("Wavefile erfolgreich erstellt.");
 	}
 
 }

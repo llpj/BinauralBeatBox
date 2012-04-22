@@ -1,3 +1,8 @@
+/**
+ * @author Fabian Schäfer
+ *
+ */
+
 package logic;
 
 import java.awt.Graphics2D;
@@ -97,20 +102,24 @@ class FrakFarbverlauf extends Animation {
 	}
 
 	//Vererbte Methoden
+	public void run()
+	{
+		
+	}
 	@Override
-	public void init(Session session) {
+	public void init() {//TODO Session session
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public boolean pause() {
+	public boolean pause(boolean state) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean finish() {
+	public boolean finish(boolean state) {
 		// TODO Auto-generated method stub
 		return false;
 	}

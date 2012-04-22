@@ -5,14 +5,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-<<<<<<< HEAD
- * @author Magnus Brï¿½hl
-=======
  * Die Session-Klasse. Achtung: bei jedem hinzufuegen eines Segments muss die
  * Laenge der Session (duration) neu berechnet werden.
  * 
  * @author Magnus Brühl
->>>>>>> ae5b5620e132b9d329b77270b90a0af3d6daf0f0
  * 
  */
 public class Session implements Serializable {
@@ -41,6 +37,7 @@ public class Session implements Serializable {
 		this();
 		this.Hintergrundklang = Hintergrundklang;
 		this.addSegment(segment);
+		this.duration = this.calcDuration();
 	}
 
 	// Getter und Setter
@@ -57,7 +54,16 @@ public class Session implements Serializable {
 	}
 
 	public int getDuration() {
+		this.duration = this.calcDuration(); // zur Sicherheit nochmal nachrechnen
 		return duration;
+	}
+
+	public ArrayList<Segment> getSegments() {
+		return segments;
+	}
+
+	public void setSegments(ArrayList<Segment> segments) {
+		this.segments = segments;
 	}
 
 	// Kalkulationen und Methoden
@@ -72,7 +78,7 @@ public class Session implements Serializable {
 	}
 
 	/**
-	 * Iteriert durch die Liste von Segmenten und addiert die jeweiligen Lï¿½ngen
+	 * Iteriert durch die Liste von Segmenten und addiert die jeweiligen Laengen
 	 * 
 	 * @return Die Dauer der kompletten Session
 	 */
@@ -81,7 +87,7 @@ public class Session implements Serializable {
 		if (this.segments.isEmpty()) {
 			return lDuration;
 		} else {
-			// iterate through the list of segments and add the durations
+			// iteriere durch die Liste von Segmenten und addiere die Dauer
 			Iterator<Segment> itr = this.segments.iterator();
 			while (itr.hasNext()) {
 				lDuration = itr.next().getDuration();
