@@ -1,6 +1,7 @@
 package management;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,7 +17,7 @@ import gui.playerGui.PlayerPanel;
 public class BinauralBeatBox {
 
 	private MainFrame	mf; 
-	AnimationFreq aniFreq;
+	private AnimationFreq aniFreq;
 	
 	/**
 	 * @param args
@@ -45,6 +46,7 @@ public class BinauralBeatBox {
 					//Session ses = new Session ();
 					
 						aniFreq = new AnimationFreq (freq); 
+						aniFreq.setHandle( (Graphics2D)mf.getGraphicsForVirtualization() );
 					
 				} else {
 					//PAUSE:

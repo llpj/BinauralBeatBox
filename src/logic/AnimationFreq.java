@@ -1,5 +1,5 @@
 /**
- * @author Fabian Schäfer
+ * @author Fabian Schï¿½fer
  *
  */
 
@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 public class AnimationFreq extends Animation {
 /**
- * Klassenname wurde geändert von Frequenz zu AnimationFreq - Grund: Somit ist der Bezeichner eindeutig
+ * Klassenname wurde geï¿½ndert von Frequenz zu AnimationFreq - Grund: Somit ist der Bezeichner eindeutig
  */
 	Color colors[] = { Color.RED, Color.GREEN,Color.BLUE}; // ersetzt das Attribut String color, da weniger code und einfacheres Handle
 //	private double [][] values; 
@@ -86,8 +86,8 @@ public class AnimationFreq extends Animation {
 		
 //		this.count = 50;
 //		this.values = new double [3][count];
-		MainFrame mf = new MainFrame();
-		setHandle((Graphics2D)mf.getGraphicsForVirtualization()); 
+//		MainFrame mf = new MainFrame();
+//		setHandle((Graphics2D)mf.getGraphicsForVirtualization()); 
 		animation = new Thread();
 		start();
 	}
