@@ -100,6 +100,10 @@ public class Session implements Serializable {
 		this.calcDuration();
 	}
 
+	public int getNumerOfSegments() {
+		return this.segments.size();
+	}
+
 	/**
 	 * Iteriert durch die Liste von Segmenten und addiert die jeweiligen Laengen
 	 * 

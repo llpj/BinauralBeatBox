@@ -13,7 +13,7 @@ public class ContainerTester {
 		BinauralBeat beat = new BinauralBeat(12, 14);
 		System.out.println("Gewaehlte Stimmung: " + beat.getMood());
 
-		
+
 //		Session session = new Session();
 //		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 //		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
@@ -45,11 +45,11 @@ public class ContainerTester {
 		category.addSession(session2);
 
 		System.out.println(category.toString());
-		
+
 		// Test Wav-Export
 		Segment steadySegment = new Segment(40, 155, 160);
 		Session exportableSession = new Session("Hintergrundklang", steadySegment);
-		
+
 		FileManager fm = new FileManager();
 		fm.setActiveSession(exportableSession);
 		System.out.println("Erstelle Wavefile...");
