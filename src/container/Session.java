@@ -8,7 +8,7 @@ import java.util.Iterator;
  * Die Session-Klasse. Achtung: bei jedem hinzufuegen eines Segments muss die
  * Laenge der Session (duration) neu berechnet werden.
  * 
- * @author Magnus Br�hl
+ * @author Magnus Bruehl
  * 
  */
 public class Session implements Serializable {
@@ -20,6 +20,10 @@ public class Session implements Serializable {
 	private int duration;
 
 	// Konstruktoren
+	/**
+	 * Erstellt eine leere Session, mit Standard-Hintergrundklang, einer leeren
+	 * Liste von Segmenten und einer Dauer von 0.
+	 */
 	public Session() {
 		// TODO: Korrekten Pfad zum Standard-Hintergrundklang hinzufuegen
 		Hintergrundklang = "Pfad";
@@ -27,12 +31,30 @@ public class Session implements Serializable {
 		this.duration = 0;
 	}
 
+	/**
+	 * Erstellt eine neue Session mit angegebenem Hintergrundklang und einer
+	 * bereits vorhandenen Liste von Segmenten
+	 * 
+	 * @param Hintergrundklang
+	 *            Der Pfad zum Hintergrundklang
+	 * @param segments
+	 *            Eine Liste von Segmenten
+	 */
 	public Session(String Hintergrundklang, ArrayList<Segment> segments) {
 		this.Hintergrundklang = Hintergrundklang;
 		this.segments = segments;
 		this.duration = this.calcDuration();
 	}
 
+	/**
+	 * Erstellt eine neue Session mit angegebenem Hintergrundklang und einem
+	 * einzelnen bereits vorhandenen Segment
+	 * 
+	 * @param Hintergrundklang
+	 *            Der Pfad zum Hintergrundklang
+	 * @param segment
+	 *            Ein einzelnes Segment
+	 */
 	public Session(String Hintergrundklang, Segment segment) {
 		this();
 		this.Hintergrundklang = Hintergrundklang;
@@ -54,7 +76,8 @@ public class Session implements Serializable {
 	}
 
 	public int getDuration() {
-		this.duration = this.calcDuration(); // zur Sicherheit nochmal nachrechnen
+		this.duration = this.calcDuration(); // zur Sicherheit nochmal
+												// nachrechnen
 		return duration;
 	}
 
