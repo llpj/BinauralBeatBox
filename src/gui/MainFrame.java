@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
 		},SessionlistPanel.ADD_BUTTON);
 		
 		virtualizationPnl	= new JPanel();
-		virtualizationPnl.setBackground(Color.BLUE);
+		virtualizationPnl.setBackground(Color.GRAY);
 	
 		editorPnl			= new SessionEditorPanel();
 		
