@@ -39,10 +39,10 @@ public class MainFrame extends JFrame {
 		},SessionlistPanel.ADD_BUTTON);
 		
 		virtualizationPnl	= new JPanel();
+		virtualizationPnl.setBackground(Color.BLUE);
+	
 		editorPnl			= new SessionEditorPanel();
 		
-		virtualizationPnl.setBackground(Color.BLUE);
-		virtualizationPnl.setForeground(Color.RED);//für sinus linien...funktioniert aber nicht
 		playerLayout();
 
 		setMinimumSize( new Dimension(getSize().width,500) );

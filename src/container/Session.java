@@ -8,7 +8,7 @@ import java.util.Iterator;
  * Die Session-Klasse. Achtung: bei jedem hinzufuegen eines Segments muss die
  * Laenge der Session (duration) neu berechnet werden.
  * 
- * @author Magnus Brühl
+ * @author Magnus Brï¿½hl
  * 
  */
 public class Session implements Serializable {
@@ -90,7 +90,7 @@ public class Session implements Serializable {
 			// iteriere durch die Liste von Segmenten und addiere die Dauer
 			Iterator<Segment> itr = this.segments.iterator();
 			while (itr.hasNext()) {
-				lDuration = itr.next().getDuration();
+				lDuration += itr.next().getDuration();
 			}
 			return lDuration;
 		}
