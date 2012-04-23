@@ -20,6 +20,10 @@ public class Session implements Serializable {
 	private int duration;
 
 	// Konstruktoren
+	/**
+	 * Erstellt eine leere Session, mit Standard-Hintergrundklang, einer leeren
+	 * Liste von Segmenten und einer Dauer von 0.
+	 */
 	public Session() {
 		// TODO: Korrekten Pfad zum Standard-Hintergrundklang hinzufuegen
 		Hintergrundklang = "Pfad";
@@ -54,7 +58,8 @@ public class Session implements Serializable {
 	}
 
 	public int getDuration() {
-		this.duration = this.calcDuration(); // zur Sicherheit nochmal nachrechnen
+		this.duration = this.calcDuration(); // zur Sicherheit nochmal
+												// nachrechnen
 		return duration;
 	}
 
