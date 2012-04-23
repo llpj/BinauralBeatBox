@@ -18,7 +18,7 @@ public class ContainerTester {
 //		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 //		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 //		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
-//		SessionWiedergabe sessionWiedergabe = new SessionWiedergabe(session);
+//		Sessionww.faWiedergabe sessionWiedergabe = new SessionWiedergabe(session);
 //		
 //		sessionWiedergabe.playSession((int) beat.getFreq1_start(),(int) beat.getFreq2_start());
 
