@@ -18,6 +18,7 @@ import javax.sound.sampled.*;
 public class SessionWiedergabe {
 	
 	private Session session;
+	private static long cuDuration = 0;
 	private int balance;	
 	private static Clip c;
 	private static AudioFormat playme;
@@ -26,13 +27,12 @@ public class SessionWiedergabe {
     
     // Testvariablen
     static int i= 0;
-	static int j=1;
 
     
 	public SessionWiedergabe(Session session) {
 		this.session = session;
-		playme = new AudioFormat(44100, 16, 2, true, false); // Parameter 1: Samplerate, 2: SampleBits, 3: Kanaele)
 		
+        playme = new AudioFormat(44100, 16, 2, true, true); // Parameter 1: Samplerate, 2: SampleBits, 3: Kanaele)
 		sampleSize = (byte) (playme.getSampleSizeInBits() / 8);
 		
 		totalBeat = new byte[(int) playme.getSampleRate() * sampleSize  * session.getDuration()];
@@ -44,36 +44,35 @@ public class SessionWiedergabe {
 	/**
 	  * public static void playSession(int freqLinks, int  freqRechts, int freqDauer)
 	  * 
-	  * @param freqLinks:  linke Frequenz. Wenn 0, dann kein Ton 
+	  * @param	static int j=1; freqLinks:  linke Frequenz. Wenn 0, dann kein Ton 
 	  * @param freqRechts: rechte Frequenz. Wenn 0, dann kein Ton
 	  * @param freDsuer: Frequennz Wiederholungen
 	  * 
-	  * mit Hilfe von c.getFramePosition() ist es moeglich, die aktuelle Zeit zu bestimmen
+	  * mit Hilfe von c.getMicrosecondPosition() ist es moeglich, die aktuelle Zeit zu bestimmen
 	  */
-	public static void playSession(int freqLinks, int  freqRechts)  {
+	public static void playSession(int freqLinks, int  freqRechts) {
 		i++;
-		System.out.print("Funktion aufgerufen: "+i);
+		System.out.println("Funktion aufgerufen: "+i);
 
         byte[] data = getStereoSinusTone(freqLinks, freqRechts, playme,10);
+        
         try {
             c = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
             c.open(playme, data, 0, data.length);
             c.start();
-            System.out.println(" loop: " +j);
             //c.loop(Clip.LOOP_CONTINUOUSLY);
             c.loop(1);
-            j++;
             while(c.isRunning()) {
                 try {
-                	System.out.println("spielt "+ c.getFramePosition());
-                    //Thread.sleep(50);
+                	System.out.println("spielt "+ c.getMicrosecondPosition());
+                    // Thread.sleep(50);
                 	
                 } 
                 catch (Exception ex) {}
             }
         }
         catch (LineUnavailableException ex) {
-            ex.printStackTrace();
+        	ex.printStackTrace();         
         }
         System.out.println("Ende...");
     }
@@ -114,29 +113,40 @@ public class SessionWiedergabe {
 	  * steht, dann soll der Pause Knopf nix tun		
 	  * 
 	  */
-	public void pauseSession() {
-		if (c.isRunning()) {
-			c.stop();   		
-         	c.setFramePosition(c.getFramePosition()); // Session pausieren
-		}
-		else {
-			c.getFramePosition();
-			
-			if (c.getFramePosition()!=0) {
-				c.start();
-			}
-			else {
-				// nix tun
-				System.out.println("Pausenbuttontest");
-			}
-		}
-	}
-	
-	public void stopSession() {
+	public static void pauseSession() {
+		System.out.println("Pausenbuttontest");
+		cuDuration = c.getMicrosecondPosition();
+		System.out.println("Aktuelle Position: "+cuDuration);
 		if (c.isRunning()) {
 			c.stop();
-		}
-         	c.setFramePosition(0); // Session auf den Anfang setzen
+		} else {
+			System.out.println("Pause Fehler: Clip c wurde nicht abgespielt.");
+		}		
+	}
+	
+	/**
+	 * public static void continueSession()
+	 * 
+	 * setzt die Session Wiedergabe da fort, wo pause gedrueckt worden ist
+	 */
+	
+	public static long getCuDuration() {
+		return cuDuration;
+	}
+	
+	public static void continueSession() {
+		System.out.println("Continuebuttontest");
+		c.setMicrosecondPosition(cuDuration);
+		System.out.println("Continue at: "+cuDuration);
+		c.start();
+	}	
+	
+	public static void stopSession() {
+		System.out.println("Stopbuttontest");
+		if (c.isRunning()) {
+			c.stop();
+			cuDuration=0; // Session auf den Anfang setzen
+		}  	
 	}
 	
 	/**

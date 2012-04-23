@@ -13,8 +13,14 @@ public class ContainerTester {
 		BinauralBeat beat = new BinauralBeat(12, 14);
 		System.out.println("Gewaehlte Stimmung: " + beat.getMood());
 
-		/*SessionWiedergabe.playSession((int) beat.getFreq1_start(),
-				(int) beat.getFreq2_start(), 1000);*/
+		
+//		Session session = new Session();
+//		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+//		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
+//		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+//		SessionWiedergabe sessionWiedergabe = new SessionWiedergabe(session);
+//		
+//		sessionWiedergabe.playSession((int) beat.getFreq1_start(),(int) beat.getFreq2_start());
 
 		/*
 		 * for(int i = 0; i<1000; i++){

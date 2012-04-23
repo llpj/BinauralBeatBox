@@ -45,8 +45,14 @@ public class BinauralBeatBox {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
-					//PLAY:
-					SessionWiedergabe.playSession(500,1000);
+					
+					//PLAY
+					if (SessionWiedergabe.getCuDuration()==0) {
+						SessionWiedergabe.playSession(500,1000);
+					} else {
+						SessionWiedergabe.continueSession();
+					}
+					
 					int [] freq={-30,0,30};
 					//Session ses = new Session ();
 					animation = new AnimationFreq (freq);
@@ -55,15 +61,16 @@ public class BinauralBeatBox {
 				} else {
 					//PAUSE:
 					animation.pause(true);
+					SessionWiedergabe.pauseSession();
 				}
 			}
 		}, PlayerPanel.PLAY_BUTTON);
-		
 		mf.getPlayerPanel().addActionListenerToElement( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:
 				animation.finish(true);
+				SessionWiedergabe.stopSession();
 			}
 		}, PlayerPanel.STOP_BUTTON);
 	}
