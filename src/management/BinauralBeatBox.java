@@ -1,13 +1,14 @@
 package management;
 
-import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import container.BinauralBeat;
+import container.Segment;
+import container.Session;
+
 import logic.*;
-import container.*;
-
-
 import gui.MainFrame;
 import gui.ToggleButton;
 import gui.playerGui.PlayerPanel;
@@ -16,16 +17,21 @@ import gui.playerGui.PlayerPanel;
 public class BinauralBeatBox {
 
 	private MainFrame	mf; 
-	AnimationFreq aniFreq;
+	private Animation	animation;
 	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
-		// hall0
+
 		new BinauralBeatBox();
 		
+		Session session = new Session();
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		
+		new SessionWiedergabe(session);
 	}
 	
 	private BinauralBeatBox() {
@@ -40,15 +46,15 @@ public class BinauralBeatBox {
 			public void actionPerformed(ActionEvent ae) {
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
 					//PLAY:
-					//SessionWiedergabe.playSession(500,1000,10);
+					SessionWiedergabe.playSession(500,1000);
 					int [] freq={-30,0,30};
 					//Session ses = new Session ();
-					
-						aniFreq = new AnimationFreq (freq); 
+					animation = new AnimationFreq (freq);
+					animation.setHandle( (Graphics2D)mf.getGraphicsForVirtualization() );
 					
 				} else {
 					//PAUSE:
-					aniFreq.pause(true);
+					animation.pause(true);
 				}
 			}
 		}, PlayerPanel.PLAY_BUTTON);
@@ -57,7 +63,7 @@ public class BinauralBeatBox {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:
-				aniFreq.finish(true);
+				animation.finish(true);
 			}
 		}, PlayerPanel.STOP_BUTTON);
 	}
