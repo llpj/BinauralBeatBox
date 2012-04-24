@@ -1,5 +1,7 @@
 package management;
 
+import interfaces.Mood;
+
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,8 +58,10 @@ public class BinauralBeatBox{
 					}
 					
 						//animationfreq
-						int [] freq={-30,0,30};
-						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
+//						int [] freq={-30,0,30};
+//						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
+						//animationFrakFarbverlauf: true = frak, false = nur farbverlauf
+						animation = new FrakFarbverlauf (Mood.THETA,false,mf.getVirtualizationPnl());
 					
 				} else {
 					//PAUSE:

@@ -12,16 +12,12 @@ public class AnimationFreq extends Animation {
 /**
  * Klassenname wurde geï¿½ndert von Frequenz zu AnimationFreq - Grund: Somit ist der Bezeichner eindeutig
  */
-	private Thread animation;
-	private Graphics2D animationPnl;
 	// ersetzt das Attribut String color, da weniger code und einfacheres Handle
 	Color colors[] = {Color.BLUE, Color.RED, Color.GREEN}; 
 	//Koordinaten auf der Sinuskurve
 	int[] x;
 	int[] y;
-	//TODO animationPnl größe 
-	int width;
-	int height;
+	
 	double xPos;
 	
 	public AnimationFreq (int [] freq, JPanel pnl)//TODO Session session
@@ -65,15 +61,7 @@ public class AnimationFreq extends Animation {
 	}
 
 	
-	//Thread Initialisierung
-	 public void start () {
-		 if(animation == null)
-		{
-	        animation = new Thread (this);
-	        animation.start ();
-		}
-	}
-
+	
 	
 	//Vererbte Methoden
 	
@@ -83,8 +71,7 @@ public class AnimationFreq extends Animation {
 		// Initialisierung der Werte
 		xPos = 0;
 		pnl.setDoubleBuffered(true);
-//		sin();
-		start();
+		super.start();
 	}
 
 	@Override
@@ -145,16 +132,17 @@ public class AnimationFreq extends Animation {
 	 // Gibt 0 zurück --> soll für das Eingrenzen der Animation benutzt werden
 	while (animation == thisThread) 
 		{
+			xPos += 0.1f;
+			sin();
 			try 
 			{
-				Thread.sleep (30);
+				Thread.sleep (40);	
 			}
 			catch (InterruptedException e) 
 			{
+				//nichts
 			}
 			pnl.repaint();
-			xPos += 0.1f;
-			sin();
         }
 
 	}

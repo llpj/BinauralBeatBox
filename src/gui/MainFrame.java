@@ -8,7 +8,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -82,5 +81,9 @@ public class MainFrame extends JFrame {
 	
 	public PlayerPanel getPlayerPanel() {
 		return playerPnl;
+	}
+	@Override
+	public void update(Graphics g){
+		    paint(g);
 	}
 }
