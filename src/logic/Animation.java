@@ -11,9 +11,11 @@ import javax.swing.JPanel;
 
 import container.Session;
 
-public abstract class Animation extends JPanel implements Runnable{
+public abstract class Animation /*extends JPanel*/ implements Runnable{
 	
 	private int [] freq = new int[3];
+	
+	protected JPanel pnl;
 	
 	public int [] getFreq ()
 	{
@@ -24,6 +26,9 @@ public abstract class Animation extends JPanel implements Runnable{
 		this.freq = freq;
 	}
 	
+	public Animation(JPanel pnl) {
+		this.pnl = pnl;
+	}
 	public abstract void init ();//TODO session 
 	public abstract boolean pause (boolean state); //"pause" an Stelle von "break", da Java bereits break benutzt
 	public abstract boolean finish (boolean state);

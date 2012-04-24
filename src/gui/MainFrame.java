@@ -76,8 +76,8 @@ public class MainFrame extends JFrame {
 		pack();
 	}
 	
-	public Graphics getGraphicsForVirtualization() {
-		return virtualizationPnl.getGraphics();
+	public JPanel getVirtualizationPnl() {
+		return virtualizationPnl;
 	}
 	
 	public PlayerPanel getPlayerPanel() {

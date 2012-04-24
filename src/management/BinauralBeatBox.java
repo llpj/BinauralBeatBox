@@ -57,8 +57,7 @@ public class BinauralBeatBox{
 					
 						//animationfreq
 						int [] freq={-30,0,30};
-						animation = new AnimationFreq (freq);
-						animation.setHandle( (Graphics2D)mf.getGraphicsForVirtualization() );
+						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
 					
 					
 				} else {

@@ -23,18 +23,18 @@ public class AnimationFreq extends Animation {
 	int[] x;
 	int[] y;
 	//TODO animationPnl größe 
-	double width;
-	double height;
-	
-	   
-	public AnimationFreq ()
+	int width;
+	int height;
+
+	public AnimationFreq (int [] freq, JPanel pnl)//TODO Session session
 	{
-		//Standard Konstruktor
-	}
-	
-	public AnimationFreq (int [] freq)//TODO Session session
-	{
+		super(pnl);
 		super.setFreq(freq);
+		animationPnl = (Graphics2D) pnl.getGraphics();
+		width = pnl.getSize().width; // muss über Dimension gemacht werden, da Punkte und Pixel nicht vergleichbar wären
+		height = pnl.getSize().height;
+		y = new int[360]; 
+		x = new int[360];
 		//Initialisierung
 		init();//TODO session
 	}
@@ -42,22 +42,29 @@ public class AnimationFreq extends Animation {
 	protected void sin ()
 	{	 
 		// TODO in: freq
-		super.paint(animationPnl);
-		int i;
-		for( int j = 0; j < 3; j++)
+		int nextPos = (int)x[x.length-1];
+		int i,j;
+		
+		while(nextPos < width)
 		{
-			for( i = 0; i < y.length; i++ )
+			for( j = 0; j < 3; j++)
 			{
-				y[i]=(100-(int)Math.round(Math.sin(Math.toRadians(i))*super.getFreq()[j]));
-				x[i]=i;
-				if(j == 0)y[i]-=20;
-				else if (j==1) y[i]+=30;
-				else y[i]+=80;
+				for( i = 0; i < y.length; i++ )
+				{
+					y[i]=(100-(int)Math.round(Math.sin(Math.toRadians(i))*super.getFreq()[j]));
+					x[i]=i;
+					if(j == 0)y[i]-=20;
+					else if (j==1) y[i]+=30;
+					else y[i]+=80;
+				}
+				animationPnl.setColor(colors[j]);
+				animationPnl.setStroke(new BasicStroke(5.0f));
+				animationPnl.drawPolyline(x, y, x.length);
 			}
-			animationPnl.setColor(colors[j]);
-		    animationPnl.setStroke(new BasicStroke(5.0f));
-			animationPnl.drawPolyline(x, y, x.length);
+			animationPnl.translate((int)x[x.length-1],0);
+			nextPos += (int)x[x.length-1];
 		}
+		pnl.paintAll(animationPnl);
 	}
 	
 	
@@ -77,9 +84,8 @@ public class AnimationFreq extends Animation {
 	public void init() {//TODO Session session
 		// TODO Auto-generated method stub
 		// Initialisierung der Werte
-		super.paint(animationPnl);
+		sin();
 		start();
-		
 	}
 
 	@Override
@@ -121,12 +127,8 @@ public class AnimationFreq extends Animation {
 	@Override
 	public void setHandle (Graphics2D animationPnl) {
 		// TODO Auto-generated method stub
-		this.animationPnl = animationPnl;
-		animationPnl.getComposite();
-		y = new int[360]; 
-		x = new int[360];
 	}
-//getter & setter
+	//getter & setter
 	public Color [] getColor ()
 	{
 		return colors;
@@ -142,20 +144,16 @@ public class AnimationFreq extends Animation {
 		// TODO Auto-generated method stub
 	Thread thisThread = Thread.currentThread();
 	 // Gibt 0 zurück --> soll für das Eingrenzen der Animation benutzt werden
-	
-
 	while (animation == thisThread) 
 		{
-            try 
-            {
-                Thread.sleep (30);
-            }
-            catch (InterruptedException e) 
-            {
-            }
-            sin();
-            animationPnl.translate((int)x[x.length-1],0);
-            repaint();
+			try 
+			{
+				Thread.sleep (300);
+			}
+			catch (InterruptedException e) 
+			{
+			}
+			pnl.repaint();
         }
 
 	}

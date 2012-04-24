@@ -7,6 +7,8 @@ package logic;
 
 import java.awt.Graphics2D;
 
+import javax.swing.JPanel;
+
 import container.Session;
 
 class FrakFarbverlauf extends Animation {
@@ -17,14 +19,11 @@ class FrakFarbverlauf extends Animation {
 	private String [] color = new String [2];
     private boolean isFraktal;        // isFarbverlauf wird nun durch den Unterschied von true und false mit abgebildet
     private String mood;
+
     
-    public FrakFarbverlauf ()
+    public FrakFarbverlauf (String mood, boolean isFraktal, JPanel pnl)
     {
-    	
-    }
-    
-    public FrakFarbverlauf (String mood, boolean isFraktal)
-    {
+    	super(pnl);
     	this.setMood(mood);
     	this.setFraktal(isFraktal);
     }
