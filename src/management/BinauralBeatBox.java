@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JPanel;
+
 import container.BinauralBeat;
 import container.Segment;
 import container.Session;
@@ -14,7 +16,7 @@ import gui.ToggleButton;
 import gui.playerGui.PlayerPanel;
 
 
-public class BinauralBeatBox {
+public class BinauralBeatBox{
 
 	private MainFrame			mf; 
 	private Animation			animation;
@@ -23,7 +25,7 @@ public class BinauralBeatBox {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) { 
 
 		new BinauralBeatBox();
 	}
@@ -45,26 +47,32 @@ public class BinauralBeatBox {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
-					//PLAY:
-					sw.playSession(200, 300);
-					int [] freq={-30,0,30};
-					//Session ses = new Session ();
-					animation = new AnimationFreq (freq);
-					animation.setHandle( (Graphics2D)mf.getGraphicsForVirtualization() );
+				
+					//PLAY
+					if (SessionWiedergabe.getCuDuration()==0) {
+						SessionWiedergabe.playSession(500,1000);
+					} else {
+						SessionWiedergabe.continueSession();
+					}
+					
+						//animationfreq
+						int [] freq={-30,0,30};
+						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
 					
 				} else {
 					//PAUSE:
 					animation.pause(true);
+					SessionWiedergabe.pauseSession();
 				}
 			}
 		}, PlayerPanel.PLAY_BUTTON);
-		
 		mf.getPlayerPanel().addActionListenerToElement( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:
 				sw.stopSession();
 				animation.finish(true);
+				SessionWiedergabe.stopSession();
 			}
 		}, PlayerPanel.STOP_BUTTON);
 	}

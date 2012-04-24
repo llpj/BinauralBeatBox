@@ -5,12 +5,13 @@
 package logic;
 
 import java.awt.Graphics2D;
-import java.applet.*;
-import container.Session;
+import javax.swing.JPanel;
 
 public abstract class Animation implements Runnable{
 	
 	private int [] freq = new int[3];
+	
+	protected JPanel pnl;
 	
 	public int [] getFreq ()
 	{
@@ -21,6 +22,9 @@ public abstract class Animation implements Runnable{
 		this.freq = freq;
 	}
 	
+	public Animation(JPanel pnl) {
+		this.pnl = pnl;
+	}
 	public abstract void init ();//TODO session 
 	public abstract boolean pause (boolean state); //"pause" an Stelle von "break", da Java bereits break benutzt
 	public abstract boolean finish (boolean state);

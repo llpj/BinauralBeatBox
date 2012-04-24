@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -27,7 +28,6 @@ public class MainFrame extends JFrame {
 	private SessionlistPanel	listPnl;
 	private SessionEditorPanel	editorPnl;
 
-
 	public MainFrame() {
 		playerPnl			= new PlayerPanel();
 		listPnl				= new SessionlistPanel();
@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
 		},SessionlistPanel.ADD_BUTTON);
 		
 		virtualizationPnl	= new JPanel();
-		virtualizationPnl.setBackground(Color.BLUE);
+		virtualizationPnl.setBackground(Color.GRAY);
 	
 		editorPnl			= new SessionEditorPanel();
 		
@@ -76,8 +76,8 @@ public class MainFrame extends JFrame {
 		pack();
 	}
 	
-	public Graphics getGraphicsForVirtualization() {
-		return virtualizationPnl.getGraphics();
+	public JPanel getVirtualizationPnl() {
+		return virtualizationPnl;
 	}
 	
 	public PlayerPanel getPlayerPanel() {
