@@ -5,13 +5,9 @@
 package logic;
 
 import java.awt.Graphics2D;
-import java.applet.*;
-
 import javax.swing.JPanel;
 
-import container.Session;
-
-public abstract class Animation /*extends JPanel*/ implements Runnable{
+public abstract class Animation implements Runnable{
 	
 	private int [] freq = new int[3];
 	

@@ -4,10 +4,7 @@
  */
 
 package logic;
-import container.Session;
-import gui.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 
 import javax.swing.JPanel;
 
@@ -25,12 +22,12 @@ public class AnimationFreq extends Animation {
 	//TODO animationPnl größe 
 	int width;
 	int height;
-
+	double xPos;
+	
 	public AnimationFreq (int [] freq, JPanel pnl)//TODO Session session
 	{
 		super(pnl);
 		super.setFreq(freq);
-		animationPnl = (Graphics2D) pnl.getGraphics();
 		width = pnl.getSize().width; // muss über Dimension gemacht werden, da Punkte und Pixel nicht vergleichbar wären
 		height = pnl.getSize().height;
 		y = new int[360]; 
@@ -38,24 +35,25 @@ public class AnimationFreq extends Animation {
 		//Initialisierung
 		init();//TODO session
 	}
-	
+
 	protected void sin ()
-	{	 
+	{	
 		// TODO in: freq
-		int nextPos = (int)x[x.length-1];
+		animationPnl = (Graphics2D) pnl.getGraphics();
+		int nextPos = 0;
 		int i,j;
-		
+		int q = height/3;
 		while(nextPos < width)
 		{
 			for( j = 0; j < 3; j++)
 			{
 				for( i = 0; i < y.length; i++ )
 				{
-					y[i]=(100-(int)Math.round(Math.sin(Math.toRadians(i))*super.getFreq()[j]));
+					y[i]=(100-(int)Math.round(Math.sin(Math.toRadians(i)+xPos)*super.getFreq()[j]));
 					x[i]=i;
-					if(j == 0)y[i]-=20;
-					else if (j==1) y[i]+=30;
-					else y[i]+=80;
+					if(j == 0)y[i]-=q-150;//20
+					else if (j==1) y[i]+=100;//30
+					else y[i]+=q+50;//80
 				}
 				animationPnl.setColor(colors[j]);
 				animationPnl.setStroke(new BasicStroke(5.0f));
@@ -64,9 +62,8 @@ public class AnimationFreq extends Animation {
 			animationPnl.translate((int)x[x.length-1],0);
 			nextPos += (int)x[x.length-1];
 		}
-		pnl.paintAll(animationPnl);
 	}
-	
+
 	
 	//Thread Initialisierung
 	 public void start () {
@@ -84,7 +81,9 @@ public class AnimationFreq extends Animation {
 	public void init() {//TODO Session session
 		// TODO Auto-generated method stub
 		// Initialisierung der Werte
-		sin();
+		xPos = 0;
+		pnl.setDoubleBuffered(true);
+//		sin();
 		start();
 	}
 
@@ -95,7 +94,7 @@ public class AnimationFreq extends Animation {
 		else 	
 		{
 			try {
-				animation.sleep(0); //TODO pause
+				Thread.sleep(0); //TODO pause
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -148,12 +147,14 @@ public class AnimationFreq extends Animation {
 		{
 			try 
 			{
-				Thread.sleep (300);
+				Thread.sleep (30);
 			}
 			catch (InterruptedException e) 
 			{
 			}
 			pnl.repaint();
+			xPos += 0.1f;
+			sin();
         }
 
 	}
