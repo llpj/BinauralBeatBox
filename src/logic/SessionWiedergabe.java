@@ -19,7 +19,6 @@ public class SessionWiedergabe {
 	
 	private Session session;
 	private static long cuDuration = 0;
-	private int balance;	
 	private static Clip c;
 	private static AudioFormat playme;
 	private byte sampleSize;
@@ -174,10 +173,6 @@ public class SessionWiedergabe {
 	private void changeVolumn(float volumn) {
 		FloatControl gainControl = (FloatControl) c.getControl(FloatControl.Type.MASTER_GAIN);
 		gainControl.setValue(volumn); //  veringert die Lautsärke um 10 Decibel
-	}
-	
-	private void changeBalance(int balance) {
-		this.balance = balance;
 	}
 
 }
