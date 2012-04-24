@@ -50,7 +50,7 @@ public class SessionWiedergabe {
 	  * 
 	  * mit Hilfe von c.getFramePosition() ist es moeglich, die aktuelle Zeit zu bestimmen
 	  */
-	public static void playSession(int freqLinks, int  freqRechts)  {
+	public void playSession(int freqLinks, int  freqRechts)  {
 		i++;
 		System.out.print("Funktion aufgerufen: "+i);
 
@@ -65,8 +65,8 @@ public class SessionWiedergabe {
             j++;
             while(c.isRunning()) {
                 try {
-                	System.out.println("spielt "+ c.getFramePosition());
-                    //Thread.sleep(50);
+//                	System.out.println("spielt "+ c.getFramePosition());
+                    Thread.sleep(50);
                 	
                 } 
                 catch (Exception ex) {}
@@ -79,8 +79,7 @@ public class SessionWiedergabe {
     }
 	
 	//Berechnung, um die Frequenzen auf die Boxen zu verteilen
-	private static byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat playme, int duration) {
-        byte sampleSize = (byte) (playme.getSampleSizeInBits() / 8);
+	private byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat playme, int duration) {
         byte[] data = new byte[(int) playme.getSampleRate() * sampleSize  * duration];
         double stepWidth = (2 * Math.PI) / playme.getSampleRate();
         int sample_max_value = (int) Math.pow(2, playme.getSampleSizeInBits()) / 2 - 1;

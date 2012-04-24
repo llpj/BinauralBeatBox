@@ -16,8 +16,9 @@ import gui.playerGui.PlayerPanel;
 
 public class BinauralBeatBox {
 
-	private MainFrame	mf; 
-	private Animation	animation;
+	private MainFrame			mf; 
+	private Animation			animation;
+	private SessionWiedergabe	sw;
 	
 	/**
 	 * @param args
@@ -25,17 +26,16 @@ public class BinauralBeatBox {
 	public static void main(String[] args) {
 
 		new BinauralBeatBox();
+	}
+	
+	private BinauralBeatBox() {
+		mf = new MainFrame();
 		
 		Session session = new Session();
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
-		
-		new SessionWiedergabe(session);
-	}
-	
-	private BinauralBeatBox() {
-		mf = new MainFrame();
+		sw = new SessionWiedergabe(session);
 		
 		initActionListenerForPlayerPanel();
 	}
@@ -46,7 +46,7 @@ public class BinauralBeatBox {
 			public void actionPerformed(ActionEvent ae) {
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
 					//PLAY:
-					SessionWiedergabe.playSession(500,1000);
+					sw.playSession(200, 300);
 					int [] freq={-30,0,30};
 					//Session ses = new Session ();
 					animation = new AnimationFreq (freq);
@@ -63,6 +63,7 @@ public class BinauralBeatBox {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:
+				sw.stopSession();
 				animation.finish(true);
 			}
 		}, PlayerPanel.STOP_BUTTON);
