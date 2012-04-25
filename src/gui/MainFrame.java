@@ -45,9 +45,11 @@ public class MainFrame extends JFrame {
 
 		setMinimumSize( new Dimension(getSize().width,500) );
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		setVisible(true);
 	}
 
+	
 	
 	private void playerLayout() {
 		this.getContentPane().removeAll();

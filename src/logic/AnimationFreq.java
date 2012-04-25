@@ -146,6 +146,4 @@ public class AnimationFreq extends Animation {
         }
 
 	}
-
-	
 }

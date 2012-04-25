@@ -2,17 +2,29 @@
  * @author Fabian Schï¿½fer
  *
  */
+
+
+
+
 package logic;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
+
 import javax.swing.JPanel;
 
 public abstract class Animation implements Runnable{
+
+
+	/*
+	 * ImageBuffer gegen flackern + ActionListener für Max/Min
+	 */
 	
 	private int [] freq = new int[3];
 	protected Thread animation;
 	protected Graphics2D animationPnl;
 	protected JPanel pnl;
+	
 	//TODO animationPnl größe 
 	protected int width;
 	protected int height;
@@ -39,7 +51,11 @@ public abstract class Animation implements Runnable{
 		}
 	}
 
-	
+	public void setSize(Dimension size)
+	{
+		width = size.width;
+		height = size.height;
+	}
 	public abstract void init ();//TODO session 
 	public abstract boolean pause (boolean state); //"pause" an Stelle von "break", da Java bereits break benutzt
 	public abstract boolean finish (boolean state);

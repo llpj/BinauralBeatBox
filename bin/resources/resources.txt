@@ -1,0 +1,3 @@
+Dieser Ordner enthaelt die persistenten Daten.
+Im Unterordner /wav sind die verfuegbaren Hintergrundklaenge hinterlegt.
+Im Unterordner /xml werden die persistenten Sessions, vorkonfigurierten Beats usw. abgelegt.

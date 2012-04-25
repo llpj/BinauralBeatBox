@@ -25,8 +25,7 @@ public class Session implements Serializable {
 	 * Liste von Segmenten und einer Dauer von 0.
 	 */
 	public Session() {
-		// TODO: Korrekten Pfad zum Standard-Hintergrundklang hinzufuegen
-		Hintergrundklang = "Pfad";
+		Hintergrundklang = "./src/resources/wav/amsel.wav";
 		segments = new ArrayList<Segment>();
 		this.duration = 0;
 	}
