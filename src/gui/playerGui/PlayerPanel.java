@@ -3,8 +3,11 @@ package gui.playerGui;
 import gui.ActionListenerAddable;
 import gui.ToggleButton;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.EventListener;
 
 import javax.swing.JButton;
@@ -37,7 +40,10 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 	
 	public static final int PLAY_BUTTON 	= 0;
 	public static final int STOP_BUTTON 	= 1;
-	public static final int TIME_SLIDER		= 2;
+//	public static final int BALANCE_BUTTON	= 2;
+	public static final int TIME_SLIDER		= 3;
+	public static final int MUTE_BAR		= 4;
+	
 
 	public PlayerPanel() {
 		initElements();
@@ -73,6 +79,28 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 		timeSlider.setMaximum(3);
 		
 		muteBar = new JProgressBar();
+		muteBar.setMinimum(0);
+		muteBar.setMaximum(100);
+		muteBar.setSize(100, 50);
+		muteBar.addMouseListener( new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent arg0) { }
+			
+			@Override
+			public void mousePressed(MouseEvent me) { }
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) { }
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) { }
+			
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				calculateProgessBarPos( me.getPoint() );
+			}
+		});
 	}
 
 	@Override
@@ -87,7 +115,14 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 			case TIME_SLIDER:
 				timeSlider.addChangeListener( (ChangeListener)el );
 				break;
+			case MUTE_BAR:
+				muteBar.addChangeListener( (ChangeListener)el );
+				break;
 		}
 	}
 
+	private void calculateProgessBarPos(Point p) {
+		float u = (float) muteBar.getSize().width / muteBar.getMaximum();
+		muteBar.setValue((int)( (float)p.x / u));
+	}
 }

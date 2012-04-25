@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import container.BinauralBeat;
 import container.Segment;
@@ -70,6 +73,7 @@ public class BinauralBeatBox{
 				}
 			}
 		}, PlayerPanel.PLAY_BUTTON);
+
 		mf.getPlayerPanel().addListenerToElement( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -79,6 +83,14 @@ public class BinauralBeatBox{
 				SessionWiedergabe.stopSession();
 			}
 		}, PlayerPanel.STOP_BUTTON);
+		
+		mf.getPlayerPanel().addListenerToElement(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent ce) {
+				JProgressBar b = (JProgressBar)ce.getSource();
+				System.out.println( b.getValue() );
+			}
+		}, PlayerPanel.MUTE_BAR);
 	}
 
 }
