@@ -5,7 +5,6 @@
 
 package logic;
 import java.awt.*;
-import java.awt.event.WindowEvent;
 
 import javax.swing.JPanel;
 
@@ -147,14 +146,4 @@ public class AnimationFreq extends Animation {
         }
 
 	}
-
-	@Override
-	public void windowStateChanged(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		//Bei Maximierung neu setzen
-		width = pnl.getSize().width; 
-		height = pnl.getSize().height;
-	}
-
-	
 }

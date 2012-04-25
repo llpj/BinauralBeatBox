@@ -2,9 +2,14 @@ package management;
 
 import interfaces.Mood;
 
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.JPanel;
 
@@ -42,6 +47,37 @@ public class BinauralBeatBox{
 		sw = new SessionWiedergabe(session);
 		
 		initActionListenerForPlayerPanel();
+		
+		// Für Animation-resize
+		mf.addComponentListener(new ComponentListener() 
+		{  
+		        // Diese Methode wird aufgerufen, wenn JFrame wird max-/minimiert
+		        public void componentResized(ComponentEvent evt) {
+		            Component c = (Component)evt.getSource();
+		            
+		            // Neue Größe
+		            Dimension newSize = c.getSize();
+		            animation.setSize(newSize);
+		        }
+
+				@Override
+				public void componentHidden(ComponentEvent arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void componentMoved(ComponentEvent arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void componentShown(ComponentEvent arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+		});
 	}
 	
 	private void initActionListenerForPlayerPanel() {
@@ -58,11 +94,11 @@ public class BinauralBeatBox{
 					}
 					
 						//animationfreq
-//						int [] freq={-30,0,30};
-//						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
+						int [] freq={-30,0,30};
+						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
 						//animationFrakFarbverlauf: true = frak, false = nur farbverlauf
-						animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
-					
+//						animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
+//					
 				} else {
 					//PAUSE:
 //					animation.pause(true);

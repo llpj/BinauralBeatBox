@@ -8,12 +8,12 @@
 
 package logic;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.event.WindowStateListener;
 
 import javax.swing.JPanel;
 
-public abstract class Animation implements Runnable, WindowStateListener{
+public abstract class Animation implements Runnable{
 
 
 	/*
@@ -51,7 +51,11 @@ public abstract class Animation implements Runnable, WindowStateListener{
 		}
 	}
 
-	
+	public void setSize(Dimension size)
+	{
+		width = size.width;
+		height = size.height;
+	}
 	public abstract void init ();//TODO session 
 	public abstract boolean pause (boolean state); //"pause" an Stelle von "break", da Java bereits break benutzt
 	public abstract boolean finish (boolean state);

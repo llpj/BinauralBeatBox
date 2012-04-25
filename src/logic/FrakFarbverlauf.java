@@ -11,7 +11,6 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.event.WindowEvent;
 import java.awt.geom.Point2D;
 
 import javax.swing.JPanel;
@@ -348,13 +347,4 @@ public class FrakFarbverlauf extends Animation {
 		// TODO Auto-generated method stub
 
 	}
-
-	@Override
-	public void windowStateChanged(WindowEvent e) {
-		// TODO Auto-generated method stub
-		//Bei Maximierung neu setzen
-		width = pnl.getSize().width; 
-		height = pnl.getSize().height;
-	}
-
 }
