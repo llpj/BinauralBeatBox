@@ -5,7 +5,6 @@ import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-import logic.SessionWiedergabe;
 //import logic.SessionWiedergabe;
 import interfaces.wavFile.WavFile;
 
