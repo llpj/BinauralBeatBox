@@ -125,7 +125,8 @@ public class BinauralBeat {
 		// Wenn kein Uebergang und Links- und Rechtsfrequenz nicht gleich
 		if (freq1_start == freq1_target && freq2_start == freq2_target
 				&& freq1_start != freq2_start) {
-			double b = (freq1_start + freq2_start) / 2; // berechne Schwebung
+			//double b = (freq1_start + freq2_start) / 2; // berechne gehoerte Frequenz
+			double b = freq1_start-freq2_start; // berechne Schwebung
 			b = (b < 0 ? b * (-1) : b); // Schnellberechnung des Betrags
 			// Cannot switch on a value of type double. Only convertible int
 			// values or enum constants are switchable

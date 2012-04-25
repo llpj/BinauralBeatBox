@@ -21,6 +21,7 @@ import java.util.ArrayList;
  */
 
 import container.Category;
+import container.Segment;
 import container.Session;
 
 /**
@@ -30,7 +31,7 @@ import container.Session;
  * @author Magnus Bruehl, Ulrich Ahrendt
  * 
  */
-// TODO: XML-Encoding, WAVE-Encoding
+// TODO: XML-Encoding
 public class FileManager {
 	// Attribute
 	private ArrayList<Category> categories;
@@ -76,7 +77,7 @@ public class FileManager {
 			int sampleRate = 44100; // Samples pro Sekunde
 			double duration = activeSession.getDuration(); // Sekunden
 
-			// Berechnie die Anzahl Frames, die fuer die angegebene Dauer
+			// Berechne die Anzahl Frames, die fuer die angegebene Dauer
 			// benoetigt wird
 			long numFrames = (long) (duration * sampleRate);
 
@@ -89,35 +90,43 @@ public class FileManager {
 			// Erstelle einen grosszuegigen Buffer von 100 frames
 			double[][] buffer = new double[2][100];
 
-			// Initialisiere lokalen Frame-Zaehler
-			long frameCounter = 0;
+			// Loop ueber alle Segmente
+			for (int curSeg = 0; curSeg < activeSession.getNumerOfSegments(); curSeg++) {
 
-			// Loop, bis alle Frames geschrieben wurden
-			while (frameCounter < numFrames) {
-				// Bestimme die maximal zu schreibende Anzahl an Frames
-				long remaining = wavFile.getFramesRemaining();
-				int toWrite = (remaining > 100) ? 100 : (int) remaining;
+				// Hole das aktuelle Segment
+				Segment activeSegment = activeSession.getSegments().get(curSeg);
 
-				// Fuelle den Buffer. Ein Ton pro Stereokanal
-				// TODO: hier muss ueber alle Segmente geloopt werden.
-				for (int s = 0; s < toWrite; s++, frameCounter++) {
-					// Hole die aktuelle Frequenz aus dem aktuellen Segment
-					// TODO: Funktion, die die Frequenz ueber einen Zeitraum
-					// anpasst, also slowdown oder wakeup
-					int freq1 = activeSession.getSegments().get(0).getBeat()
-							.getFreq1_start();
-					int freq2 = activeSession.getSegments().get(0).getBeat()
-							.getFreq2_start();
+				// Berechne die Anzahl Frames, die fuer das aktuelle Segment
+				// benoetigt wird
+				numFrames = (long) (activeSegment.getDuration() * sampleRate);
 
-					buffer[0][s] = Math.sin(2.0 * Math.PI * freq1
-							* frameCounter / sampleRate);
-					buffer[1][s] = Math.sin(2.0 * Math.PI * freq2
-							* frameCounter / sampleRate);
+				// Initialisiere lokalen Frame-Zaehler
+				long frameCounter = 0;
 
+				// Loop, bis alle Frames geschrieben wurden
+				while (frameCounter < numFrames) {
+					// Bestimme die maximal zu schreibende Anzahl an Frames
+					long remaining = numFrames - frameCounter;
+					int toWrite = (remaining > 100) ? 100 : (int) remaining;
+
+					// Fuelle den Buffer. Ein Ton pro Stereokanal
+					for (int s = 0; s < toWrite; s++, frameCounter++) {
+						// Hole die aktuelle Frequenz aus dem aktuellen Segment
+						// TODO: Funktion, die die Frequenz ueber einen Zeitraum
+						// anpasst, also slowdown oder wakeup
+						int freq1 = activeSegment.getBeat().getFreq1_start();
+						int freq2 = activeSegment.getBeat().getFreq2_start();
+
+						buffer[0][s] = Math.sin(2.0 * Math.PI * freq1
+								* frameCounter / sampleRate);
+						buffer[1][s] = Math.sin(2.0 * Math.PI * freq2
+								* frameCounter / sampleRate);
+
+					}
+
+					// Schreibe den Buffer
+					wavFile.writeFrames(buffer, toWrite);
 				}
-
-				// Schreibe den Buffer
-				wavFile.writeFrames(buffer, toWrite);
 			}
 
 			// Schliesse das wavFile

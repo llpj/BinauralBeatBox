@@ -27,7 +27,6 @@ public class MainFrame extends JFrame {
 	private SessionlistPanel	listPnl;
 	private SessionEditorPanel	editorPnl;
 
-
 	public MainFrame() {
 		playerPnl			= new PlayerPanel();
 		listPnl				= new SessionlistPanel();
@@ -39,10 +38,10 @@ public class MainFrame extends JFrame {
 		},SessionlistPanel.ADD_BUTTON);
 		
 		virtualizationPnl	= new JPanel();
+		virtualizationPnl.setBackground(Color.GRAY);
+	
 		editorPnl			= new SessionEditorPanel();
 		
-		virtualizationPnl.setBackground(Color.BLUE);
-		virtualizationPnl.setForeground(Color.RED);//für sinus linien...funktioniert aber nicht
 		playerLayout();
 
 		setMinimumSize( new Dimension(getSize().width,500) );
@@ -76,11 +75,15 @@ public class MainFrame extends JFrame {
 		pack();
 	}
 	
-	public Graphics getGraphicsForVirtualization() {
-		return virtualizationPnl.getGraphics();
+	public JPanel getVirtualizationPnl() {
+		return virtualizationPnl;
 	}
 	
 	public PlayerPanel getPlayerPanel() {
 		return playerPnl;
+	}
+	@Override
+	public void update(Graphics g){
+		    paint(g);
 	}
 }

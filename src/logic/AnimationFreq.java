@@ -1,81 +1,67 @@
 /**
- * @author Fabian Schäfer
+ * @author Fabian Schï¿½fer
  *
  */
 
 package logic;
-import container.Session;
-import gui.*;
-import java.applet.*;
 import java.awt.*;
 
 import javax.swing.JPanel;
 
 public class AnimationFreq extends Animation {
 /**
- * Klassenname wurde geändert von Frequenz zu AnimationFreq - Grund: Somit ist der Bezeichner eindeutig
+ * Klassenname wurde geï¿½ndert von Frequenz zu AnimationFreq - Grund: Somit ist der Bezeichner eindeutig
  */
-	Color colors[] = { Color.RED, Color.GREEN,Color.BLUE}; // ersetzt das Attribut String color, da weniger code und einfacheres Handle
-//	private double [][] values; 
-//	private int count;   //Anzahl der Bildpunkte
-	private Thread animation;
-	private Graphics2D animationPnl;
+	// ersetzt das Attribut String color, da weniger code und einfacheres Handle
+	Color colors[] = {Color.BLUE, Color.RED, Color.GREEN}; 
 	//Koordinaten auf der Sinuskurve
-	int[] x = new int[720];
-	int[] y = new int[720];
-	   
-	public AnimationFreq ()
-	{
-		
-	}
+	int[] x;
+	int[] y;
 	
-	public AnimationFreq (int [] freq)//TODO Session session
+	double xPos;
+	
+	public AnimationFreq (int [] freq, JPanel pnl)//TODO Session session
 	{
+		super(pnl);
 		super.setFreq(freq);
+		width = pnl.getSize().width; // muss über Dimension gemacht werden, da Punkte und Pixel nicht vergleichbar wären
+		height = pnl.getSize().height;
+		y = new int[360]; 
+		x = new int[360];
 		//Initialisierung
 		init();//TODO session
-	
-		
 	}
-	
+
 	protected void sin ()
-	{	 
+	{	
 		// TODO in: freq
-		
-		for( int j = 0; j < 3; j++)
+		animationPnl = (Graphics2D) pnl.getGraphics();
+		int nextPos = 0;
+		int i,j;
+		int q = height/3;
+		while(nextPos < width)
 		{
-			for( int i = 0; i < y.length; i++ )
+			for( j = 0; j < 3; j++)
 			{
-				y[i]=(100-(int)Math.round(Math.sin(Math.toRadians(i))*super.getFreq()[j]));
-				x[i]=i;
-				if(j == 0)y[i]-=20;
-				else if (j==1) y[i]+=30;
-				else y[i]+=80;
-				
-				//animationPnl.draw();
-				//animationPnl. (colors[j]);
-				//animationPnl.drawLine(0,sin,0,sin);
-
-					
+				for( i = 0; i < y.length; i++ )
+				{
+					y[i]=(100-(int)Math.round(Math.sin(Math.toRadians(i)+xPos)*super.getFreq()[j]));
+					x[i]=i;
+					if(j == 0)y[i]-=q-150;//20
+					else if (j==1) y[i]+=100;//30
+					else y[i]+=q+50;//80
+				}
+				animationPnl.setColor(colors[j]);
+				animationPnl.setStroke(new BasicStroke(5.0f));
+				animationPnl.drawPolyline(x, y, x.length);
 			}
-			animationPnl.drawPolyline(x, y, x.length);
+			animationPnl.translate((int)x[x.length-1],0);
+			nextPos += (int)x[x.length-1];
 		}
-//		for (int j=0; j<3; j++)
-//		{
-//		for(int i=0;i<y.length;i++)
-//	      {
-//	         y[i]=100-(int)Math.round(Math.sin(Math.toRadians(i))*super.getFreq()[j]);
-//	         x[i]=i;
-//	      }
-//		}
 	}
-	
-	
-	 public void start () {
-	        animation = new Thread (this);
-	        animation.start ();
-	    }
 
+	
+	
 	
 	//Vererbte Methoden
 	
@@ -83,13 +69,9 @@ public class AnimationFreq extends Animation {
 	public void init() {//TODO Session session
 		// TODO Auto-generated method stub
 		// Initialisierung der Werte
-		
-//		this.count = 50;
-//		this.values = new double [3][count];
-		MainFrame mf = new MainFrame();
-		setHandle((Graphics2D)mf.getGraphicsForVirtualization()); 
-		animation = new Thread();
-		start();
+		xPos = 0;
+		pnl.setDoubleBuffered(true);
+		super.start();
 	}
 
 	@Override
@@ -99,7 +81,7 @@ public class AnimationFreq extends Animation {
 		else 	
 		{
 			try {
-				animation.sleep(0); //TODO pause
+				Thread.sleep(0); //TODO pause
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -119,6 +101,10 @@ public class AnimationFreq extends Animation {
 		else 	
 		{
 			animation.stop();
+			if(animation != null)
+			{
+				animation = null;
+			}
 			return true;
 		}
 		
@@ -127,9 +113,8 @@ public class AnimationFreq extends Animation {
 	@Override
 	public void setHandle (Graphics2D animationPnl) {
 		// TODO Auto-generated method stub
-		this.animationPnl = animationPnl;
 	}
-//getter & setter
+	//getter & setter
 	public Color [] getColor ()
 	{
 		return colors;
@@ -139,27 +124,26 @@ public class AnimationFreq extends Animation {
 	{
 		this.colors = color;
 	}
-	
-//	public void setValues(double [][] values) {
-//		this.values = values;
-//	}
-//
-//	public double [][] getValues() {
-//		return values;
-//	}
 
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-//		while (true) {
-            try {
-                Thread.sleep (30);
-            }
-            catch (InterruptedException e) {
-            }
-            sin();
-//            animationPnl.drawPolyline(x, y, x.length);
-       // }
+	Thread thisThread = Thread.currentThread();
+	 // Gibt 0 zurück --> soll für das Eingrenzen der Animation benutzt werden
+	while (animation == thisThread) 
+		{
+			xPos += 0.1f;
+			sin();
+			try 
+			{
+				Thread.sleep (40);	
+			}
+			catch (InterruptedException e) 
+			{
+				//nichts
+			}
+			pnl.repaint();
+        }
 
 	}
 

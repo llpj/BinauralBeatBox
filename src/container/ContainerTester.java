@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import logic.SessionWiedergabe;
+//import logic.SessionWiedergabe;
 import management.FileManager;
 
 public class ContainerTester {
@@ -23,6 +24,16 @@ public class ContainerTester {
 		 * SessionWiedergabe.playSession((int) beat.getFreq1_start(), (int)
 		 * beat.getFreq2_start(), 1000);
 		 */
+
+		// Session session = new Session();
+		// session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		// session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
+		// session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		// Sessionww.faWiedergabe sessionWiedergabe = new
+		// SessionWiedergabe(session);
+		//
+		// sessionWiedergabe.playSession((int) beat.getFreq1_start(),(int)
+		// beat.getFreq2_start());
 
 		/*
 		 * for(int i = 0; i<1000; i++){
@@ -52,6 +63,11 @@ public class ContainerTester {
 		Segment steadySegment = new Segment(40, 155, 160);
 		Session exportableSession = new Session("Hintergrundklang",
 				steadySegment);
+
+		exportableSession.addSegment(slowdown);
+		exportableSession.addSegment(segment1);
+		exportableSession.addSegment(segment2);
+		// Erwartetes Resultat: eine Wav-Datei mit Laenge 70
 
 		FileManager fm = new FileManager();
 		fm.setActiveSession(exportableSession);
