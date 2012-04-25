@@ -1,5 +1,11 @@
 package container;
 
+import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+import logic.SessionWiedergabe;
 //import logic.SessionWiedergabe;
 import management.FileManager;
 
@@ -7,8 +13,9 @@ public class ContainerTester {
 
 	/**
 	 * @param args
+	 * @throws FileNotFoundException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		// Testing getMood in connection with the enum
 		BinauralBeat beat = new BinauralBeat(12, 14);
 		System.out.println("Gewaehlte Stimmung: " + beat.getMood());
@@ -56,6 +63,7 @@ public class ContainerTester {
 		Segment steadySegment = new Segment(40, 155, 160);
 		Session exportableSession = new Session("Hintergrundklang",
 				steadySegment);
+
 		exportableSession.addSegment(slowdown);
 		exportableSession.addSegment(segment1);
 		exportableSession.addSegment(segment2);
@@ -66,6 +74,11 @@ public class ContainerTester {
 		System.out.println("Erstelle Wavefile...");
 		fm.exportAsWav();
 		System.out.println("Wavefile erfolgreich erstellt.");
+
+		// XML Test
+		XMLEncoder e = new XMLEncoder(new BufferedOutputStream(
+				new FileOutputStream("Test.xml")));
+		e.writeObject(exportableSession);
 	}
 
 }

@@ -81,4 +81,8 @@ public class MainFrame extends JFrame {
 	public PlayerPanel getPlayerPanel() {
 		return playerPnl;
 	}
+	@Override
+	public void update(Graphics g){
+		    paint(g);
+	}
 }
