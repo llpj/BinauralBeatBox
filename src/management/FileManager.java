@@ -72,6 +72,7 @@ public class FileManager {
 	 * Exportiert die aktuelle Session als WAVE-File. Die Samplerate betraegt
 	 * 44.1KHz, die Bittiefe betraegt 16.
 	 */
+	// TODO: http://www.jsresources.org/examples/AudioConcat.html
 	public void exportAsWav() {
 		try {
 			int sampleRate = 44100; // Samples pro Sekunde

@@ -3,8 +3,6 @@
  */
 package container;
 
-//Imports to allow UserExceptions
-import org.omg.CORBA.UserException;
 import interfaces.Mood;
 
 /**
@@ -73,7 +71,6 @@ public class BinauralBeat {
 	 *            Linkskanal
 	 * @param freq2
 	 *            Rechtskanal
-	 * @throws UserException
 	 */
 	public BinauralBeat(int freq1, int freq2) throws IllegalArgumentException {
 		this(freq1, freq1, freq2, freq2);
