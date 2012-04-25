@@ -61,11 +61,12 @@ public class BinauralBeatBox{
 //						int [] freq={-30,0,30};
 //						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
 						//animationFrakFarbverlauf: true = frak, false = nur farbverlauf
-						animation = new FrakFarbverlauf (Mood.THETA,false,mf.getVirtualizationPnl());
+						animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
 					
 				} else {
 					//PAUSE:
-					animation.pause(true);
+//					animation.pause(true);
+					animation.finish(true);
 					SessionWiedergabe.pauseSession();
 				}
 			}

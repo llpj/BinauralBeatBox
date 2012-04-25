@@ -2,17 +2,29 @@
  * @author Fabian Schï¿½fer
  *
  */
+
+
+
+
 package logic;
 
 import java.awt.Graphics2D;
+import java.awt.event.WindowStateListener;
+
 import javax.swing.JPanel;
 
-public abstract class Animation implements Runnable{
+public abstract class Animation implements Runnable, WindowStateListener{
+
+
+	/*
+	 * ImageBuffer gegen flackern + ActionListener für Max/Min
+	 */
 	
 	private int [] freq = new int[3];
 	protected Thread animation;
 	protected Graphics2D animationPnl;
 	protected JPanel pnl;
+	
 	//TODO animationPnl größe 
 	protected int width;
 	protected int height;
