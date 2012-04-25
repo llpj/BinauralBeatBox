@@ -81,14 +81,18 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 		muteBar = new JProgressBar();
 		muteBar.setMinimum(0);
 		muteBar.setMaximum(100);
-		muteBar.setSize(100, 50);
+
 		muteBar.addMouseListener( new MouseListener() {
 			
 			@Override
-			public void mouseReleased(MouseEvent arg0) { }
+			public void mouseReleased(MouseEvent me) {
+				calculateProgessBarPos( me.getPoint() );
+			}
 			
 			@Override
-			public void mousePressed(MouseEvent me) { }
+			public void mousePressed(MouseEvent me) {
+				calculateProgessBarPos( me.getPoint() );
+			}
 			
 			@Override
 			public void mouseExited(MouseEvent arg0) { }

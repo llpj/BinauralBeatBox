@@ -1,18 +1,14 @@
 package management;
 
-import interfaces.Mood;
-
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -51,35 +47,24 @@ public class BinauralBeatBox{
 		
 		initActionListenerForPlayerPanel();
 		
-		// Für Animation-resize
+
+		// Fï¿½r Animation-resize
 		mf.addComponentListener(new ComponentListener() 
 		{  
 		        // Diese Methode wird aufgerufen, wenn JFrame wird max-/minimiert
 		        public void componentResized(ComponentEvent evt) {
 		            Component c = (Component)evt.getSource();
 		            
-		            // Neue Größe
+		            // Neue Grï¿½ï¿½e
 		            Dimension newSize = c.getSize();
 		            animation.setSize(newSize);
 		        }
-
 				@Override
-				public void componentHidden(ComponentEvent arg0) {
-					// TODO Auto-generated method stub
-					
-				}
-
+				public void componentHidden(ComponentEvent arg0) {	}
 				@Override
-				public void componentMoved(ComponentEvent arg0) {
-					// TODO Auto-generated method stub
-					
-				}
-
+				public void componentMoved(ComponentEvent arg0) { }
 				@Override
-				public void componentShown(ComponentEvent arg0) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void componentShown(ComponentEvent arg0) { }
 		});
 	}
 	
@@ -121,11 +106,20 @@ public class BinauralBeatBox{
 			}
 		}, PlayerPanel.STOP_BUTTON);
 		
+		mf.getPlayerPanel().addListenerToElement( new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent ce) {
+				JSlider s = (JSlider)ce.getSource();
+				System.out.println( s.getValue() );
+			}
+		}, PlayerPanel.TIME_SLIDER);
+		
 		mf.getPlayerPanel().addListenerToElement(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
-				JProgressBar b = (JProgressBar)ce.getSource();
-				System.out.println( b.getValue() );
+				JProgressBar muteBar = (JProgressBar)ce.getSource();
+				// TODO Gesamtlautstaerke einbinden  (Wertebereich von muteBar.getValue(): 0-100)
+				System.out.println( muteBar.getValue() );
 			}
 		}, PlayerPanel.MUTE_BAR);
 	}
