@@ -10,6 +10,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.EventListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -115,16 +116,16 @@ public class SessionlistPanel extends JPanel implements ActionListenerAddable {
 	}
 
 	@Override
-	public void addActionListenerToElement(ActionListener al, int element) {
+	public void addListenerToElement(EventListener al, int element) {
 		switch(element) {
 			case ADD_BUTTON:
-				addBtn.addActionListener(al);
+				addBtn.addActionListener( (ActionListener)al );
 				break;
 			case EDIT_BUTTON:
-				editBtn.addActionListener(al);
+				editBtn.addActionListener( (ActionListener)al );
 				break;
 			case REMOVE_BUTTON:
-				removeBtn.addActionListener(al);
+				removeBtn.addActionListener( (ActionListener)al );
 				break;
 		}
 	}

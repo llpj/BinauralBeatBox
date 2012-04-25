@@ -5,11 +5,13 @@ import gui.ToggleButton;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.EventListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSlider;
+import javax.swing.event.ChangeListener;
 
 public class PlayerPanel extends JPanel implements ActionListenerAddable {
 
@@ -35,6 +37,7 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 	
 	public static final int PLAY_BUTTON 	= 0;
 	public static final int STOP_BUTTON 	= 1;
+	public static final int TIME_SLIDER		= 2;
 
 	public PlayerPanel() {
 		initElements();
@@ -60,6 +63,7 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 			}
 		});
 		
+		
 		balanceBtn = new JButton("b");
 		
 		timeSlider = new JSlider();
@@ -72,13 +76,16 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 	}
 
 	@Override
-	public void addActionListenerToElement(ActionListener al, int element) {
+	public void addListenerToElement(EventListener el, int element) {
 		switch(element) {
 			case PLAY_BUTTON:
-				playBtn.addActionListener(al);
+				playBtn.addActionListener( (ActionListener)el );
 				break;
 			case STOP_BUTTON:
-				stopBtn.addActionListener(al);
+				stopBtn.addActionListener( (ActionListener)el );
+				break;
+			case TIME_SLIDER:
+				timeSlider.addChangeListener( (ChangeListener)el );
 				break;
 		}
 	}
