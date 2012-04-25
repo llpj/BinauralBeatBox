@@ -6,9 +6,7 @@ import gui.playerGui.SessionlistPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -31,7 +29,7 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		playerPnl			= new PlayerPanel();
 		listPnl				= new SessionlistPanel();
-		listPnl.addActionListenerToElement(new ActionListener() {
+		listPnl.addListenerToElement(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				editorLayout();

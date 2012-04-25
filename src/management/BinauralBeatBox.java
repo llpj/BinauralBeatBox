@@ -43,7 +43,7 @@ public class BinauralBeatBox{
 	}
 	
 	private void initActionListenerForPlayerPanel() {
-		mf.getPlayerPanel().addActionListenerToElement( new ActionListener() {
+		mf.getPlayerPanel().addListenerToElement( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
@@ -66,7 +66,7 @@ public class BinauralBeatBox{
 				}
 			}
 		}, PlayerPanel.PLAY_BUTTON);
-		mf.getPlayerPanel().addActionListenerToElement( new ActionListener() {
+		mf.getPlayerPanel().addListenerToElement( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:

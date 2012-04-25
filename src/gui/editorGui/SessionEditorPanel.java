@@ -5,6 +5,7 @@ import gui.GuiFunctionLib;
 
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.util.EventListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -45,13 +46,13 @@ public class SessionEditorPanel extends JPanel implements ActionListenerAddable 
 	}
 
 	@Override
-	public void addActionListenerToElement(ActionListener al, int element) {
+	public void addListenerToElement(EventListener al, int element) {
 		switch(element) {
 			case SAVE_BUTTON:
-				saveBtn.addActionListener(al);
+				saveBtn.addActionListener( (ActionListener)al );
 				break;
 			case CANCEL_BUTTON:
-				cancelBtn.addActionListener(al);
+				cancelBtn.addActionListener( (ActionListener)al );
 				break;
 		}
 	}
