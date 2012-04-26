@@ -50,7 +50,7 @@ public class SessionEditorPanel extends JPanel implements ActionListenerAddable 
 	}
 
 	@Override
-	public void addListenerToElement(EventListener el, int element) {
+	public void addListenerToElement(int element, EventListener el) {
 		switch(element) {
 			case SAVE_BUTTON:
 				saveBtn.addActionListener( (ActionListener)el );

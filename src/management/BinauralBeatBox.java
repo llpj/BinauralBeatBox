@@ -7,12 +7,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import container.BinauralBeat;
+import container.Category;
 import container.Segment;
 import container.Session;
 
@@ -27,7 +32,8 @@ public class BinauralBeatBox{
 
 	private MainFrame			mf; 
 	private Animation			animation;
-	private SessionWiedergabe	sw;
+	
+	private FileManager			fileManager;
 	
 	/**
 	 * @param args
@@ -38,13 +44,15 @@ public class BinauralBeatBox{
 	}
 	
 	private BinauralBeatBox() {
+		fileManager	= new FileManager();
+		test_Sessions();
+		
 		mf = new MainFrame();
 		
 		Session session = new Session();
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
-		sw = new SessionWiedergabe(session);
 		
 		initListenerForPlayerPanel();
 		initListenerForSessionListPanel();
@@ -74,7 +82,7 @@ public class BinauralBeatBox{
 	
 	private void initListenerForPlayerPanel() {
 		PlayerPanel pnl = mf.getPlayerPanel();
-		pnl.addListenerToElement( new ActionListener() {
+		pnl.addListenerToElement(PlayerPanel.PLAY_BUTTON, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
@@ -99,52 +107,113 @@ public class BinauralBeatBox{
 					SessionWiedergabe.pauseSession();
 				}
 			}
-		}, PlayerPanel.PLAY_BUTTON);
+		});
 
-		pnl.addListenerToElement( new ActionListener() {
+		pnl.addListenerToElement(PlayerPanel.STOP_BUTTON, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:
-				sw.stopSession();
 				animation.finish(true);
 				SessionWiedergabe.stopSession();
 			}
-		}, PlayerPanel.STOP_BUTTON);
+		});
 		
-		pnl.addListenerToElement( new ChangeListener() {
+		pnl.addListenerToElement(PlayerPanel.TIME_SLIDER, new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
 				JSlider s = (JSlider)ce.getSource();
 				System.out.println( s.getValue() );
 			}
-		}, PlayerPanel.TIME_SLIDER);
+		});
 		
-		pnl.addListenerToElement(new ChangeListener() {
+		pnl.addListenerToElement(PlayerPanel.MUTE_BAR, new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
 				JProgressBar muteBar = (JProgressBar)ce.getSource();
 				// TODO Gesamtlautstaerke einbinden  (Wertebereich von muteBar.getValue(): 0-100)
 				System.out.println( muteBar.getValue() );
 			}
-		}, PlayerPanel.MUTE_BAR);
+		});
 	}
 	
 	private void initListenerForSessionListPanel() {
 		SessionListPanel pnl = mf.getSessionListPnl();
 		
-		pnl.addListenerToElement( new ActionListener() {
+		pnl.addListenerToElement(SessionListPanel.EDIT_BUTTON, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO gewählte Session bearbeiten
 			}
-		}, SessionListPanel.EDIT_BUTTON);
+		});
 		
-		pnl.addListenerToElement( new ActionListener() {
+		pnl.addListenerToElement(SessionListPanel.REMOVE_BUTTON, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO gewählte Session löschen
 			}
-		}, SessionListPanel.REMOVE_BUTTON);
+		});
+		
+		pnl.addListenerToElement(SessionListPanel.CATEGORY_LIST, new ListSelectionListener() {	
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if( e.getValueIsAdjusting() ) return;
+				
+				Category c = (Category)((JList)e.getSource()).getSelectedValue();
+				System.out.println(c);
+				
+				DefaultListModel sessionModel = new DefaultListModel();
+				mf.getSessionListPnl().setListModel(sessionModel, SessionListPanel.SESSION_LIST);
+				
+				for(Session s : fileManager.getCategories().get(((JList)e.getSource()).getSelectedIndex()).getSessions() ) {
+					sessionModel.addElement( s );
+				}
+			}
+		});
+		
+		pnl.addListenerToElement(SessionListPanel.SESSION_LIST, new ListSelectionListener() {	
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				Session s = (Session)((JList)e.getSource()).getSelectedValue();
+				if( ! e.getValueIsAdjusting() && s != null) {
+					System.out.println(s);
+				}
+			}
+		});
+	
+		DefaultListModel catModel = new DefaultListModel();
+		mf.getSessionListPnl().setListModel(catModel, SessionListPanel.CATEGORY_LIST);
+		
+		for(Category c : fileManager.getCategories() ) {
+			catModel.addElement( c );
+		}
 	}
 
+	private void test_Sessions() {
+		fileManager.addCategory( new Category("Category 1") );
+		fileManager.addCategory( new Category("Category 2") );
+		fileManager.addCategory( new Category("Category 3") );
+		fileManager.addCategory( new Category("Category 4") );
+		fileManager.addCategory( new Category("Category 5") );
+		
+		Session session = new Session();
+		session.setName("Session 1");
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		fileManager.getCategories().get(0).addSession(session);
+		
+		session = new Session();
+		session.setName("Session 2");
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		fileManager.getCategories().get(0).addSession(session);
+		
+		session = new Session();
+		session.setName("Session 3");
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		fileManager.getCategories().get(0).addSession(session);
+	}
 }

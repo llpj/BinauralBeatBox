@@ -29,24 +29,23 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		playerPnl			= new PlayerPanel();
 		listPnl				= new SessionListPanel();
-		listPnl.addListenerToElement(new ActionListener() {
+		listPnl.addListenerToElement(SessionListPanel.ADD_BUTTON, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				editorLayout();
 			}
-		},SessionListPanel.ADD_BUTTON);
+		});
 		
 		virtualizationPnl	= new JPanel();
 		virtualizationPnl.setBackground(Color.GRAY);
 	
 		editorPnl			= new SessionEditorPanel();
-		editorPnl.addListenerToElement(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				playerLayout();
-			}
-		}, SessionEditorPanel.CANCEL_BUTTON);
+		editorPnl.addListenerToElement(SessionEditorPanel.CANCEL_BUTTON, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					playerLayout();
+				}
+			});
 		
 		playerLayout();
 

@@ -108,7 +108,7 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 	}
 
 	@Override
-	public void addListenerToElement(EventListener el, int element) {
+	public void addListenerToElement(int element, EventListener el) {
 		switch(element) {
 			case PLAY_BUTTON:
 				playBtn.addActionListener( (ActionListener)el );
