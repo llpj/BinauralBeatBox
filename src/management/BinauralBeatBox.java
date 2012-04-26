@@ -156,16 +156,16 @@ public class BinauralBeatBox{
 		pnl.addListenerToElement(SessionListPanel.CATEGORY_LIST, new ListSelectionListener() {	
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				if( e.getValueIsAdjusting() ) return;
-				
 				Category c = (Category)((JList)e.getSource()).getSelectedValue();
-				System.out.println(c);
-				
-				DefaultListModel sessionModel = new DefaultListModel();
-				mf.getSessionListPnl().setListModel(sessionModel, SessionListPanel.SESSION_LIST);
-				
-				for(Session s : fileManager.getCategories().get(((JList)e.getSource()).getSelectedIndex()).getSessions() ) {
-					sessionModel.addElement( s );
+				if( ! e.getValueIsAdjusting() && c != null ) {
+					System.out.println(c);
+					
+					DefaultListModel sessionModel = new DefaultListModel();
+					mf.getSessionListPnl().setListModel(sessionModel, SessionListPanel.SESSION_LIST);
+					
+					for(Session s : fileManager.getCategories().get(((JList)e.getSource()).getSelectedIndex()).getSessions() ) {
+						sessionModel.addElement( s );
+					}
 				}
 			}
 		});
@@ -175,7 +175,12 @@ public class BinauralBeatBox{
 			public void valueChanged(ListSelectionEvent e) {
 				Session s = (Session)((JList)e.getSource()).getSelectedValue();
 				if( ! e.getValueIsAdjusting() && s != null) {
+					// TODO Session laden
+					// TODO eventuelle aktuelle Session stoppen
+					// TODO Infos in GUI darstellen (duration in timeSlider)
+					mf.getPlayerPanel().setDuration( s.getDuration() );
 					System.out.println(s);
+					fileManager.setActiveSession(s);
 				}
 			}
 		});
@@ -199,7 +204,7 @@ public class BinauralBeatBox{
 		session.setName("Session 1");
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
-		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		session.addSegment( new Segment(30, new BinauralBeat(500, 530)) );
 		fileManager.getCategories().get(0).addSession(session);
 		
 		session = new Session();
@@ -211,7 +216,7 @@ public class BinauralBeatBox{
 		
 		session = new Session();
 		session.setName("Session 3");
-		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		session.addSegment( new Segment(15, new BinauralBeat(500, 530)) );
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		fileManager.getCategories().get(0).addSession(session);

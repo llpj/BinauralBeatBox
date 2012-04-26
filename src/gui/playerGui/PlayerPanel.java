@@ -16,6 +16,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeListener;
 
+
 public class PlayerPanel extends JPanel implements ActionListenerAddable {
 
 	/**
@@ -73,10 +74,12 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 		balanceBtn = new JButton("b");
 		
 		timeSlider = new JSlider();
+		timeSlider.setSnapToTicks(false);
 		timeSlider.setPaintTicks(true);
 		timeSlider.setPaintLabels(true);
 		timeSlider.setMinimum(0);
-		timeSlider.setMaximum(3);
+		timeSlider.setMaximum(0);
+		timeSlider.setMajorTickSpacing(1);
 		
 		muteBar = new JProgressBar();
 		muteBar.setMinimum(0);
@@ -123,6 +126,13 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 				muteBar.addChangeListener( (ChangeListener)el );
 				break;
 		}
+	}
+	
+	public void setDuration(int d) {
+		timeSlider.setMaximum(d);
+		timeSlider.setValue(0);
+		timeSlider.setMajorTickSpacing( timeSlider.getMaximum() );
+		// TODO Label anzeige wird nicht aktualisiert
 	}
 
 	private void calculateProgessBarPos(Point p) {
