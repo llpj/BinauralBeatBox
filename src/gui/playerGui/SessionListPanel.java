@@ -18,7 +18,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-public class SessionlistPanel extends JPanel implements ActionListenerAddable {
+public class SessionListPanel extends JPanel implements ActionListenerAddable {
 
 	/**
 	 * 
@@ -53,7 +53,7 @@ public class SessionlistPanel extends JPanel implements ActionListenerAddable {
 //		REMOVE_BUTTON
 //	}
 
-	public SessionlistPanel() {
+	public SessionListPanel() {
 		initMenuPnl();
 		openBtn				= new ToggleButton("^", "v", true);
 		

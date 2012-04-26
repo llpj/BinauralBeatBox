@@ -20,6 +20,7 @@ import logic.*;
 import gui.MainFrame;
 import gui.ToggleButton;
 import gui.playerGui.PlayerPanel;
+import gui.playerGui.SessionListPanel;
 
 
 public class BinauralBeatBox{
@@ -45,7 +46,8 @@ public class BinauralBeatBox{
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		sw = new SessionWiedergabe(session);
 		
-		initActionListenerForPlayerPanel();
+		initListenerForPlayerPanel();
+		initListenerForSessionListPanel();
 		
 
 		// F�r Animation-resize
@@ -68,8 +70,9 @@ public class BinauralBeatBox{
 		});
 	}
 	
-	private void initActionListenerForPlayerPanel() {
-		mf.getPlayerPanel().addListenerToElement( new ActionListener() {
+	private void initListenerForPlayerPanel() {
+		PlayerPanel pnl = mf.getPlayerPanel();
+		pnl.addListenerToElement( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
@@ -96,7 +99,7 @@ public class BinauralBeatBox{
 			}
 		}, PlayerPanel.PLAY_BUTTON);
 
-		mf.getPlayerPanel().addListenerToElement( new ActionListener() {
+		pnl.addListenerToElement( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:
@@ -106,7 +109,7 @@ public class BinauralBeatBox{
 			}
 		}, PlayerPanel.STOP_BUTTON);
 		
-		mf.getPlayerPanel().addListenerToElement( new ChangeListener() {
+		pnl.addListenerToElement( new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
 				JSlider s = (JSlider)ce.getSource();
@@ -114,7 +117,7 @@ public class BinauralBeatBox{
 			}
 		}, PlayerPanel.TIME_SLIDER);
 		
-		mf.getPlayerPanel().addListenerToElement(new ChangeListener() {
+		pnl.addListenerToElement(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
 				JProgressBar muteBar = (JProgressBar)ce.getSource();
@@ -122,6 +125,24 @@ public class BinauralBeatBox{
 				System.out.println( muteBar.getValue() );
 			}
 		}, PlayerPanel.MUTE_BAR);
+	}
+	
+	private void initListenerForSessionListPanel() {
+		SessionListPanel pnl = mf.getSessionListPnl();
+		
+		pnl.addListenerToElement( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO gewählte Session bearbeiten
+			}
+		}, SessionListPanel.EDIT_BUTTON);
+		
+		pnl.addListenerToElement( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO gewählte Session löschen
+			}
+		}, SessionListPanel.REMOVE_BUTTON);
 	}
 
 }

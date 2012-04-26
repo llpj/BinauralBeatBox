@@ -2,7 +2,7 @@ package gui;
 
 import gui.editorGui.SessionEditorPanel;
 import gui.playerGui.PlayerPanel;
-import gui.playerGui.SessionlistPanel;
+import gui.playerGui.SessionListPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,18 +23,18 @@ public class MainFrame extends JFrame {
 	
 	private PlayerPanel			playerPnl;
 	private JPanel				virtualizationPnl;
-	private SessionlistPanel	listPnl;
+	private SessionListPanel	listPnl;
 	private SessionEditorPanel	editorPnl;
 
 	public MainFrame() {
 		playerPnl			= new PlayerPanel();
-		listPnl				= new SessionlistPanel();
+		listPnl				= new SessionListPanel();
 		listPnl.addListenerToElement(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				editorLayout();
 			}
-		},SessionlistPanel.ADD_BUTTON);
+		},SessionListPanel.ADD_BUTTON);
 		
 		virtualizationPnl	= new JPanel();
 		virtualizationPnl.setBackground(Color.GRAY);
@@ -82,5 +82,9 @@ public class MainFrame extends JFrame {
 	
 	public PlayerPanel getPlayerPanel() {
 		return playerPnl;
+	}
+	
+	public SessionListPanel getSessionListPnl() {
+		return listPnl;
 	}
 }
