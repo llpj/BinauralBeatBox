@@ -32,7 +32,7 @@ public class Session implements Serializable {
 
 	/**
 	 * Erstellt eine neue Session mit angegebenem Hintergrundklang und einer
-	 * bereits vorhandenen Liste von Segmenten
+	 * bereits vorhandenen Liste von Segmenten.
 	 * 
 	 * @param Hintergrundklang
 	 *            Der Pfad zum Hintergrundklang
@@ -47,7 +47,7 @@ public class Session implements Serializable {
 
 	/**
 	 * Erstellt eine neue Session mit angegebenem Hintergrundklang und einem
-	 * einzelnen bereits vorhandenen Segment
+	 * einzelnen bereits vorhandenen Segment.
 	 * 
 	 * @param Hintergrundklang
 	 *            Der Pfad zum Hintergrundklang
@@ -57,6 +57,19 @@ public class Session implements Serializable {
 	public Session(String Hintergrundklang, Segment segment) {
 		this();
 		this.Hintergrundklang = Hintergrundklang;
+		this.addSegment(segment);
+		this.duration = this.calcDuration();
+	}
+
+	/**
+	 * Erstellt eine neue Session mit Standardhintergrundklang und einem
+	 * einzelnen bereits vorhandenen Segment.
+	 * 
+	 * @param segment
+	 *            Ein einzelnes Segment
+	 */
+	public Session(Segment segment) {
+		this();
 		this.addSegment(segment);
 		this.duration = this.calcDuration();
 	}

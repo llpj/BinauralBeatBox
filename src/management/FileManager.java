@@ -85,7 +85,7 @@ public class FileManager {
 			// Erstelle ein wav-file mit dem Namen, der durch den Benutzer
 			// spezifiziert wurde
 			// TODO: Hier den User-spezifizierten Filename angeben
-			WavFile wavFile = WavFile.newWavFile(new File("test.wav"), 2,
+			WavFile wavFile = WavFile.newWavFile(new File("sineonly.wav"), 2,
 					numFrames, 16, sampleRate);
 
 			// Erstelle einen grosszuegigen Buffer von 100 frames
@@ -135,20 +135,6 @@ public class FileManager {
 		} catch (Exception e) {
 			System.err.println(e);
 		}
-
-		/*
-		 * Ueber AudioStream InputStream inputStream = "musch"; // Hole
-		 * Audioinformationen, um einen AudioInputStream zu generieren
-		 * AudioInputStream audioInputStream = AudioSystem
-		 * .getAudioInputStream(inputStream); // Neue WAVE-Datei im Filesystem
-		 * erstellen File fileOut = new File("test.wav"); // Hier muss der Pfad
-		 * rein, // den der User spezifiziert WaveFileWriter writer = new
-		 * WaveFileWriter(); // Check, ob das Hostsystem ueberhaupt WAVE-Dateien
-		 * schreiben kann. if
-		 * (AudioSystem.isFileTypeSupported(AudioFileFormat.Type.WAVE,
-		 * audioInputStream)) { writer.write(audioInputStream,
-		 * AudioFileFormat.Type.WAVE, fileOut); }
-		 */
 
 	}
 
