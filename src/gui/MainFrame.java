@@ -40,6 +40,13 @@ public class MainFrame extends JFrame {
 		virtualizationPnl.setBackground(Color.GRAY);
 	
 		editorPnl			= new SessionEditorPanel();
+		editorPnl.addListenerToElement(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				playerLayout();
+			}
+		}, SessionEditorPanel.CANCEL_BUTTON);
 		
 		playerLayout();
 

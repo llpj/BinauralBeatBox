@@ -55,11 +55,13 @@ public class BinauralBeatBox{
 		{  
 		        // Diese Methode wird aufgerufen, wenn JFrame wird max-/minimiert
 		        public void componentResized(ComponentEvent evt) {
-		            Component c = (Component)evt.getSource();
-		            
-		            // Neue Gr��e
-		            Dimension newSize = c.getSize();
-		            animation.setSize(newSize);
+		            if (animation != null) {
+		            	Component c = (Component)evt.getSource();
+			            
+			            // Neue Gr��e
+			            Dimension newSize = c.getSize();
+			            animation.setSize(newSize);
+		            }
 		        }
 				@Override
 				public void componentHidden(ComponentEvent arg0) {	}
