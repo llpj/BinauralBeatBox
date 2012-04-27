@@ -4,6 +4,7 @@ import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 
 //import logic.SessionWiedergabe;
@@ -20,6 +21,9 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import management.FileManager;
 
@@ -84,15 +88,30 @@ public class ContainerTester {
 
 		FileManager fm = new FileManager();
 		fm.setActiveSession(exportableSession);
+		fm.xmlsave();
 		System.out.println("Erstelle Wavefile mit Sinustoenen...");
 		fm.exportAsWav();
 		System.out.println("Wavefile erfolgreich erstellt.");
 
-		// XML Test
-		XMLEncoder e = new XMLEncoder(new BufferedOutputStream(
-				new FileOutputStream("Test.xml")));
-		e.writeObject(exportableSession);
-
+// XML Test
+//		XMLEncoder e = new XMLEncoder(new BufferedOutputStream(
+//				new FileOutputStream("Test.xml")));
+//		e.writeObject(exportableSession);
+		
+		
+		XStream xstream = new XStream(new DomDriver());
+		xstream.alias("Session", Session.class);
+		String xml = xstream.toXML(exportableSession);
+		
+		FileWriter writer;
+	    try {
+	      writer = new FileWriter("session.xml");
+	      writer.write(xml);
+	      writer.close();
+	    } catch (IOException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+	    }
 		/*
 		 * // Teste Hintergrundklang-Pfad Session standardSession = new
 		 * Session(); System.out

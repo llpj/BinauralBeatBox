@@ -22,10 +22,12 @@ public class SessionManager {
 	private Session activeSession; // private Session, hihi :)
 	private Category activeCategory;
 	private ArrayList<Category> categories;
+	private ArrayList<String> sessionlist;
 
 	// Konstruktoren
 	public SessionManager() {
 		categories = new ArrayList<Category>();
+		sessionlist = new ArrayList<String>();
 	}
 
 	/**
@@ -41,6 +43,14 @@ public class SessionManager {
 	// Getter & Setter
 	public Session getActiveSession() {
 		return activeSession;
+	}
+
+	public ArrayList<String> getSessionlist() {
+		return sessionlist;
+	}
+
+	public void setSessionlist(ArrayList<String> sessionlist) {
+		this.sessionlist = sessionlist;
 	}
 
 	public void setActiveSession(Session activeSession) {

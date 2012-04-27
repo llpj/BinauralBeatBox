@@ -6,12 +6,17 @@ package management;
 import interfaces.wavFile.WavFile;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 /* (Currently) unused imports
  import java.io.FileInputStream;
  import java.io.FileOutputStream;
  import java.io.InputStream;
  */
 import java.util.HashMap;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 /* (Currently) unused Imports
  import javax.sound.sampled.AudioFileFormat;
  import javax.sound.sampled.AudioInputStream;
@@ -36,6 +41,29 @@ public class FileManager {
 	// Attribute
 	private HashMap<String, Category> categories;
 	private Session activeSession;
+	
+	//Xml
+	//creating xstream object
+	
+	public void xmlsave(){
+		XStream xstream = new XStream(new DomDriver());
+		xstream.alias("Session", Session.class);
+		String xml = xstream.toXML(categories);
+		//writes string in file
+		FileWriter writer;
+	    try {
+	      writer = new FileWriter("categories.xml");
+	      writer.write(xml);
+	      writer.close();
+	    } catch (IOException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+		
+	    }
+	}
+	
+	
+	
 
 	// Konstruktor
 	public FileManager() {

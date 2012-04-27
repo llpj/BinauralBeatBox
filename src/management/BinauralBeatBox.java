@@ -198,6 +198,7 @@ public class BinauralBeatBox{
 		fileManager.addCategory( new Category("Category 2") );
 		fileManager.addCategory( new Category("Category 3") );
 		fileManager.addCategory( new Category("Category 4") );
+		fileManager.xmlsave();
 		
 		Session session = new Session();
 		session.setName("Session 1");
