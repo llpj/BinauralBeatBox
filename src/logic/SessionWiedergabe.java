@@ -1,6 +1,5 @@
 package logic;
 
-import java.lang.reflect.Array;
 
 import container.BinauralBeat;
 import container.Segment;
@@ -22,7 +21,7 @@ public class SessionWiedergabe {
 	private int balance;	
 	private static Clip c;
 	private static AudioFormat playme;
-	private byte sampleSize;
+	private static byte sampleSize;
 	private byte[] totalBeat;
     
     // Testvariablen
@@ -33,7 +32,7 @@ public class SessionWiedergabe {
 		this.session = session;
 		
         playme = new AudioFormat(44100, 16, 2, true, true); // Parameter 1: Samplerate, 2: SampleBits, 3: Kanaele)
-		sampleSize = (byte) (playme.getSampleSizeInBits() / 8);
+		byte sampleSize = (byte) (playme.getSampleSizeInBits() / 8);
 		
 		totalBeat = new byte[(int) playme.getSampleRate() * sampleSize  * session.getDuration()];
 		
@@ -79,7 +78,6 @@ public class SessionWiedergabe {
 	
 	//Berechnung, um die Frequenzen auf die Boxen zu verteilen
 	private static byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat playme, int duration) {
-		byte sampleSize = (byte) (playme.getSampleSizeInBits() / 8);
         byte[] data = new byte[(int) playme.getSampleRate() * sampleSize  * duration];
         double stepWidth = (2 * Math.PI) / playme.getSampleRate();
         int sample_max_value = (int) Math.pow(2, playme.getSampleSizeInBits()) / 2 - 1;
@@ -99,6 +97,7 @@ public class SessionWiedergabe {
                 int index = i + j + sampleSize;
                 data[index] = sampleByte;
             }
+            
             
             x += stepWidth;
         }
@@ -145,6 +144,7 @@ public class SessionWiedergabe {
 		System.out.println("Stopbuttontest");
 		if (c.isRunning()) {
 			c.stop();
+			c.close();
 			cuDuration=0; // Session auf den Anfang setzen
 		}  	
 	}
