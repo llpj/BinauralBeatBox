@@ -1,5 +1,5 @@
 /**
- * @author Fabian Schï¿½fer
+ * @author Fabian Schaefer
  *
  */
 
@@ -14,21 +14,21 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 public abstract class Animation implements Runnable{
-
-
-	/*
-	 * ImageBuffer gegen flackern + ActionListener für Max/Min
-	 */
 	
 	private int [] freq = new int[3];
 	protected Thread animation;
 	protected Graphics2D animationPnl;
 	protected JPanel pnl;
 	
-	//TODO animationPnl größe 
 	protected int width;
 	protected int height;
+	protected boolean pause;
+	protected int tempo;
 	
+	public boolean getPause()
+	{
+		return pause;
+	}
 	public int [] getFreq ()
 	{
 		return freq;
@@ -37,9 +37,9 @@ public abstract class Animation implements Runnable{
 	{
 		this.freq = freq;
 	}
-	
 	public Animation(JPanel pnl) {
 		this.pnl = pnl;
+		pause = false;
 	}
 	
 	//Thread Initialisierung
@@ -50,14 +50,14 @@ public abstract class Animation implements Runnable{
 	        animation.start ();
 		}
 	}
-
+	//AnimationPnl size
 	public void setSize(Dimension size)
 	{
 		width = size.width;
 		height = size.height;
 	}
-	public abstract void init ();//TODO session 
-	public abstract boolean pause (boolean state); //"pause" an Stelle von "break", da Java bereits break benutzt
+	public abstract void init ();
+	public abstract void pause (boolean state); //"pause" an Stelle von "break", da Java bereits break benutzt
 	public abstract boolean finish (boolean state);
 	public abstract void setHandle (Graphics2D animationpnl); //Klasse Graphics aus java.awt.* kï¿½nnte auch verwendet werden
 

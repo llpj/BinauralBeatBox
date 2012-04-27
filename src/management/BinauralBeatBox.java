@@ -2,12 +2,15 @@ package management;
 
 import interfaces.Mood;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -37,6 +40,8 @@ public class BinauralBeatBox{
 	
 	private FileManager			fileManager;
 	
+	private boolean				isPause;
+	
 	/**
 	 * @param args
 	 */
@@ -59,7 +64,7 @@ public class BinauralBeatBox{
 		initListenerForPlayerPanel();
 		initListenerForSessionListPanel();
 		
-
+		isPause = false;
 		// Animation-resize
 		mf.addComponentListener(new ComponentListener() 
 		{  
@@ -71,6 +76,8 @@ public class BinauralBeatBox{
 			            // Neuer size
 			            Dimension newSize = c.getSize();
 			            animation.setSize(newSize);
+			            //für resize notwendig
+			            animation.init();
 		            }
 		        }
 				@Override
@@ -88,7 +95,7 @@ public class BinauralBeatBox{
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
-				
+					
 					//PLAY
 //					if (SessionWiedergabe.getCuDuration()==0) {
 //						SessionWiedergabe.playSession(500,1000);
@@ -97,15 +104,26 @@ public class BinauralBeatBox{
 //					}
 					
 						//animationfreq
-//						int [] freq={-30,0,30};
-//						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
+					if(!isPause)
+					{
+						//Übermalt alte animation falls mal pause gedrückt wurde
+						Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl().getGraphics();
+						Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf.getVirtualizationPnl().getSize().width, mf.getVirtualizationPnl().getSize().height);
+						rec.setColor(Color.GRAY);
+						rec.fill(rectangle);
+						int [] freq={-30,0,30};
+						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
 						//animationFrakFarbverlauf: true = frak, false = nur farbverlauf
-						animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
-//					
+//						animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
+					}
+					else
+					{
+						animation.pause(false);	
+					}
 				} else {
 					//PAUSE:
-//					animation.pause(true);
-					animation.finish(true);
+					animation.pause(true);
+					isPause = false;
 //					SessionWiedergabe.pauseSession();
 				}
 			}
@@ -116,6 +134,7 @@ public class BinauralBeatBox{
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:
 				animation.finish(true);
+				isPause = false;
 //				SessionWiedergabe.stopSession();
 			}
 		});

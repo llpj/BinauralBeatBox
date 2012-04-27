@@ -21,11 +21,10 @@ import javax.swing.JPanel;
 
 public class FrakFarbverlauf extends Animation {
 	//Konstanten für Farbverlaufwechsel
-	private final float [] vertGrad = {25,25,15,25};
-	private final float [] hozGrad = {5,25,2,2};
-	private final float [] smoothGrad = {5,5,20,20};
+//	private final float [] vertGrad = {25,25,15,25};
+//	private final float [] hozGrad = {5,25,2,2};
+//	private final float [] smoothGrad = {5,5,20,20};
 	
-	private int tempo;
 	private int bodySize; //random
 	private int bodyCount; //random
 	private Color [] colors = new Color [4]; 
@@ -249,19 +248,19 @@ public class FrakFarbverlauf extends Animation {
 				bodySize = 500;
 //				bodySize = (int) (Math.random()*100+1);
 				createBody();
-				animationPnl.drawImage(img, null, 0, 0);
 				gradPos += h;
 				if(gradPos > 1000)
 				{
 					h = -10.f;
 					posColor = (int) (Math.random()*3);
+					
 				}
 				else if(gradPos <= 0)
 				{
 					h = 10.f;
 					posColor = (int) (Math.random()*3);
 				}
-	
+				animationPnl.drawImage(img, null, 0, 0);
 				try 
 				{
 					Thread.sleep (40);	
@@ -314,9 +313,9 @@ public class FrakFarbverlauf extends Animation {
 	}
 
 	@Override
-	public boolean pause(boolean state) {
+	public void pause(boolean state) {
 		// TODO Auto-generated method stub
-		if(state == false)return false;
+		if(state == false)pause = false;
 		else 	
 		{
 			try {
@@ -325,7 +324,7 @@ public class FrakFarbverlauf extends Animation {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return true;
+			pause = true;
 		}
 	}
 
