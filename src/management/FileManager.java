@@ -11,7 +11,7 @@ import java.io.File;
  import java.io.FileOutputStream;
  import java.io.InputStream;
  */
-import java.util.ArrayList;
+import java.util.HashMap;
 /* (Currently) unused Imports
  import javax.sound.sampled.AudioFileFormat;
  import javax.sound.sampled.AudioInputStream;
@@ -34,20 +34,20 @@ import container.Session;
 // TODO: XML-Encoding
 public class FileManager {
 	// Attribute
-	private ArrayList<Category> categories;
+	private HashMap<String, Category> categories;
 	private Session activeSession;
 
 	// Konstruktor
 	public FileManager() {
-		categories = new ArrayList<Category>();
+		categories = new HashMap<String, Category>();
 	}
 
 	// Getter & Setter
-	public ArrayList<Category> getCategories() {
+	public HashMap<String, Category> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(ArrayList<Category> categories) {
+	public void setCategories(HashMap<String, Category> categories) {
 		this.categories = categories;
 	}
 
@@ -61,7 +61,7 @@ public class FileManager {
 
 	// Weitere Methoden
 	public void addCategory(Category category) {
-		this.categories.add(category);
+		categories.put(category.toString(), category);
 	}
 
 	public void removeCategory(int index) {

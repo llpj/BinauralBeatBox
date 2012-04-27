@@ -148,8 +148,8 @@ public class BinauralBeatBox{
 		
 		pnl.addListenerToElement(SessionListPanel.REMOVE_BUTTON, new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO gewählte Session löschen
+			public void actionPerformed(ActionEvent ae) {
+
 			}
 		});
 		
@@ -162,8 +162,8 @@ public class BinauralBeatBox{
 					
 					DefaultListModel sessionModel = new DefaultListModel();
 					mf.getSessionListPnl().setListModel(sessionModel, SessionListPanel.SESSION_LIST);
-					
-					for(Session s : fileManager.getCategories().get(((JList)e.getSource()).getSelectedIndex()).getSessions() ) {
+
+					for(Session s : ((Category)((JList)e.getSource()).getSelectedValue()).getSessions() ) {
 						sessionModel.addElement( s );
 					}
 				}
@@ -188,7 +188,7 @@ public class BinauralBeatBox{
 		DefaultListModel catModel = new DefaultListModel();
 		mf.getSessionListPnl().setListModel(catModel, SessionListPanel.CATEGORY_LIST);
 		
-		for(Category c : fileManager.getCategories() ) {
+		for(Category c : fileManager.getCategories().values() ) {
 			catModel.addElement( c );
 		}
 	}
@@ -198,27 +198,71 @@ public class BinauralBeatBox{
 		fileManager.addCategory( new Category("Category 2") );
 		fileManager.addCategory( new Category("Category 3") );
 		fileManager.addCategory( new Category("Category 4") );
-		fileManager.addCategory( new Category("Category 5") );
 		
 		Session session = new Session();
 		session.setName("Session 1");
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(30, new BinauralBeat(500, 530)) );
-		fileManager.getCategories().get(0).addSession(session);
+		fileManager.getCategories().get("Category 1").addSession(session);
 		
 		session = new Session();
 		session.setName("Session 2");
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
-		fileManager.getCategories().get(0).addSession(session);
+		fileManager.getCategories().get("Category 1").addSession(session);
 		
 		session = new Session();
 		session.setName("Session 3");
 		session.addSegment( new Segment(15, new BinauralBeat(500, 530)) );
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
-		fileManager.getCategories().get(0).addSession(session);
+		fileManager.getCategories().get("Category 1").addSession(session);
+		
+
+		session = new Session();
+		session.setName("sdgsdgg");
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
+		session.addSegment( new Segment(30, new BinauralBeat(500, 530)) );
+		fileManager.getCategories().get("Category 2").addSession(session);
+		
+		session = new Session();
+		session.setName("sagadfgsdg");
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		fileManager.getCategories().get("Category 2").addSession(session);
+		
+		session = new Session();
+		session.setName("sdlkgjhlkasdf");
+		session.addSegment( new Segment(15, new BinauralBeat(500, 530)) );
+		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		fileManager.getCategories().get("Category 2").addSession(session);
+		
+
+		
+		session = new Session();
+		session.setName("sdgsdgg 3423");
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
+		session.addSegment( new Segment(30, new BinauralBeat(500, 530)) );
+		fileManager.getCategories().get("Category 3").addSession(session);
+		
+		session = new Session();
+		session.setName("sagadfgsdg 123423");
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		fileManager.getCategories().get("Category 3").addSession(session);
+		
+		session = new Session();
+		session.setName("sdlkgjhlkasdf 123432");
+		session.addSegment( new Segment(15, new BinauralBeat(500, 530)) );
+		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
+		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		fileManager.getCategories().get("Category 3").addSession(session);
 	}
 }
