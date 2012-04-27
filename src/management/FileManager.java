@@ -11,7 +11,7 @@ import java.io.File;
  import java.io.FileOutputStream;
  import java.io.InputStream;
  */
-import java.util.ArrayList;
+import java.util.HashMap;
 /* (Currently) unused Imports
  import javax.sound.sampled.AudioFileFormat;
  import javax.sound.sampled.AudioInputStream;
@@ -34,20 +34,20 @@ import container.Session;
 // TODO: XML-Encoding
 public class FileManager {
 	// Attribute
-	private ArrayList<Category> categories;
+	private HashMap<String, Category> categories;
 	private Session activeSession;
 
 	// Konstruktor
 	public FileManager() {
-		categories = new ArrayList<Category>();
+		categories = new HashMap<String, Category>();
 	}
 
 	// Getter & Setter
-	public ArrayList<Category> getCategories() {
+	public HashMap<String, Category> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(ArrayList<Category> categories) {
+	public void setCategories(HashMap<String, Category> categories) {
 		this.categories = categories;
 	}
 
@@ -61,7 +61,7 @@ public class FileManager {
 
 	// Weitere Methoden
 	public void addCategory(Category category) {
-		this.categories.add(category);
+		categories.put(category.toString(), category);
 	}
 
 	public void removeCategory(int index) {
@@ -72,6 +72,7 @@ public class FileManager {
 	 * Exportiert die aktuelle Session als WAVE-File. Die Samplerate betraegt
 	 * 44.1KHz, die Bittiefe betraegt 16.
 	 */
+	// TODO: http://www.jsresources.org/examples/AudioConcat.html
 	public void exportAsWav() {
 		try {
 			int sampleRate = 44100; // Samples pro Sekunde
@@ -84,7 +85,7 @@ public class FileManager {
 			// Erstelle ein wav-file mit dem Namen, der durch den Benutzer
 			// spezifiziert wurde
 			// TODO: Hier den User-spezifizierten Filename angeben
-			WavFile wavFile = WavFile.newWavFile(new File("test.wav"), 2,
+			WavFile wavFile = WavFile.newWavFile(new File("sineonly.wav"), 2,
 					numFrames, 16, sampleRate);
 
 			// Erstelle einen grosszuegigen Buffer von 100 frames
@@ -134,20 +135,6 @@ public class FileManager {
 		} catch (Exception e) {
 			System.err.println(e);
 		}
-
-		/*
-		 * Ueber AudioStream InputStream inputStream = "musch"; // Hole
-		 * Audioinformationen, um einen AudioInputStream zu generieren
-		 * AudioInputStream audioInputStream = AudioSystem
-		 * .getAudioInputStream(inputStream); // Neue WAVE-Datei im Filesystem
-		 * erstellen File fileOut = new File("test.wav"); // Hier muss der Pfad
-		 * rein, // den der User spezifiziert WaveFileWriter writer = new
-		 * WaveFileWriter(); // Check, ob das Hostsystem ueberhaupt WAVE-Dateien
-		 * schreiben kann. if
-		 * (AudioSystem.isFileTypeSupported(AudioFileFormat.Type.WAVE,
-		 * audioInputStream)) { writer.write(audioInputStream,
-		 * AudioFileFormat.Type.WAVE, fileOut); }
-		 */
 
 	}
 

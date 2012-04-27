@@ -10,14 +10,16 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.EventListener;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListModel;
+import javax.swing.event.ListSelectionListener;
 
-public class SessionlistPanel extends JPanel implements ActionListenerAddable {
+public class SessionListPanel extends JPanel implements ActionListenerAddable {
 
 	/**
 	 * 
@@ -32,15 +34,12 @@ public class SessionlistPanel extends JPanel implements ActionListenerAddable {
 	private	JButton			removeBtn;
 	private ToggleButton	openBtn;
 	
-	private DefaultListModel	categoryListModel;
-	private DefaultListModel	sessionListModel;
-	
 
 	public static final int ADD_BUTTON 		= 0;
 	public static final int EDIT_BUTTON 	= 1;
 	public static final int REMOVE_BUTTON 	= 2;
-//	public static final int CATEGORY_LIST 	= 3;
-//	public static final int SESSION_LIST 	= 4;
+	public static final int CATEGORY_LIST 	= 3;
+	public static final int SESSION_LIST 	= 4;
 //	public static final int OPEN_BTN	 	= 5;
 	
 //	public enum Elements {
@@ -52,15 +51,12 @@ public class SessionlistPanel extends JPanel implements ActionListenerAddable {
 //		REMOVE_BUTTON
 //	}
 
-	public SessionlistPanel() {
+	public SessionListPanel() {
 		initMenuPnl();
 		openBtn				= new ToggleButton("^", "v", true);
 		
-		categoryListModel	= new DefaultListModel();
-		categoryList		= new JList(categoryListModel);
-
-		sessionListModel	= new DefaultListModel();
-		sessionList			= new JList(sessionListModel);
+		categoryList		= new JList();
+		sessionList			= new JList();
 		
 		changeLayout();
 		
@@ -115,18 +111,46 @@ public class SessionlistPanel extends JPanel implements ActionListenerAddable {
 	}
 
 	@Override
-	public void addActionListenerToElement(ActionListener al, int element) {
+	public void addListenerToElement(int element, EventListener el) {
 		switch(element) {
 			case ADD_BUTTON:
-				addBtn.addActionListener(al);
+				addBtn.addActionListener( (ActionListener)el );
 				break;
 			case EDIT_BUTTON:
-				editBtn.addActionListener(al);
+				editBtn.addActionListener( (ActionListener)el );
 				break;
 			case REMOVE_BUTTON:
-				removeBtn.addActionListener(al);
+				removeBtn.addActionListener( (ActionListener)el );
+				break;
+			case CATEGORY_LIST:
+				categoryList.addListSelectionListener( (ListSelectionListener)el );
+				break;
+			case SESSION_LIST:
+				sessionList.addListSelectionListener( (ListSelectionListener)el );
 				break;
 		}
+	}
+	
+	public void setListModel(ListModel lm, int element) {
+		switch(element) {
+			case CATEGORY_LIST:
+				categoryList.setModel(lm);
+				break;
+			case SESSION_LIST:
+				sessionList.setModel(lm);
+				break;
+		}
+	}
+	
+	public ListModel getListModel(int element) {
+		switch(element) {
+			case CATEGORY_LIST:
+				return categoryList.getModel();
+			case SESSION_LIST:
+				return sessionList.getModel();
+		}
+		
+		return null;
 	}
 
 }

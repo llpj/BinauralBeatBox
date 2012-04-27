@@ -1,6 +1,5 @@
 package logic;
 
-
 import container.BinauralBeat;
 import container.Segment;
 import container.Session;
@@ -18,7 +17,7 @@ public class SessionWiedergabe {
 	
 	private Session session;
 	private static long cuDuration = 0;
-	private int balance;	
+	private int balance;
 	private static Clip c;
 	private static AudioFormat playme;
 	private static byte sampleSize;

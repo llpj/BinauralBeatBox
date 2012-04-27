@@ -18,6 +18,7 @@ public class Session implements Serializable {
 	private String Hintergrundklang; // path to background noise
 	private ArrayList<Segment> segments;
 	private int duration;
+	private String name;
 
 	// Konstruktoren
 	/**
@@ -25,15 +26,14 @@ public class Session implements Serializable {
 	 * Liste von Segmenten und einer Dauer von 0.
 	 */
 	public Session() {
-		// TODO: Korrekten Pfad zum Standard-Hintergrundklang hinzufuegen
-		Hintergrundklang = "Pfad";
+		Hintergrundklang = "./src/resources/wav/amsel.wav";
 		segments = new ArrayList<Segment>();
 		this.duration = 0;
 	}
 
 	/**
 	 * Erstellt eine neue Session mit angegebenem Hintergrundklang und einer
-	 * bereits vorhandenen Liste von Segmenten
+	 * bereits vorhandenen Liste von Segmenten.
 	 * 
 	 * @param Hintergrundklang
 	 *            Der Pfad zum Hintergrundklang
@@ -48,7 +48,7 @@ public class Session implements Serializable {
 
 	/**
 	 * Erstellt eine neue Session mit angegebenem Hintergrundklang und einem
-	 * einzelnen bereits vorhandenen Segment
+	 * einzelnen bereits vorhandenen Segment.
 	 * 
 	 * @param Hintergrundklang
 	 *            Der Pfad zum Hintergrundklang
@@ -58,6 +58,19 @@ public class Session implements Serializable {
 	public Session(String Hintergrundklang, Segment segment) {
 		this();
 		this.Hintergrundklang = Hintergrundklang;
+		this.addSegment(segment);
+		this.duration = this.calcDuration();
+	}
+
+	/**
+	 * Erstellt eine neue Session mit Standardhintergrundklang und einem
+	 * einzelnen bereits vorhandenen Segment.
+	 * 
+	 * @param segment
+	 *            Ein einzelnes Segment
+	 */
+	public Session(Segment segment) {
+		this();
 		this.addSegment(segment);
 		this.duration = this.calcDuration();
 	}
@@ -121,6 +134,18 @@ public class Session implements Serializable {
 			}
 			return lDuration;
 		}
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public String toString() {
+		return this.name;
 	}
 
 }

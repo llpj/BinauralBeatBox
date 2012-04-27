@@ -1,7 +1,7 @@
 package gui;
 
-import java.awt.event.ActionListener;
+import java.util.EventListener;
 
 public interface ActionListenerAddable {
-	public void addActionListenerToElement(ActionListener al, int element);
+	public void addListenerToElement(int element, EventListener el);
 }

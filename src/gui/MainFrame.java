@@ -2,11 +2,10 @@ package gui;
 
 import gui.editorGui.SessionEditorPanel;
 import gui.playerGui.PlayerPanel;
-import gui.playerGui.SessionlistPanel;
+import gui.playerGui.SessionListPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,31 +23,39 @@ public class MainFrame extends JFrame {
 	
 	private PlayerPanel			playerPnl;
 	private JPanel				virtualizationPnl;
-	private SessionlistPanel	listPnl;
+	private SessionListPanel	listPnl;
 	private SessionEditorPanel	editorPnl;
 
 	public MainFrame() {
 		playerPnl			= new PlayerPanel();
-		listPnl				= new SessionlistPanel();
-		listPnl.addActionListenerToElement(new ActionListener() {
+		listPnl				= new SessionListPanel();
+		listPnl.addListenerToElement(SessionListPanel.ADD_BUTTON, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				editorLayout();
 			}
-		},SessionlistPanel.ADD_BUTTON);
+		});
 		
 		virtualizationPnl	= new JPanel();
 		virtualizationPnl.setBackground(Color.GRAY);
 	
 		editorPnl			= new SessionEditorPanel();
+		editorPnl.addListenerToElement(SessionEditorPanel.CANCEL_BUTTON, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					playerLayout();
+				}
+			});
 		
 		playerLayout();
 
 		setMinimumSize( new Dimension(getSize().width,500) );
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		setVisible(true);
 	}
 
+	
 	
 	private void playerLayout() {
 		this.getContentPane().removeAll();
@@ -82,8 +89,8 @@ public class MainFrame extends JFrame {
 	public PlayerPanel getPlayerPanel() {
 		return playerPnl;
 	}
-	@Override
-	public void update(Graphics g){
-		    paint(g);
+	
+	public SessionListPanel getSessionListPnl() {
+		return listPnl;
 	}
 }

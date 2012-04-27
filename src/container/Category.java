@@ -71,7 +71,8 @@ public class Category {
 	}
 
 	public String toString() {
-		return "Name: " + name + "\nContained Sessions:\n"
-				+ sessions.toString();
+		return name;
+//		return "Name: " + name + "\nContained Sessions:\n"
+//				+ sessions.toString();
 	}
 }
