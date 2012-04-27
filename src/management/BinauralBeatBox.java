@@ -1,5 +1,7 @@
 package management;
 
+import interfaces.Mood;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -58,15 +60,15 @@ public class BinauralBeatBox{
 		initListenerForSessionListPanel();
 		
 
-		// F�r Animation-resize
+		// Animation-resize
 		mf.addComponentListener(new ComponentListener() 
 		{  
-		        // Diese Methode wird aufgerufen, wenn JFrame wird max-/minimiert
+		        // Diese Methode wird aufgerufen, wenn JFrame max-/minimiert wird
 		        public void componentResized(ComponentEvent evt) {
 		            if (animation != null) {
 		            	Component c = (Component)evt.getSource();
 			            
-			            // Neue Gr��e
+			            // Neuer size
 			            Dimension newSize = c.getSize();
 			            animation.setSize(newSize);
 		            }
@@ -88,23 +90,23 @@ public class BinauralBeatBox{
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
 				
 					//PLAY
-					if (SessionWiedergabe.getCuDuration()==0) {
-						SessionWiedergabe.playSession(500,1000);
-					} else {
-						SessionWiedergabe.continueSession();
-					}
+//					if (SessionWiedergabe.getCuDuration()==0) {
+//						SessionWiedergabe.playSession(500,1000);
+//					} else {
+//						SessionWiedergabe.continueSession();
+//					}
 					
 						//animationfreq
-						int [] freq={-30,0,30};
-						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
+//						int [] freq={-30,0,30};
+//						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
 						//animationFrakFarbverlauf: true = frak, false = nur farbverlauf
-//						animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
+						animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
 //					
 				} else {
 					//PAUSE:
 //					animation.pause(true);
 					animation.finish(true);
-					SessionWiedergabe.pauseSession();
+//					SessionWiedergabe.pauseSession();
 				}
 			}
 		});
@@ -114,7 +116,7 @@ public class BinauralBeatBox{
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:
 				animation.finish(true);
-				SessionWiedergabe.stopSession();
+//				SessionWiedergabe.stopSession();
 			}
 		});
 		

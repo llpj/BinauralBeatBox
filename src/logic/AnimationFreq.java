@@ -5,6 +5,7 @@
 
 package logic;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
@@ -17,9 +18,11 @@ public class AnimationFreq extends Animation {
 	//Koordinaten auf der Sinuskurve
 	int[] x;
 	int[] y;
+	BufferedImage img;
 	
 	double xPos;
 	
+	@SuppressWarnings("static-access")
 	public AnimationFreq (int [] freq, JPanel pnl)//TODO Session session
 	{
 		super(pnl);
@@ -32,10 +35,24 @@ public class AnimationFreq extends Animation {
 		init();//TODO session
 	}
 
-	protected void sin ()
+	protected void sin (boolean set)
 	{	
 		// TODO in: freq
-		animationPnl = (Graphics2D) pnl.getGraphics();
+		Color[] c = new Color[3];
+		if(set == false)
+		{
+			c[0] = Color.GRAY;
+			c[1] = Color.GRAY;
+			c[2] = Color.GRAY;
+		}
+		else
+		{
+			c[0] = colors[0];
+			c[1] = colors[1];
+			c[2] = colors[2];
+		}
+		Graphics2D animationPnlBuffer;
+		animationPnlBuffer = (Graphics2D) img.createGraphics();
 		int nextPos = 0;
 		int i,j;
 		int q = height/3;
@@ -47,17 +64,20 @@ public class AnimationFreq extends Animation {
 				{
 					y[i]=(100-(int)Math.round(Math.sin(Math.toRadians(i)+xPos)*super.getFreq()[j]));
 					x[i]=i;
-					if(j == 0)y[i]-=q-150;//20
-					else if (j==1) y[i]+=100;//30
-					else y[i]+=q+50;//80
+					if(j == 0)y[i]-=q;//20
+					else if (j==1) y[i]+=0;//30
+					else y[i]+=q;//80
 				}
-				animationPnl.setColor(colors[j]);
-				animationPnl.setStroke(new BasicStroke(5.0f));
-				animationPnl.drawPolyline(x, y, x.length);
+				animationPnlBuffer.setColor(c[j]);
+				animationPnlBuffer.setStroke(new BasicStroke(5.0f));
+				animationPnlBuffer.drawPolyline(x, y, x.length);
 			}
-			animationPnl.translate((int)x[x.length-1],0);
+			animationPnlBuffer.translate((int)x[x.length-1],0);
 			nextPos += (int)x[x.length-1];
 		}
+		//animationPnl.drawImage(img, null, 0, this);
+		
+		
 	}
 
 	
@@ -69,8 +89,10 @@ public class AnimationFreq extends Animation {
 	public void init() {//TODO Session session
 		// TODO Auto-generated method stub
 		// Initialisierung der Werte
+		animationPnl = (Graphics2D) pnl.getGraphics();
+		img = animationPnl.getDeviceConfiguration().createCompatibleImage(width, height, Transparency.BITMASK);
 		xPos = 0;
-		pnl.setDoubleBuffered(true);
+//		pnl.setDoubleBuffered(true);
 		super.start();
 	}
 
@@ -124,7 +146,8 @@ public class AnimationFreq extends Animation {
 	{
 		this.colors = color;
 	}
-
+	
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
@@ -133,16 +156,18 @@ public class AnimationFreq extends Animation {
 	while (animation == thisThread) 
 		{
 			xPos += 0.1f;
-			sin();
+			sin(true);
+			animationPnl.drawImage(img, null, 0, 0);
+			sin(false);
 			try 
 			{
-				Thread.sleep (40);	
+				Thread.sleep (20);	
 			}
 			catch (InterruptedException e) 
 			{
 				//nichts
 			}
-			pnl.repaint();
+			
         }
 
 	}

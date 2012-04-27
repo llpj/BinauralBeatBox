@@ -11,7 +11,9 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Transparency;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
@@ -32,6 +34,7 @@ public class FrakFarbverlauf extends Animation {
     private int posColor;
     private float gradPos;
     Polygon poly;
+    BufferedImage img;
     
     public FrakFarbverlauf (Mood mood, JPanel pnl, boolean isFraktal)
     {
@@ -43,10 +46,7 @@ public class FrakFarbverlauf extends Animation {
     
     public int iteration(double realteil,double imaginaerteil) {   
     	/* Diese Methode enthält die eigentliche Iteration zur Berechnung der Farbe eines Bildpunktes 
-    	des Apfelmännchens. Genau genommen wird hier zum einen die Entscheidung getroffen, welcher 
-    	Zweig in der Zeichenmethode paint() zu verwenden ist. Zum anderen wird ein Modulo-Faktor für 
-    	die tatsächliche Farbwahl berechnet. Dabei werden zwei Parameter benötigt - der Realteil und 
-    	der Imaginärteil. */
+    	des Apfelmännchens. Dabei werden zwei Parameter benötigt - der Realteil und der Imaginärteil. */
     	   double x,y,x2,y2,z;
     	   int k=0;
     	   x=0;
@@ -55,7 +55,7 @@ public class FrakFarbverlauf extends Animation {
     	   y2=0;
     	   z=0;
     	   for (k=0;k<1000;k++) {
-    	// Der komplexe Apfelmännchen-Grundalgorithmus
+    	// Der Apfelmännchen-Grundalgorithmus
     	     y=2*x*y+imaginaerteil;
     	     x=x2-y2+realteil;
     	     x2=x*x;
@@ -69,79 +69,82 @@ public class FrakFarbverlauf extends Animation {
     protected void createBody ()
     {
     	// TODO in bodySize
-    	animationPnl = (Graphics2D) pnl.getGraphics();
+    	Graphics2D animationPnlBuffer;
+		animationPnlBuffer = (Graphics2D) img.createGraphics();
         
         if(isFraktal == false)
 		{
         	
-        	animationPnl.setPaint(createGradient (colors[posColor], colors[posColor+1]));
-			animationPnl.fillRect(0, 0, width, height);
-			animationPnl.drawRect(0, 0, width, height);
+        	animationPnlBuffer.setPaint(createGradient (colors[posColor], colors[posColor+1]));
+			animationPnlBuffer.fillRect(0, 0, width, height);
+			animationPnlBuffer.drawRect(0, 0, width, height);
 		}
 		else
 		{
-			/* In der Zeichenmethode paint() wird der eigentliche Bildaufbau vorgenommen. */
-			 /* Startwerte für das Apfelmännchen. Ein Verändern der Startwerte führt zu einer Veränderung 
-			der Größe und/oder Position des Apfelmännchens. Die Grundfläche für den Aufbau des 
-			Apfelmännchens bleibt allerdings unberührt. */
-//			  double restart=-2;
-//			  double reend=1;
-//			  double imstart=-1;
-//			  double imend=1;
+			//Größe der Apfelmännchens
+			//Breite: Differenz von restart und reend --> neg = links / pos = rechts
+			// restart und reend sollten im Bereich von -10 bis 10 --> optimal bei -4 und -1 liegen
+			  double restart=-3;
+			  double reend=0;
+			  
+			  //Höhe: Differenz von imstart und imend --> neg = tiefere position / pos = höhere position
+			  double imstart=-2;
+			  double imend=0;
 			//Alternative Startwerte zum Experimentieren   
-			    double restart=-3; 
-			   double reend=2;
-			   double imstart=-2;
-			   double imend=2;
+//			  double restart=-3; 
+//			  double reend=2;
+//			  double imstart=-2;
+//			  double imend=2;
 			 
-			  double restep,imstep,imquad,repart,impart;
+			  double restep,imstep,repart,impart;
 			  int x,y,farbe;
 			 /* Veränderung der Schrittweiten bei der Berechnung beeinflusst ebenfalls Größe und Position 
 			des Fraktals */
 			// Schrittweite für den Realteil 
-			  restep=(reend-restart)/200; 
+			  restep=(reend-restart)/(width/2); 
 			// Schrittweite für den Imaginärteil 
-			  imstep=(imend-imstart)/200; 
-			  y=0; // Zählvariable
+			  imstep=(imend-imstart)/(height/2); 
 			// Zuweisung eines Startwertes für den 
 			// Imaginärteil in der Rekursion
 			  impart=imstart; 
-			 /* Beginn der Rekursion. Zwei ineinander verschachtelte for-Schleifen. Die äußere Schleife 
-			berechnet den Realteil, die innere Schleife den Imaginärteil. */
-			// Jeder y-Wert entspricht einer Bildschirmzeile
-			  for (y=0;y<200;y++)  {
-			// Zuweisung eines Startwertes für den Realteil 
-			// in der Rekursion
-			   repart=restart; 
-			// Jeder x-Wert entspricht einer Spalte
-			   for (x=0;x<200;x++) {
-			/* Berechnung der Entscheidungsvariable für die Farbe eines Bildpunktes  */
-			    farbe=iteration(repart,impart);
-			    if(farbe==1000) {
-			// Zeichne an der Position x,y einen schwarzen 
-			// Punkt
-			        animationPnl.setColor(Color.black);
-			   animationPnl.drawLine(x,y,x+1,y);
-			    } 
-			    else { 
+			 
+			  for (y=0;y<height-1;y++)  
+			  {
+				  // Zuweisung eines Startwertes für den Realteil 
+				  repart=restart; 
+				  for (x=0;x<width-1;x++) 
+				  {
+					  //Berechnung der Entscheidungsvariable für die Farbe eines Bildpunktes  
+					  farbe=iteration(repart,impart);
+					  if(farbe==1000) 
+					  {
+						  //Farbe für das Apfelmännchen-Innere
+						  animationPnl.setPaint(createGradient(colors[posColor], colors[posColor+1]));
+						  //Malt den Hintergrund in Abhänigkeit von width und height
+						  animationPnl.drawLine(x,y,x+1,y);
+					  } 
+					  else 
+					  { 
 			/* Hier wird die Farbe eines Bildpunktes vom eigentlichen Apfelmännchen explizit berechnet. 
 			Die 3 Angaben in der Color-Angabe sind RGB-Werte (Rot-Grün-Blau) und legen die jeweilige 
 			Intensität der Farbanteile fest. Nur der erste Parameter wird jeweils neu berechnet. Dabei 
 			ist bei Manipulationen des Rotbereichs darauf zu achten, dass das Resultat zwischen 0 und 255 
 			bleibt. Hier im Beispiel liegt die Grundfarbwahl im Rotbereich. Sie kann aber jederzeit durch 
 			Veränderung der Parameter in einen anderen Farbbereich verlegt werden. */
-			  Color jr = new Color(255-(farbe%52*5),255-(farbe%52*5),125);
+//			  Color jr = new Color(255-(farbe%52*5),255-(farbe%52*5),125);
 			/* Alternative Grundfarbe. Dabei wird sowohl der Rotanteil, als auch der Grünanteil 
 			manipuliert. */
-			/*Color jr = new Color(255-(farbe%26*10), 120, 125); */
-			   animationPnl.setColor(jr);  
-			// Zeichne an Position x,y einen Punkt mit 
-			// dem Farbwert jr
-			   animationPnl.drawLine(x,y,x+1,y);} 
-			/* Neue Werte für die Iteration*/
-			      repart=repart+restep;}  
-			   impart=impart+imstep;}
-			     }
+			    	
+						//Farbe der Apfelmännchen-Umgebung
+						Color jr = new Color(255-(farbe%26*10), 120, colors[posColor].getBlue()); 
+						animationPnlBuffer.setColor(jr); 
+						// Zeichne an Position x,y einen Punkt mit 
+						// dem Farbwert jr
+						animationPnlBuffer.drawLine(x,y,x+1,y);} 
+					  	// Neue Werte für die Iteration
+					  	repart=repart+restep;}  
+				  		impart=impart+imstep;}
+			     	}
 			  
 
 //			poly = new Polygon();
@@ -164,7 +167,7 @@ public class FrakFarbverlauf extends Animation {
 //				animationPnl.fill( poly );
 //				animationPnl.drawPolygon( poly );
 ////				animationPnl.rotate(bodySize);
-    	  
+    	  //animationPnl.rotate(1);
     }
     
     protected GradientPaint createGradient (Color color1, Color color2)
@@ -246,6 +249,7 @@ public class FrakFarbverlauf extends Animation {
 				bodySize = 500;
 //				bodySize = (int) (Math.random()*100+1);
 				createBody();
+				animationPnl.drawImage(img, null, 0, 0);
 				gradPos += h;
 				if(gradPos > 1000)
 				{
@@ -266,7 +270,6 @@ public class FrakFarbverlauf extends Animation {
 				{
 					//nichts
 				}
-//				pnl.repaint();
 	        }
 
 	}
@@ -305,6 +308,8 @@ public class FrakFarbverlauf extends Animation {
 		tempo = 1500;
 		width = pnl.getSize().width; // muss über Dimension gemacht werden, da Punkte und Pixel nicht vergleichbar wären
 		height = pnl.getSize().height;
+		animationPnl = (Graphics2D) pnl.getGraphics();
+		img = animationPnl.getDeviceConfiguration().createCompatibleImage(width, height, Transparency.BITMASK);
 		super.start();
 	}
 
