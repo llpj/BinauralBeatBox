@@ -1,13 +1,8 @@
 package logic;
 
-import interfaces.mixing.MixingAudioInputStream;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import container.BinauralBeat;
 import container.Segment;
 import container.Session;
@@ -73,117 +68,119 @@ public class SessionWiedergabe {
         // -------------- IDEE --------------- 
         // http://www.java-forum.org/allgemeine-java-themen/14532-mehrere-audioclips-gleichzeitig-wiedergeben.html
         
-  	      final AudioInputStream a1=  AudioSystem.getAudioInputStream(new File("./src/resources/wav/amsel.wav"));
-  	      DataLine.Info lineInfo1 = new DataLine.Info( SourceDataLine.class, a1.getFormat());
-  	      
-  	      final AudioInputStream a2 = AudioSystem.getAudioInputStream(line2);
-  	      DataLine.Info lineInfo2 = new DataLine.Info( SourceDataLine.class, a2.getFormat());
-	   
-              final SourceDataLine sourceDataLine1 = (SourceDataLine )AudioSystem.getLine(lineInfo1);
-              final SourceDataLine sourceDataLine2 = (SourceDataLine )AudioSystem.getLine(lineInfo2);
-              
-      	      
-        	    Collection<AudioInputStream> list=new ArrayList<AudioInputStream>();
-        	    list.add(a1);
-        	    list.add(a2);
-        	    
-        	  MixingAudioInputStream mixer=new MixingAudioInputStream(playme, list); 
-              
-        	  
-//              // Hintergrundmusik
-//              Thread t1 = new Thread(){
-//                 public void run(){
-//                    byte[] buf = new byte[1024];
-//                    
-//                    try {
-//                       int l;
-//                       while((l = a1.read(buf))!= -1){
-//                          
-//                          sourceDataLine1.write(buf, 0, l);
-//                       }
-//                       while(sourceDataLine1.isActive()){
-//                          try {
-//                             Thread.sleep(100);
-//                          } catch (InterruptedException e) {
-//                             // TODO Auto-generated catch block
-//                             e.printStackTrace();
-//                          }
-//                       }
-//                       sourceDataLine1.close();
-//                       
-//                       
-//                    } catch (IOException e) {
-//                       // TODO Auto-generated catch block
-//                       e.printStackTrace();
-//                    }
-//                 }
-//              };
-//              t1.setDaemon(true);
-//              
-//              // Sinuston
-//              Thread t2 = new Thread(){
-//                 public void run(){
-//                    byte[] buf = new byte[1024];
-//                    
-//                    try {
-//                       int l;
-//                       while((l = a2.read(buf))!= -1){
-//                          
-//                          sourceDataLine2.write(buf, 0, l);
-//                       }
-//                       while(sourceDataLine2.isActive()){
-//                          try {
-//                             Thread.sleep(100);
-//                          } catch (InterruptedException e) {
-//                             // TODO Auto-generated catch block
-//                             e.printStackTrace();
-//                          }
-//                       }
-//                       sourceDataLine2.close();
-//                       
-//                       
-//                    } catch (IOException e) {
-//                       // TODO Auto-generated catch block
-//                       e.printStackTrace();
-//                    }
-//                 }
-//              };
-//              t2.setDaemon(true);
-//              
-//              
-//              sourceDataLine1.open();
-//              sourceDataLine1.start();
-//              t1.start();
-//              
-//              sourceDataLine2.open();
-//              sourceDataLine2.start();
-//              t2.start();
-//  			
-//              t1.join();
-//              t2.join();
-        
-        
 
+    	final AudioInputStream a1=  AudioSystem.getAudioInputStream(new File("./src/resources/wav/amsel.wav"));
+  		DataLine.Info lineInfo1 = new DataLine.Info( SourceDataLine.class, a1.getFormat());
+  		
+  		//final AudioInputStream a2 = AudioSystem.getAudioInputStream(line2);
+  		final AudioInputStream a2 = AudioSystem.getAudioInputStream(new File("./src/resources/wav/amsel.wav")); // Test
+  		DataLine.Info lineInfo2 = new DataLine.Info( SourceDataLine.class, a2.getFormat());
+  		
+  		Mixer.Info[] mis = AudioSystem.getMixerInfo(); 
+  		for(int i = 0; i < mis.length; i++){
+  			
+  			Mixer.Info mi = mis[i];
+  			if(mi.getName().equals("Java Sound Audio Engine")){
+  				
+  				Mixer m = AudioSystem.getMixer(mi);
+  				final SourceDataLine sourceDataLine1 = (SourceDataLine )m.getLine(lineInfo1);
+  				final SourceDataLine sourceDataLine2 = (SourceDataLine )m.getLine(lineInfo2);
+  				
+  				
+  				Thread t1 = new Thread(){
+  					public void run(){
+  						byte[] buf = new byte[1024];
+  						
+  						try {
+  							int l;
+  							while((l = a1.read(buf))!= -1){
+  								
+  								sourceDataLine1.write(buf, 0, l);
+  							}
+  							while(sourceDataLine1.isActive()){
+  								try {
+  									Thread.sleep(100);
+  								} catch (InterruptedException e) {
+  									// TODO Auto-generated catch block
+  									e.printStackTrace();
+  								}
+  							}
+  							sourceDataLine1.close();
+  							
+  							
+  						} catch (IOException e) {
+  							// TODO Auto-generated catch block
+  							e.printStackTrace();
+  						}
+  					}
+  				};
+  				t1.setDaemon(true);
+  				
+  				Thread t2 = new Thread(){
+  					public void run(){
+  						byte[] buf = new byte[1024];
+  						
+  						try {
+  							int l;
+  							while((l = a2.read(buf))!= -1){
+  								
+  								sourceDataLine2.write(buf, 0, l);
+  							}
+  							while(sourceDataLine2.isActive()){
+  								try {
+  									Thread.sleep(100);
+  								} catch (InterruptedException e) {
+  									// TODO Auto-generated catch block
+  									e.printStackTrace();
+  								}
+  							}
+  							sourceDataLine2.close();
+  							
+  							
+  						} catch (IOException e) {
+  							// TODO Auto-generated catch block
+  							e.printStackTrace();
+  						}
+  					}
+  				};
+  				t2.setDaemon(true);
+  				
+  				
+  				sourceDataLine1.open();
+  				sourceDataLine1.start();
+  				t1.start();
+  				
+  				sourceDataLine2.open();
+  				sourceDataLine2.start();
+  				t2.start();
+  		
+  				t1.join();
+  				t2.join();
+  				
+  				break;
+  				
+  			}
+  		}
+        	  
         
-        try {
-            c = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
-            c.open(mixer);
-            // c.open(mixer, data, 0, data.length);
-            c.start();
-            //c.loop(Clip.LOOP_CONTINUOUSLY);
-            c.loop(1);
-            while(c.isRunning()) {
-                try {
-                	System.out.println("spielt "+ c.getMicrosecondPosition());
-                    // Thread.sleep(50);
-                	
-                } 
-                catch (Exception ex) {}
-            }
-        }
-        catch (LineUnavailableException ex) {
-        	ex.printStackTrace();         
-        }
+//        try {
+//            c = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
+//            c.open(playme, data, 0, data.length);
+//            c.start();
+//            //c.loop(Clip.LOOP_CONTINUOUSLY);
+//            c.loop(1);
+//            while(c.isRunning()) {
+//                try {
+//                	System.out.println("spielt "+ c.getMicrosecondPosition());
+//                    // Thread.sleep(50);
+//                	
+//                } 
+//                catch (Exception ex) {}
+//            }
+//        }
+//        catch (LineUnavailableException ex) {
+//        	ex.printStackTrace();         
+//        }
         System.out.println("Ende...");
     }
 	
