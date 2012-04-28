@@ -36,6 +36,7 @@ public class BinauralBeatBox{
 	private Animation			animation;
 	
 	private FileManager			fileManager;
+	private SessionWiedergabe	sw;
 	
 	/**
 	 * @param args
@@ -55,6 +56,7 @@ public class BinauralBeatBox{
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		sw = new SessionWiedergabe(session);
 		
 		initListenerForPlayerPanel();
 		initListenerForSessionListPanel();
@@ -90,11 +92,11 @@ public class BinauralBeatBox{
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
 				
 					//PLAY
-//					if (SessionWiedergabe.getCuDuration()==0) {
-//						SessionWiedergabe.playSession(500,1000);
-//					} else {
-//						SessionWiedergabe.continueSession();
-//					}
+					if (SessionWiedergabe.getCuDuration()==0) {
+						SessionWiedergabe.playSession(80,90);
+					} else {
+						SessionWiedergabe.continueSession();
+					}
 					
 						//animationfreq
 //						int [] freq={-30,0,30};

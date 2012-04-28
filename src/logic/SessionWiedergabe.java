@@ -76,7 +76,7 @@ public class SessionWiedergabe {
     }
 	
 	//Berechnung, um die Frequenzen auf die Boxen zu verteilen
-	private static byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat playme, int duration) {
+	public static byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat playme, int duration) {
         byte[] data = new byte[(int) playme.getSampleRate() * sampleSize  * duration];
         double stepWidth = (2 * Math.PI) / playme.getSampleRate();
         int sample_max_value = (int) Math.pow(2, playme.getSampleSizeInBits()) / 2 - 1;
