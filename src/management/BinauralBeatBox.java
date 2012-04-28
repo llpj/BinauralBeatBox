@@ -107,7 +107,7 @@ public class BinauralBeatBox{
 					
 					//PLAY
 					if (sw.getCuDuration()==0) {
-							sw.playSession(80,90);
+							sw.playSession(100,130);
 					} else {
 						sw.continueSession();
 					}

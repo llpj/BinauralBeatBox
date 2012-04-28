@@ -40,7 +40,7 @@ public class SessionWiedergabe {
 	public SessionWiedergabe(Session session) {
 		this.session = session;
 		
-        playme = new AudioFormat(44100, 16, 2, true, true); // Parameter 1: Samplerate, 2: SampleBits, 3: Kanaele)
+		AudioFormat playme = getAudioFormat();
 		byte sampleSize = (byte) (playme.getSampleSizeInBits() / 8);
 		
 		totalBeat = new byte[(int) playme.getSampleRate() * sampleSize  * session.getDuration()];
@@ -60,63 +60,41 @@ public class SessionWiedergabe {
 	  */
 	public void playSession(int freqLinks, int  freqRechts) {
 		i++;
-		file = new File("./src/resources/wav/amsel.wav");	
 		System.out.println("Funktion aufgerufen: "+i);
-		        
-		// Hintergrundmusik
-			try {
-				clip1 = AudioSystem.getClip();
-			} catch (LineUnavailableException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}        
-	
-			try {
-				ais = AudioSystem.getAudioInputStream(file);
-			} catch (UnsupportedAudioFileException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	        try {
-				clip1.open(ais);
-			} catch (LineUnavailableException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			} catch (IOException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
-
-
-	  // Frequenzton
-	        
-		byte[] data = getStereoSinusTone(freqLinks, freqRechts, playme,10);
-		InputStream line2 = new ByteArrayInputStream(data);
-		// ByteArrayInputStream line2 = new ByteArrayInputStream(data);
-		playme = new AudioFormat(44100, 16, 2, true, true);
-	        
-			try {
-				clip2 = AudioSystem.getClip();
+		System.out.println("Links: "+freqLinks+ " Rechts: "+freqRechts);
+		file = new File("./src/resources/wav/amsel.wav");
+		AudioFormat playme = getAudioFormat();
+		byte[] data = getStereoSinusTone(freqLinks, freqRechts, playme);
+		
+		
+		// Hintergrundmusik (clip1)
+		try {
+			clip1 = AudioSystem.getClip();
+			ais = AudioSystem.getAudioInputStream(file);
+			clip1.open(ais);
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
+		// Frequenzton (clip2)
+		try {
+		clip2 = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
+			clip2.open(playme, data, 0, data.length);
 			} catch (LineUnavailableException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
-			ais2 = new AudioInputStream(line2, playme, data.length / playme.getFrameSize());
-			//ais2 = AudioSystem.getAudioInputStream(line2);
-	        try {	        	
-				clip2.open(playme, data, 0, data.length);
-			} catch (LineUnavailableException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 	        
-	// Abspielen
+		// Abspielen (clip1 + clip2)
 	        
-        // loop continuously
+        // Dauerschleife
         clip1.loop(-1);
         clip2.loop(-1);
         while(clip2.isRunning()) {
@@ -132,40 +110,47 @@ public class SessionWiedergabe {
         // -------------- IDEE --------------- 
         // http://www.java-forum.org/allgemeine-java-themen/14532-mehrere-audioclips-gleichzeitig-wiedergeben.html
        
-//        try {
-//            c = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
-//            c.open(playme, data, 0, data.length);
-//        	//Clip clip = (Clip) AudioSystem.getLine(info);
-//        	//clip.open(); // reserviert Ressourcen
-//
-//            c.start();
-//            //c.loop(Clip.LOOP_CONTINUOUSLY);
-//            c.loop(1);
-//            while(c.isRunning()) {
-//                try {
-//                	System.out.println("spielt "+ c.getMicrosecondPosition());
-//                    // Thread.sleep(50);
-//                	
-//                } 
-//                catch (Exception ex) {}
-//            }
-//        }
-//        catch (LineUnavailableException ex) {
-//        	ex.printStackTrace();         
-//        }
-//        System.out.println("Ende...");
+
+        System.out.println("Ende...");
     }
 	
 	
 	//Berechnung, um die Frequenzen auf die Boxen zu verteilen
-	public byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat playme, int duration) {
-        byte[] data = new byte[(int) playme.getSampleRate() * sampleSize  * duration];
-        double stepWidth = (2 * Math.PI) / playme.getSampleRate();
-        int sample_max_value = (int) Math.pow(2, playme.getSampleSizeInBits()) / 2 - 1;
+//	public byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat playme, int duration) {
+//        byte[] data = new byte[(int) playme.getSampleRate() * sampleSize  * duration];
+//        double stepWidth = (2 * Math.PI) / playme.getSampleRate();
+//        int sample_max_value = (int) Math.pow(2, playme.getSampleSizeInBits()) / 2 - 1;
+//        double x = 0;
+//        
+//    	for (int i = 0; i < data.length; i += sampleSize * 2) {
+//            
+//            int value = (int) (sample_max_value * Math.sin(frequency1 * x));
+//            for (int j = 0; j < sampleSize; j++) {
+//                byte sampleByte = (byte) ((value >> (8 * j)) & 0xff);
+//                data[i + j] = sampleByte;
+//            }
+//            
+//            value = (int) (sample_max_value * Math.sin(frequency2 * x));
+//            for (int j = 0; j < sampleSize; j++) {
+//                byte sampleByte = (byte) ((value >> (8 * j)) & 0xff);
+//                int index = i + j + sampleSize;
+//                data[index] = sampleByte;
+//            }
+//            
+//            
+//            x += stepWidth;
+//        }
+//        return data;
+//    }	
+	
+    public byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat af) {
+        byte sampleSize = (byte) (af.getSampleSizeInBits() / 8);
+        byte[] data = new byte[(int) af.getSampleRate() * sampleSize  * 2];
+        double stepWidth = (2 * Math.PI) / af.getSampleRate();
         double x = 0;
-        
-    	for (int i = 0; i < data.length; i += sampleSize * 2) {
+        for (int i = 0; i < data.length; i += sampleSize * 2) {
             
+        	int sample_max_value = (int) Math.pow(2, af.getSampleSizeInBits()) / 2 - 1;
             int value = (int) (sample_max_value * Math.sin(frequency1 * x));
             for (int j = 0; j < sampleSize; j++) {
                 byte sampleByte = (byte) ((value >> (8 * j)) & 0xff);
@@ -179,11 +164,28 @@ public class SessionWiedergabe {
                 data[index] = sampleByte;
             }
             
-            
             x += stepWidth;
         }
         return data;
-    }		   
+    }
+    
+    // Audioformat bestimmen (Durch eigene funktion werden Fehler behoben :)
+    private AudioFormat getAudioFormat() {
+        float sampleRate = 44100;
+        //8000,11025,16000,22050,44100
+        int sampleSizeInBits = 16;
+        //8,16
+        int channels = 1;
+        //1,2
+        boolean signed = true;
+        //true,false
+        boolean bigEndian = false;
+        //true,false
+        //return new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, 8000.0f, 8, 1, 1,
+        //8000.0f, false );
+
+        return new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
+    }
 
 	
 	/**
@@ -240,9 +242,9 @@ public class SessionWiedergabe {
 
 		for( Segment s : session.getSegments() ) {
 			BinauralBeat b = s.getBeat();
-			byte[] data = getStereoSinusTone(b.getFreq1_start(), b.getFreq2_start(), playme, s.getDuration());
-			System.arraycopy(data, 0, totalBeat, destPos, data.length);
-			destPos += data.length;
+			//byte[] data = getStereoSinusTone(b.getFreq1_start(), b.getFreq2_start(), playme, s.getDuration());
+			//System.arraycopy(data, 0, totalBeat, destPos, data.length);
+			//destPos += data.length;
 		}
 	}
 	
