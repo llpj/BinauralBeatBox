@@ -11,7 +11,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JProgressBar;
@@ -104,7 +107,21 @@ public class BinauralBeatBox{
 					
 					//PLAY
 					if (SessionWiedergabe.getCuDuration()==0) {
-						SessionWiedergabe.playSession(80,90);
+						try {
+							SessionWiedergabe.playSession(80,90);
+						} catch (UnsupportedAudioFileException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (LineUnavailableException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					} else {
 						SessionWiedergabe.continueSession();
 					}
