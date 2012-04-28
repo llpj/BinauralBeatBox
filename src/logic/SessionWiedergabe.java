@@ -33,12 +33,10 @@ public class SessionWiedergabe {
 	public SessionWiedergabe(Session session) {
 		this.session = session;
 		
-		System.out.println("Con Test");
         playme = new AudioFormat(44100, 16, 2, true, true); // Parameter 1: Samplerate, 2: SampleBits, 3: Kanaele)
 		byte sampleSize = (byte) (playme.getSampleSizeInBits() / 8);
 		
 		totalBeat = new byte[(int) playme.getSampleRate() * sampleSize  * session.getDuration()];
-		
 		transition();
 	}
 	
@@ -51,15 +49,16 @@ public class SessionWiedergabe {
 	  * @param freDsuer: Frequennz Wiederholungen
 	  * 
 	  * mit Hilfe von c.getMicrosecondPosition() ist es moeglich, die aktuelle Zeit zu bestimmen
-	 * @throws IOException 
-	 * @throws UnsupportedAudioFileException 
-	 * @throws LineUnavailableException 
-	 * @throws InterruptedException 
+	  * 
 	  */
-	public void playSession(int freqLinks, int  freqRechts) throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
+	public void playSession(int freqLinks, int  freqRechts) {
+
+		System.out.print("FreqLink: "+freqLinks);
+		System.out.println(" FreqRechts skype"+freqRechts);
+		
 		i++;		
 		System.out.println("Funktion aufgerufen: "+i);
-        byte[] data = getStereoSinusTone(freqLinks, freqRechts, playme,10);
+		byte[] data = getStereoSinusTone(freqLinks, freqRechts, playme,10);
 //        
 //        // Umwandlung von byte[] in InputStream
 //        ByteArrayInputStream line2 = new ByteArrayInputStream(data); 
@@ -80,7 +79,7 @@ public class SessionWiedergabe {
 //  		for(int i = 0; i < mis.length; i++){
 //  			
 //  			Mixer.Info mi = mis[i];
-//  			if(mi.getName().equals("Java Sound Audio Engine")){
+//    		if(mi.getName().equals("Java Sound Audio Engine")){
 //  				
 //  				Mixer m = AudioSystem.getMixer(mi);
 //  				final SourceDataLine sourceDataLine1 = (SourceDataLine )m.getLine(lineInfo1);
@@ -166,6 +165,9 @@ public class SessionWiedergabe {
         try {
             c = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
             c.open(playme, data, 0, data.length);
+        	//Clip clip = (Clip) AudioSystem.getLine(info);
+        	//clip.open(); // reserviert Ressourcen
+
             c.start();
             //c.loop(Clip.LOOP_CONTINUOUSLY);
             c.loop(1);

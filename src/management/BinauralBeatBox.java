@@ -107,21 +107,7 @@ public class BinauralBeatBox{
 					
 					//PLAY
 					if (sw.getCuDuration()==0) {
-						try {
 							sw.playSession(80,90);
-						} catch (UnsupportedAudioFileException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (LineUnavailableException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
 					} else {
 						sw.continueSession();
 					}
@@ -151,7 +137,7 @@ public class BinauralBeatBox{
 					//PAUSE:
 					animation.pause(true);
 					isPause = false;
-//					SessionWiedergabe.pauseSession();
+					sw.pauseSession();
 				}
 			}
 		});
@@ -162,7 +148,7 @@ public class BinauralBeatBox{
 				//STOP:
 				animation.finish(true);
 				isPause = false;
-//				SessionWiedergabe.stopSession();
+				sw.stopSession();
 			}
 		});
 		
