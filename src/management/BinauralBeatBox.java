@@ -106,9 +106,9 @@ public class BinauralBeatBox{
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
 					
 					//PLAY
-					if (SessionWiedergabe.getCuDuration()==0) {
+					if (sw.getCuDuration()==0) {
 						try {
-							SessionWiedergabe.playSession(80,90);
+							sw.playSession(80,90);
 						} catch (UnsupportedAudioFileException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -123,7 +123,7 @@ public class BinauralBeatBox{
 							e.printStackTrace();
 						}
 					} else {
-						SessionWiedergabe.continueSession();
+						sw.continueSession();
 					}
 					
 						//animationfreq
