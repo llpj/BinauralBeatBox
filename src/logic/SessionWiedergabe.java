@@ -3,6 +3,8 @@ package logic;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+
 import container.BinauralBeat;
 import container.Segment;
 import container.Session;
@@ -19,12 +21,17 @@ import javax.sound.sampled.*;
 public class SessionWiedergabe {
 	
 	private Session session;
-	private static long cuDuration = 0;
+	private long cuDuration = 0;
 	private int balance;
-	private static Clip c;
-	private static AudioFormat playme;
-	private static byte sampleSize;
+	private AudioFormat playme;
+	private byte sampleSize;
 	private byte[] totalBeat;
+	private File file;
+	private Clip clip1 = null;
+	private Clip clip2 = null;
+	private AudioInputStream ais = null;
+    private AudioInputStream ais2 = null;
+    private SourceDataLine sourceDataLine;
     
     // Testvariablen
     static int i= 0;
@@ -52,139 +59,103 @@ public class SessionWiedergabe {
 	  * 
 	  */
 	public void playSession(int freqLinks, int  freqRechts) {
-
-		System.out.print("FreqLink: "+freqLinks);
-		System.out.println(" FreqRechts skype"+freqRechts);
-		
-		i++;		
+		i++;
+		file = new File("./src/resources/wav/amsel.wav");	
 		System.out.println("Funktion aufgerufen: "+i);
-		byte[] data = getStereoSinusTone(freqLinks, freqRechts, playme,10);
-//        
-//        // Umwandlung von byte[] in InputStream
-//        ByteArrayInputStream line2 = new ByteArrayInputStream(data); 
-//        
-//        
-//        // -------------- IDEE --------------- 
-//        // http://www.java-forum.org/allgemeine-java-themen/14532-mehrere-audioclips-gleichzeitig-wiedergeben.html
-//        
-//
-//    	final AudioInputStream a1=  AudioSystem.getAudioInputStream(new File("./src/resources/wav/amsel.wav"));
-//  		DataLine.Info lineInfo1 = new DataLine.Info( SourceDataLine.class, a1.getFormat());
-//  		
-//  		//final AudioInputStream a2 = AudioSystem.getAudioInputStream(line2);
-//  		final AudioInputStream a2 = AudioSystem.getAudioInputStream(new File("./src/resources/wav/amsel.wav")); // Test
-//  		DataLine.Info lineInfo2 = new DataLine.Info( SourceDataLine.class, a2.getFormat());
-//  		
-//  		Mixer.Info[] mis = AudioSystem.getMixerInfo(); 
-//  		for(int i = 0; i < mis.length; i++){
-//  			
-//  			Mixer.Info mi = mis[i];
-//    		if(mi.getName().equals("Java Sound Audio Engine")){
-//  				
-//  				Mixer m = AudioSystem.getMixer(mi);
-//  				final SourceDataLine sourceDataLine1 = (SourceDataLine )m.getLine(lineInfo1);
-//  				final SourceDataLine sourceDataLine2 = (SourceDataLine )m.getLine(lineInfo2);
-//  				
-//  				
-//  				Thread t1 = new Thread(){
-//  					public void run(){
-//  						byte[] buf = new byte[1024];
-//  						
-//  						try {
-//  							int l;
-//  							while((l = a1.read(buf))!= -1){
-//  								
-//  								sourceDataLine1.write(buf, 0, l);
-//  							}
-//  							while(sourceDataLine1.isActive()){
-//  								try {
-//  									Thread.sleep(100);
-//  								} catch (InterruptedException e) {
-//  									// TODO Auto-generated catch block
-//  									e.printStackTrace();
-//  								}
-//  							}
-//  							sourceDataLine1.close();
-//  							
-//  							
-//  						} catch (IOException e) {
-//  							// TODO Auto-generated catch block
-//  							e.printStackTrace();
-//  						}
-//  					}
-//  				};
-//  				t1.setDaemon(true);
-//  				
-//  				Thread t2 = new Thread(){
-//  					public void run(){
-//  						byte[] buf = new byte[1024];
-//  						
-//  						try {
-//  							int l;
-//  							while((l = a2.read(buf))!= -1){
-//  								
-//  								sourceDataLine2.write(buf, 0, l);
-//  							}
-//  							while(sourceDataLine2.isActive()){
-//  								try {
-//  									Thread.sleep(100);
-//  								} catch (InterruptedException e) {
-//  									// TODO Auto-generated catch block
-//  									e.printStackTrace();
-//  								}
-//  							}
-//  							sourceDataLine2.close();
-//  							
-//  							
-//  						} catch (IOException e) {
-//  							// TODO Auto-generated catch block
-//  							e.printStackTrace();
-//  						}
-//  					}
-//  				};
-//  				t2.setDaemon(true);
-//  				
-//  				
-//  				sourceDataLine1.open();
-//  				sourceDataLine1.start();
-//  				t1.start();
-//  				
-//  				sourceDataLine2.open();
-//  				sourceDataLine2.start();
-//  				t2.start();
-//  		
-//  				t1.join();
-//  				t2.join();
-//  				
-//  				break;
-//  				
-//  			}
-//  		}
-        	  
-        
-        try {
-            c = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
-            c.open(playme, data, 0, data.length);
-        	//Clip clip = (Clip) AudioSystem.getLine(info);
-        	//clip.open(); // reserviert Ressourcen
+		        
+		// Hintergrundmusik
+			try {
+				clip1 = AudioSystem.getClip();
+			} catch (LineUnavailableException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}        
+	
+			try {
+				ais = AudioSystem.getAudioInputStream(file);
+			} catch (UnsupportedAudioFileException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        try {
+				clip1.open(ais);
+			} catch (LineUnavailableException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
 
-            c.start();
-            //c.loop(Clip.LOOP_CONTINUOUSLY);
-            c.loop(1);
-            while(c.isRunning()) {
-                try {
-                	System.out.println("spielt "+ c.getMicrosecondPosition());
-                    // Thread.sleep(50);
-                	
-                } 
-                catch (Exception ex) {}
-            }
+
+	  // Frequenzton
+	        
+		byte[] data = getStereoSinusTone(freqLinks, freqRechts, playme,10);
+		InputStream line2 = new ByteArrayInputStream(data);
+		// ByteArrayInputStream line2 = new ByteArrayInputStream(data);
+		playme = new AudioFormat(44100, 16, 2, true, true);
+	        
+			try {
+				clip2 = AudioSystem.getClip();
+			} catch (LineUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			ais2 = new AudioInputStream(line2, playme, data.length / playme.getFrameSize());
+			//ais2 = AudioSystem.getAudioInputStream(line2);
+	        try {	        	
+				clip2.open(playme, data, 0, data.length);
+			} catch (LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        
+	// Abspielen
+	        
+        // loop continuously
+        clip1.loop(-1);
+        clip2.loop(-1);
+        while(clip2.isRunning()) {
+            try {
+            	System.out.println("clip2 spielt "+ clip2.getMicrosecondPosition());
+                // Thread.sleep(50);
+            	
+            } 
+            catch (Exception ex) {}
         }
-        catch (LineUnavailableException ex) {
-        	ex.printStackTrace();         
-        }
-        System.out.println("Ende...");
+
+             
+        // -------------- IDEE --------------- 
+        // http://www.java-forum.org/allgemeine-java-themen/14532-mehrere-audioclips-gleichzeitig-wiedergeben.html
+       
+//        try {
+//            c = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
+//            c.open(playme, data, 0, data.length);
+//        	//Clip clip = (Clip) AudioSystem.getLine(info);
+//        	//clip.open(); // reserviert Ressourcen
+//
+//            c.start();
+//            //c.loop(Clip.LOOP_CONTINUOUSLY);
+//            c.loop(1);
+//            while(c.isRunning()) {
+//                try {
+//                	System.out.println("spielt "+ c.getMicrosecondPosition());
+//                    // Thread.sleep(50);
+//                	
+//                } 
+//                catch (Exception ex) {}
+//            }
+//        }
+//        catch (LineUnavailableException ex) {
+//        	ex.printStackTrace();         
+//        }
+//        System.out.println("Ende...");
     }
+	
 	
 	//Berechnung, um die Frequenzen auf die Boxen zu verteilen
 	public byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat playme, int duration) {
@@ -224,10 +195,10 @@ public class SessionWiedergabe {
 	  */
 	public void pauseSession() {
 		System.out.println("Pausenbuttontest");
-		cuDuration = c.getMicrosecondPosition();
+		cuDuration = clip1.getMicrosecondPosition();
 		System.out.println("Aktuelle Position: "+cuDuration);
-		if (c.isRunning()) {
-			c.stop();
+		if (clip1.isRunning()) {
+			clip1.stop();
 		} else {
 			System.out.println("Pause Fehler: Clip c wurde nicht abgespielt.");
 		}		
@@ -245,16 +216,18 @@ public class SessionWiedergabe {
 	
 	public void continueSession() {
 		System.out.println("Continuebuttontest");
-		c.setMicrosecondPosition(cuDuration);
+		clip1.setMicrosecondPosition(cuDuration);
 		System.out.println("Continue at: "+cuDuration);
-		c.start();
+		clip1.start();
 	}	
 	
 	public void stopSession() {
 		System.out.println("Stopbuttontest");
-		if (c.isRunning()) {
-			c.stop();
-			c.close();
+		if (clip1.isRunning()) {
+			clip1.stop();
+			clip2.stop();
+			clip1.close();
+			clip2.close();
 			cuDuration=0; // Session auf den Anfang setzen
 		}  	
 	}
@@ -282,7 +255,7 @@ public class SessionWiedergabe {
 	 * zB -10.0f veringert die Lautsätke um -10 Decibel
 	 */
 	private void changeVolumn(float volumn) {
-		FloatControl gainControl = (FloatControl) c.getControl(FloatControl.Type.MASTER_GAIN);
+		FloatControl gainControl = (FloatControl) clip1.getControl(FloatControl.Type.MASTER_GAIN);
 		gainControl.setValue(volumn); //  veringert die Lautsärke um 10 Decibel
 	}
 	
