@@ -13,6 +13,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Transparency;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -40,6 +41,9 @@ public class FrakFarbverlauf extends Animation {
     	super(pnl);
     	this.setMood(mood);
     	this.setFraktal(isFraktal);
+    	//Initialisierung - checkSize und posColor müssen im Konstruktor initialisiert sein !!! (wegen resizing)
+    	setCheckResize(0);
+    	posColor = (int) (Math.random()*3);
     	init();
     }
     
@@ -73,7 +77,6 @@ public class FrakFarbverlauf extends Animation {
         
         if(isFraktal == false)
 		{
-        	
         	animationPnlBuffer.setPaint(createGradient (colors[posColor], colors[posColor+1]));
 			animationPnlBuffer.fillRect(0, 0, width, height);
 			animationPnlBuffer.drawRect(0, 0, width, height);
@@ -172,8 +175,8 @@ public class FrakFarbverlauf extends Animation {
     protected GradientPaint createGradient (Color color1, Color color2)
     {
     	// hier sind auch Drehungen möglich
-    	Point2D.Float p1 = new Point2D.Float(150.f+gradPos, 75.f+gradPos); // Gradient line start
-        Point2D.Float p2 = new Point2D.Float(250.f+gradPos, 75.f+gradPos); // Gradient line end
+    	Point2D.Float p1 = new Point2D.Float(150+gradPos, 75+gradPos); // Gradient line start
+        Point2D.Float p2 = new Point2D.Float(250+gradPos, 75+gradPos); // Gradient line end
     	GradientPaint gradient = new GradientPaint(p1, color1, p2, color2,true);//true= cyclic, false = acyclic
 		return gradient;
     }
@@ -188,62 +191,30 @@ public class FrakFarbverlauf extends Animation {
     	// TODO kalkuliere tempo anhand von freq
     }
     
-   public void setTempo(int tempo) {
-		this.tempo = tempo;
-	}
-
-	public int getTempo() {
-		return tempo;
-	}
-
-	public void setBodySize(int bodySize) {
-		this.bodySize = bodySize;
-	}
-
-	public int getBodySize() {
-		return bodySize;
-	}
-
-	public void setBodyCount(int bodyCount) {
-		this.bodyCount = bodyCount;
-	}
-
-	public int getBodyCount() {
-		return bodyCount;
-	}
-
-	public void setColors(Color [] colors) {
-		this.colors = colors;
-	}
-
-	public Color [] getColors() {
-		return colors;
-	}
-
-	public void setFraktal(boolean isFraktal) {
-		this.isFraktal = isFraktal;
-	}
-
-	public boolean isFraktal() {
-		return isFraktal;
-	}
-
-	public void setMood(Mood mood) {
-		this.mood = mood;
-	}
-
-	public Mood getMood() {
-		return mood;
-	}
+  
 	
 	//Vererbte Methoden
 	public void run()
 	{
 		Thread thisThread = Thread.currentThread();
 		// animiert Farbverlauf
-		float h = 10.f ;
+		float h = 3.1f ;
 		while (animation == thisThread) 
 			{
+				synchronized(thisThread)
+				{	
+					while(pause)
+					{  
+						try 
+						{
+							thisThread.wait();
+		            	} 
+						catch (Exception e) 
+						{
+							e.printStackTrace();
+						}
+					}
+				}
 				bodyCount = (int) (Math.random()*10+1);
 				bodySize = 500;
 //				bodySize = (int) (Math.random()*100+1);
@@ -251,24 +222,25 @@ public class FrakFarbverlauf extends Animation {
 				gradPos += h;
 				if(gradPos > 1000)
 				{
-					h = -10.f;
+					h = -3.1f;
 					posColor = (int) (Math.random()*3);
 					
 				}
 				else if(gradPos <= 0)
 				{
-					h = 10.f;
+					h = 3.1f;
 					posColor = (int) (Math.random()*3);
 				}
-				animationPnl.drawImage(img, null, 0, 0);
+				
 				try 
 				{
-					Thread.sleep (40);	
+					Thread.sleep (tempo);	
 				}
 				catch (InterruptedException e) 
 				{
 					//nichts
 				}
+				animationPnl.drawImage(img, null, 0, 0);
 	        }
 
 	}
@@ -303,47 +275,49 @@ public class FrakFarbverlauf extends Animation {
 				colors[2] = Color.cyan;
 				colors[3] = Color.magenta;
 		}
-		posColor = (int) (Math.random()*3);
+//		posColor = (int) (Math.random()*3);
 		tempo = 1500;
 		width = pnl.getSize().width; // muss über Dimension gemacht werden, da Punkte und Pixel nicht vergleichbar wären
 		height = pnl.getSize().height;
 		animationPnl = (Graphics2D) pnl.getGraphics();
 		img = animationPnl.getDeviceConfiguration().createCompatibleImage(width, height, Transparency.BITMASK);
+		setCheckResize(getCheckResize() + 1);
+		if(getCheckResize()%2 == 0)
+		{
+			tempo = 10;
+		}
+		else
+		{
+			tempo = 40;
+		}
 		super.start();
 	}
 
 	@Override
-	public void pause(boolean state) {
-		// TODO Auto-generated method stub
-		if(state == false)pause = false;
+	public void pause (boolean state) {
+		if(state == false) pause = false;
 		else 	
 		{
-			try {
-				Thread.sleep(0); //TODO pause
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			pause = true;
 		}
 	}
 
 	@Override
-	public boolean finish(boolean state) {
-		// TODO Auto-generated method stub
+	public boolean finish (boolean state) {
 		if(state == false)
 		{
 			return false;
 		}
 		else 	
 		{
-			animation.stop();
-			if(animation != null)
-			{
-				animation = null;
-			}
+			//Animation wird übermalt
+			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, width, height);
+			animationPnl.setColor(Color.GRAY);
+			animationPnl.fill(rectangle);
+			animation = null;
 			return true;
 		}
+		
 	}
 
 	@Override
@@ -351,4 +325,52 @@ public class FrakFarbverlauf extends Animation {
 		// TODO Auto-generated method stub
 
 	}
+	//getter & setter
+	 public void setTempo(int tempo) {
+			this.tempo = tempo;
+		}
+
+		public int getTempo() {
+			return tempo;
+		}
+
+		public void setBodySize(int bodySize) {
+			this.bodySize = bodySize;
+		}
+
+		public int getBodySize() {
+			return bodySize;
+		}
+
+		public void setBodyCount(int bodyCount) {
+			this.bodyCount = bodyCount;
+		}
+
+		public int getBodyCount() {
+			return bodyCount;
+		}
+
+		public void setColors(Color [] colors) {
+			this.colors = colors;
+		}
+
+		public Color [] getColors() {
+			return colors;
+		}
+
+		public void setFraktal(boolean isFraktal) {
+			this.isFraktal = isFraktal;
+		}
+
+		public boolean isFraktal() {
+			return isFraktal;
+		}
+
+		public void setMood(Mood mood) {
+			this.mood = mood;
+		}
+
+		public Mood getMood() {
+			return mood;
+		}
 }

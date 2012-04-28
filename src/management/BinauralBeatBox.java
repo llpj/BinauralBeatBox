@@ -39,9 +39,10 @@ public class BinauralBeatBox{
 	private Animation			animation;
 	
 	private FileManager			fileManager;
-	
+	// überprüft ob pause gedrückt wurde
 	private boolean				isPause;
-	
+	// ist resize%2 == 0, so ist das animationPnl in maximiertem Zustand, wenn != 0 in minimiertem Zustand
+	private int					resize;
 	/**
 	 * @param args
 	 */
@@ -65,6 +66,7 @@ public class BinauralBeatBox{
 		initListenerForSessionListPanel();
 		
 		isPause = false;
+		resize = 1;
 		// Animation-resize
 		mf.addComponentListener(new ComponentListener() 
 		{  
@@ -77,6 +79,7 @@ public class BinauralBeatBox{
 			            Dimension newSize = c.getSize();
 			            animation.setSize(newSize);
 			            //für resize notwendig
+			            resize++;
 			            animation.init();
 		            }
 		        }
@@ -111,10 +114,14 @@ public class BinauralBeatBox{
 						Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf.getVirtualizationPnl().getSize().width, mf.getVirtualizationPnl().getSize().height);
 						rec.setColor(Color.GRAY);
 						rec.fill(rectangle);
-						int [] freq={-30,0,30};
-						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
+//						int [] freq={-30,0,30};
+//						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
 						//animationFrakFarbverlauf: true = frak, false = nur farbverlauf
-//						animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
+						animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
+						if(resize%2 == 0)
+						{
+							animation.init();
+						}
 					}
 					else
 					{

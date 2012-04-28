@@ -21,8 +21,7 @@ public class AnimationFreq extends Animation {
 	int[] y;
 	BufferedImage img;
 	double xPos;
-	//Zur Abstimmung der Animationsgeschwindigkeit bei Resizing Window
-	int checkResize;
+	
 	
 	public AnimationFreq (int [] freq, JPanel pnl)
 	{
@@ -31,7 +30,7 @@ public class AnimationFreq extends Animation {
 		y = new int[360]; 
 		x = new int[360];
 		//Initialisierung - checkSize muss im Konstruktor initialisiert sein !!! (wegen resizing)
-		checkResize = 0;
+		setCheckResize(0);
 		init();
 	}
 
@@ -90,8 +89,8 @@ public class AnimationFreq extends Animation {
 		animationPnl = (Graphics2D) pnl.getGraphics();
 		img = animationPnl.getDeviceConfiguration().createCompatibleImage(width, height, Transparency.BITMASK);
 		xPos = 0;
-		checkResize++;
-		if(checkResize%2 == 0)
+		setCheckResize(getCheckResize() + 1);
+		if(getCheckResize()%2 == 0)
 		{
 			tempo = 0;
 		}
@@ -145,7 +144,6 @@ public class AnimationFreq extends Animation {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean finish (boolean state) {
 		if(state == false)
@@ -158,11 +156,7 @@ public class AnimationFreq extends Animation {
 			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, width, height);
 			animationPnl.setColor(Color.GRAY);
 			animationPnl.fill(rectangle);
-			animation.stop();
-			if(animation != null)
-			{
-				animation = null;
-			}
+			animation = null;
 			return true;
 		}
 		

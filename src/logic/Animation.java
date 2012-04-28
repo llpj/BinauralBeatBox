@@ -24,6 +24,8 @@ public abstract class Animation implements Runnable{
 	protected int height;
 	protected boolean pause;
 	protected int tempo;
+	//Zur Abstimmung der Animationsgeschwindigkeit bei Resizing Window
+	protected int checkResize;
 	
 	public boolean getPause()
 	{
@@ -60,5 +62,11 @@ public abstract class Animation implements Runnable{
 	public abstract void pause (boolean state); //"pause" an Stelle von "break", da Java bereits break benutzt
 	public abstract boolean finish (boolean state);
 	public abstract void setHandle (Graphics2D animationpnl); //Klasse Graphics aus java.awt.* k�nnte auch verwendet werden
+	public void setCheckResize(int checkResize) {
+		this.checkResize = checkResize;
+	}
+	public int getCheckResize() {
+		return checkResize;
+	}
 
 }
