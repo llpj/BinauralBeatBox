@@ -189,7 +189,7 @@ public class BinauralBeatBox{
 					sw = new SessionWiedergabe(fileManager.getActiveSession());
 					if(fileManager.getActiveSession() != null) {
 						if (sw.getCuDuration()==0) {
-							sw.playSession(100,130);
+							sw.playSession();
 						} else {
 						sw.continueSession();
 						}

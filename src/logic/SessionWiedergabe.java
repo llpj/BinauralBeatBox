@@ -60,7 +60,7 @@ public class SessionWiedergabe {
 	  * mit Hilfe von c.getMicrosecondPosition() ist es moeglich, die aktuelle Zeit zu bestimmen
 	  * 
 	  */
-	public void playSession(int freqLinks, int  freqRechts) {
+	public void playSession() {
 		i++;
 		System.out.println("Funktion aufgerufen: "+i);
 		
@@ -276,6 +276,7 @@ public class SessionWiedergabe {
 		FloatControl gainControl = (FloatControl) clip1.getControl(FloatControl.Type.MASTER_GAIN);
 		gainControl.setValue(volumn); //  veringert / erhoeht die Lautsärke um x Decibel
 	}
+	
 	
 	private void changeBalance(float balance, boolean c1c2) { //c1c2 bedeutet, wenn true dann setzen lautsärke von Clip1 um - balance/2 und clip2 um + balance/2, und andersrum	
 		float hier = balance /2;		
