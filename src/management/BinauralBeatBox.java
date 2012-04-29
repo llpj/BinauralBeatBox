@@ -82,8 +82,6 @@ public class BinauralBeatBox{
 		animationCounter = 0;
 		isPause = false;
 		resize = 1;
-		sw = new SessionWiedergabe(fileManager.getActiveSession());
-		
 		// Animation-resize
 		mf.addComponentListener(new ComponentListener() 
 		{  
@@ -183,6 +181,7 @@ public class BinauralBeatBox{
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
 					
 					//PLAY
+					sw = new SessionWiedergabe(fileManager.getActiveSession());
 					if (sw.getCuDuration()==0) {
 							sw.playSession(100,130);
 					} else {

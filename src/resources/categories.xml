@@ -1,12 +1,5 @@
 <map>
   <entry>
-    <string>Category 4</string>
-    <container.Category>
-      <name>Category 4</name>
-      <sessions/>
-    </container.Category>
-  </entry>
-  <entry>
     <string>Category 2</string>
     <container.Category>
       <name>Category 2</name>
@@ -17,6 +10,13 @@
     <string>Category 3</string>
     <container.Category>
       <name>Category 3</name>
+      <sessions/>
+    </container.Category>
+  </entry>
+  <entry>
+    <string>Category 4</string>
+    <container.Category>
+      <name>Category 4</name>
       <sessions/>
     </container.Category>
   </entry>
