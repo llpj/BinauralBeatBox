@@ -90,7 +90,7 @@ public class FileManager {
 		//writes string in file
 		FileWriter writer;
 	    try {
-	      writer = new FileWriter("./src/resources/sessions/"+Session.getName()+"xml");				//get Session Name onClick? wie greife ich auf das lokale object zu?
+	      writer = new FileWriter("./src/resources/sessions/"+session.getName()+"xml");				//get Session Name onClick? wie greife ich auf das lokale object zu?
 	      writer.write(xml);
 	      writer.close();
 	    } catch (IOException e) {
