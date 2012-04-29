@@ -47,10 +47,13 @@ public class BinauralBeatBox{
 	private FileManager			fileManager;
 	private SessionWiedergabe	sw;
 	
-	// ï¿½berprï¿½ft ob pause gedrï¿½ckt wurde
+	// ueberprueft ob pause gedrueckt wurde
 	private boolean				isPause;
 	// ist resize%2 == 0, so ist das animationPnl in maximiertem Zustand, wenn != 0 in minimiertem Zustand
 	private int					resize;
+	private int					animationCounter;
+	
+	private Session				activeSession;
 	
 	/**
 	 * @param args
@@ -75,6 +78,8 @@ public class BinauralBeatBox{
 		initListenerForPlayerPanel();
 		initListenerForSessionListPanel();
 		
+		animationCounter = 0;
+		activeSession = new Session();
 		isPause = false;
 		resize = 1;
 		// Animation-resize
@@ -116,9 +121,51 @@ public class BinauralBeatBox{
 			
 			@Override
 			public void mouseClicked(MouseEvent me) {
+				animation.finish(true);
+				//uebermalt alte animation falls mal pause gedrueckt wurde
+				Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl().getGraphics();
+				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf.getVirtualizationPnl().getSize().width, mf.getVirtualizationPnl().getSize().height);
+				rec.setColor(Color.GRAY);
+				rec.fill(rectangle);
 				if(!isPause) {
-					// TODO Fabian: Animationswechsel
-					animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
+					//Setzen des Animationscounters
+					if(animationCounter > 2)
+					{
+						animationCounter = 0;
+					}
+					else
+					{
+						animationCounter++;
+					}
+					//Auswahl der Animation
+					//TODO freq und Mood übergabe aus activeSession
+					if(animationCounter == 0)
+					{
+						int [] freq={-30,0,30};
+						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
+						if(resize%2 == 0)
+						{
+							animation.init();
+						}
+					}
+					else if (animationCounter == 1)
+					{
+						//animationFrakFarbverlauf: false = nur farbverlauf
+						animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
+						if(resize%2 == 0)
+						{
+							animation.init();
+						}
+					}
+					else
+					{
+						//animationFrakFarbverlauf: true = frak,
+						animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),true);
+						if(resize%2 == 0)
+						{
+							animation.init();
+						}
+					}					
 				}
 			}
 		});
@@ -138,18 +185,17 @@ public class BinauralBeatBox{
 						sw.continueSession();
 					}
 					
-						//animationfreq
+					//animation
 					if(!isPause)
 					{
-						//ï¿½bermalt alte animation falls mal pause gedrï¿½ckt wurde
+						//uebermalt alte animation falls mal pause gedrueckt wurde
 						Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl().getGraphics();
 						Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf.getVirtualizationPnl().getSize().width, mf.getVirtualizationPnl().getSize().height);
 						rec.setColor(Color.GRAY);
 						rec.fill(rectangle);
-//						int [] freq={-30,0,30};
-//						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
-						//animationFrakFarbverlauf: true = frak, false = nur farbverlauf
-						animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
+						//TODO Freq-Übergabe aus activeSession
+						int [] freq={-30,0,30};
+						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
 						if(resize%2 == 0)
 						{
 							animation.init();
@@ -285,9 +331,9 @@ public class BinauralBeatBox{
 	private void test_Sessions() {
 		fileManager.addCategory( new Category("Category 1") );
 		fileManager.addCategory( new Category("Category 2") );
-		fileManager.addCategory( new Category("Category 3") );
+		fileManager.addCategory( new Category("Category 3") ); 
 		fileManager.addCategory( new Category("Category 4") );
-		fileManager.writeCategories(fileManager.getCategories());
+		fileManager.writeCategories(fileManager.getCategories()); 
 		
 		Session session = new Session();
 		session.setName("Session 1");
