@@ -5,9 +5,11 @@ package management;
 
 import interfaces.wavFile.WavFile;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
-import java.io.IOException; 
+import java.io.IOException;
 /* (Currently) unused imports
  import java.io.FileInputStream;
  import java.io.FileOutputStream;
@@ -16,7 +18,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver; 
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /* (Currently) unused Imports 
  import javax.sound.sampled.AudioFileFormat;
@@ -37,15 +39,10 @@ import container.Session;
  * @author Magnus Bruehl, Ulrich Ahrendt
  * 
  */
-// TODO: XML-Encoding
 public class FileManager {
 	// Attribute
 	private HashMap<String, Category> categories;
 	private Session activeSession;
-	
-
-	
-
 
 	// Konstruktor
 	public FileManager() {
@@ -77,58 +74,59 @@ public class FileManager {
 	public void removeCategory(int index) {
 		this.categories.remove(index);
 	}
-	
+
 	/**
 	 * Writes a Session into an XML File into the ressources/session directory
+	 * 
 	 * @param session
 	 */
-	
-	public  void writeSession(Session session){
-		//creating xstream object
+	public void writeSession(Session session) {
+		// creating xstream object
 		XStream xstream = new XStream(new DomDriver());
 		xstream.alias("Session", Session.class);
 		String xml = xstream.toXML(session);
-		//writes string in file
+		// writes string in file
 		FileWriter writer;
-	    try {
-	      writer = new FileWriter("./src/resources/sessions/"+session.getName()+"xml");				//get Session Name onClick? wie greife ich auf das lokale object zu?
-	      writer.write(xml);
-	      writer.close();
-	    } catch (IOException e) {
-	      // TODO Auto-generated catch block
-	      e.printStackTrace();
-		
-	    }
+		try {
+			writer = new FileWriter("./src/resources/sessions/"
+					+ activeSession.getName() + "xml"); // get Session Name
+														// onClick?
+			writer.write(xml);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+
+		}
 	}
-	
+
 	/**
-	 * writes the Hashmap with all categories and sessions into the ressources directory
+	 * writes the Hashmap with all categories and sessions into the ressources
+	 * directory
+	 * 
 	 * @param categories
 	 */
-	
-	public static void writeCategories(HashMap<String, Category> categories){
-		//creating xstream object
+
+	public void writeCategories(HashMap<String, Category> categories) {
+		// creating xstream object
 		XStream xstream = new XStream(new DomDriver());
 		String xml = xstream.toXML(categories);
-		//writes string in file
+		// writes string in file
 		FileWriter writer;
-	    try {
-	      writer = new FileWriter("./src/resources/categories.xml");
-	      writer.write(xml);
-	      writer.close();
-	    } catch (IOException e) {
-	      // TODO Auto-generated catch block
-	      e.printStackTrace();
-		
-	    }
+		try {
+			writer = new FileWriter("./src/resources/categories.xml");
+			writer.write(xml);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+
+		}
 	}
-	
 
 	/**
 	 * Exportiert die aktuelle Session als WAVE-File. Die Samplerate betraegt
 	 * 44.1KHz, die Bittiefe betraegt 16.
 	 */
-	// TODO: http://www.jsresources.org/examples/AudioConcat.html
+	// TODO: Mix mit Hintergrundklang
 	public void exportAsWav() {
 		try {
 			int sampleRate = 44100; // Samples pro Sekunde
@@ -178,7 +176,7 @@ public class FileManager {
 								* frameCounter / sampleRate);
 						buffer[1][s] = Math.sin(2.0 * Math.PI * freq2
 								* frameCounter / sampleRate);
- 
+
 					}
 
 					// Schreibe den Buffer
@@ -194,4 +192,61 @@ public class FileManager {
 
 	}
 
+	/**
+	 * Liest eine Session aus einem XML-File ein.
+	 * 
+	 * @param sessionName
+	 *            Dateiname der einzulesenden Session
+	 * @return Die aus dem XML-File eingelesene Session-Klasse
+	 */
+	public Session readSession(String sessionName) {
+		String sessionString = null;
+		try {
+			sessionString = readFileAsString("./src/resources/sessions"
+					+ categories + "sessionName" + ".xml");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		XStream xstream = new XStream(new DomDriver());
+		Session session1 = new Session();
+		session1 = (Session) xstream.fromXML(sessionString);
+		return session1;
+	}
+
+	/**
+	 * Liest Kategorien aus einem XML-File.
+	 * 
+	 * @throws IOException
+	 */
+	public Category readCategories() throws IOException {
+		String categoriesString = readFileAsString("./src/resources/categories.xml");
+		XStream xstream = new XStream(new DomDriver());
+		Category categories = new Category("Empty");
+		categories = (Category) xstream.fromXML(categoriesString);
+		return categories;
+	}
+
+	/**
+	 * Liest ein File als String. Notwendig fuer den XML-Import.
+	 * 
+	 * @param filePath
+	 * @return String, der an den XML-Import uebergeben wird.
+	 * @throws java.io.IOException
+	 */
+	private static String readFileAsString(String filePath)
+			throws java.io.IOException {
+		byte[] buffer = new byte[(int) new File(filePath).length()];
+		BufferedInputStream f = null;
+		try {
+			f = new BufferedInputStream(new FileInputStream(filePath));
+			f.read(buffer);
+		} finally {
+			if (f != null)
+				try {
+					f.close();
+				} catch (IOException ignored) {
+				}
+		}
+		return new String(buffer);
+	}
 }
