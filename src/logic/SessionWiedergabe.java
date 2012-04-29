@@ -64,7 +64,7 @@ public class SessionWiedergabe {
 		System.out.println("Links: "+freqLinks+ " Rechts: "+freqRechts);
 		file = new File("./src/resources/wav/amsel.wav");
 		AudioFormat playme = getAudioFormat();
-		byte[] data = getStereoSinusTone(freqLinks, freqRechts, playme);
+		byte[] data = getStereoSinusTone(freqLinks, freqRechts, playme, 10);
 		
 		
 		// Hintergrundmusik (clip1)
@@ -143,9 +143,9 @@ public class SessionWiedergabe {
 //        return data;
 //    }	
 	
-    public byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat af) {
-        byte sampleSize = (byte) (af.getSampleSizeInBits() / 8);
-        byte[] data = new byte[(int) af.getSampleRate() * sampleSize  * 2];
+    public byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat af, int duration) {
+        //byte sampleSize = (byte) (af.getSampleSizeInBits() / 8);
+        byte[] data = new byte[(int) af.getSampleRate() * sampleSize  * duration];
         double stepWidth = (2 * Math.PI) / af.getSampleRate();
         double x = 0;
         for (int i = 0; i < data.length; i += sampleSize * 2) {
@@ -201,9 +201,10 @@ public class SessionWiedergabe {
 		System.out.println("Aktuelle Position: "+cuDuration);
 		if (clip1.isRunning()) {
 			clip1.stop();
+			clip2.stop();
 		} else {
 			System.out.println("Pause Fehler: Clip c wurde nicht abgespielt.");
-		}		
+		}
 	}
 	
 	/**
@@ -219,8 +220,10 @@ public class SessionWiedergabe {
 	public void continueSession() {
 		System.out.println("Continuebuttontest");
 		clip1.setMicrosecondPosition(cuDuration);
+		clip2.setMicrosecondPosition(cuDuration);
 		System.out.println("Continue at: "+cuDuration);
 		clip1.start();
+		clip2.start();
 	}	
 	
 	public void stopSession() {
@@ -231,7 +234,9 @@ public class SessionWiedergabe {
 			clip1.close();
 			clip2.close();
 			cuDuration=0; // Session auf den Anfang setzen
-		}  	
+		} else {
+			System.out.println("Stop Fehler: Clip wurde nicht abgespielt.");
+		} 	
 	}
 	
 	/**
