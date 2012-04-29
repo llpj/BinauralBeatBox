@@ -70,7 +70,6 @@ public class BinauralBeatBox{
 		mf = new MainFrame();
 		initListenerForPlayerPanel();
 		initListenerForSessionListPanel();
-		initListenerForSessionEditor();
 		
 		Session session = new Session();
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
