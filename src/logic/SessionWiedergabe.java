@@ -61,7 +61,14 @@ public class SessionWiedergabe {
 		i++;
 		
 		int sampleRate = 44100;
-		int duration = session.getDuration();
+		try{
+			if(session!=null){
+				int duration = session.getDuration();
+			}else System.err.println("SessionWiedergabe: Keine Session vorhanden.");
+		}catch(Exception e){
+			System.err.println(e.getStackTrace());
+		}
+		
 		// Information von aktueller Sesison laden
 	
 		// Aus dem FileManager
