@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
@@ -48,6 +50,7 @@ public class BinauralBeatBox{
 	private boolean				isPause;
 	// ist resize%2 == 0, so ist das animationPnl in maximiertem Zustand, wenn != 0 in minimiertem Zustand
 	private int					resize;
+	
 	/**
 	 * @param args
 	 */
@@ -95,6 +98,28 @@ public class BinauralBeatBox{
 				public void componentMoved(ComponentEvent arg0) { }
 				@Override
 				public void componentShown(ComponentEvent arg0) { }
+		});
+		
+		mf.getVirtualizationPnl().addMouseListener( new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				if(!isPause) {
+					// TODO Fabian: Animationswechsel
+					animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
+				}
+			}
 		});
 	}
 	
@@ -176,8 +201,10 @@ public class BinauralBeatBox{
 		pnl.addListenerToElement(SessionListPanel.EDIT_BUTTON, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if( fileManager.getActiveSession() != null )
+				if( fileManager.getActiveSession() != null ) {
+					mf.setEditorLayout();
 					mf.getSessionEditorPnl().setDefaultValues( fileManager.getActiveSession() );
+				}
 			}
 		});
 		

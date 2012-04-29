@@ -36,21 +36,11 @@ public class MainFrame extends JFrame {
 				editorLayout();
 			}
 		};
-		
 		listPnl.addListenerToElement(SessionListPanel.ADD_BUTTON, al);
-		listPnl.addListenerToElement(SessionListPanel.EDIT_BUTTON, al);
 		
 		virtualizationPnl	= new JPanel();
 		virtualizationPnl.setBackground(Color.GRAY);
-	
-		editorPnl			= new SessionEditorPanel();
-		editorPnl.addListenerToElement(SessionEditorPanel.CANCEL_BUTTON, new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					playerLayout();
-				}
-			});
-		
+
 		playerLayout();
 
 		setMinimumSize( new Dimension(getSize().width,500) );
@@ -78,6 +68,14 @@ public class MainFrame extends JFrame {
 		getContentPane().removeAll();
 		GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
+
+		editorPnl			= new SessionEditorPanel();
+		editorPnl.addListenerToElement(SessionEditorPanel.CANCEL_BUTTON, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					playerLayout();
+				}
+			});
 		
 		GuiFunctionLib.addGridBagContainer(this, gbl, editorPnl,	0, 0, 1, 1, 1, 1);
 		GuiFunctionLib.addGridBagContainer(this, gbl, playerPnl,	0, 1, 1, 1, 1, 0);
@@ -96,6 +94,10 @@ public class MainFrame extends JFrame {
 	
 	public SessionListPanel getSessionListPnl() {
 		return listPnl;
+	}
+	
+	public void setEditorLayout() {
+		editorLayout();
 	}
 	
 	public SessionEditorPanel getSessionEditorPnl() {

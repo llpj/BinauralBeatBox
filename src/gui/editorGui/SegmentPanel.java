@@ -64,9 +64,9 @@ public class SegmentPanel extends JPanel {
 		
 		GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
-		
-		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Start Stimmug:"),		0, 1, 1, 1, 0, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Ziel Stimmug:"),		0, 2, 1, 1, 0, 0);
+//																						x, y, w, h, wx,wy
+		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Start Stimmug:"),		0, 0, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Ziel Stimmug:"),		0, 1, 1, 1, 0, 0);
 		
 		GuiFunctionLib.addGridBagContainer(this, gbl, startMood,						1, 0, 1, 1, 2, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, targetModd,						1, 1, 1, 1, 2, 0);
@@ -89,8 +89,8 @@ public class SegmentPanel extends JPanel {
 		GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
 //																						x, y, w, h, wx,wy
-		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Ziel Frequenz"),		0, 1, 1, 1, 0, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Start Frquenz:"),		0, 0, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Ziel Frequenz:"),		0, 1, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Start Frquenz:"),		0, 2, 1, 1, 0, 0);
 
 		GuiFunctionLib.addGridBagContainer(this, gbl, leftFreqPnl,						1, 0, 1, 3, 1, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Länge des Segments"),	1, 3, 1, 1, 0, 0);
@@ -131,7 +131,7 @@ public class SegmentPanel extends JPanel {
 	private void initProfiModeElements() {
 		leftFreqPnl		= new JPanel();
 		leftFreqPnl.setBorder( new TitledBorder("Linke Frequenz:") );
-		leftFreqPnl.setLayout( new GridLayout(3, 1) );
+		leftFreqPnl.setLayout( new GridLayout(2, 1) );
 		
 		startLeftFreq	= new JSpinner();
 		leftFreqPnl.add(startLeftFreq);
@@ -143,7 +143,7 @@ public class SegmentPanel extends JPanel {
 
 		rightFreqPnl	= new JPanel();
 		rightFreqPnl.setBorder( new TitledBorder("Rechte Frequenz:") );
-		rightFreqPnl.setLayout( new GridLayout(3, 1) );
+		rightFreqPnl.setLayout( new GridLayout(2, 1) );
 		
 		startRightFreq	= new JSpinner();
 		rightFreqPnl.add(startRightFreq);
