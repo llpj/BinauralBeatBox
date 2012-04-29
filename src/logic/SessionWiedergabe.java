@@ -64,19 +64,16 @@ public class SessionWiedergabe {
 
 		int sampleRate = 44100;
 
-//		int duration = session.getDuration();
-
 		try{
 			if(session!=null){
 				int duration = session.getDuration();
+				System.out.println("Ausgewaehlte Session in den PLayer geladen");
 			}else System.err.println("SessionWiedergabe: Keine Session vorhanden.");
 		}catch(Exception e){
 			System.err.println(e.getStackTrace());
 		}
 		
-		// Information von aktueller Sesison laden
 
-//
 //		// Loop ueber alle Segmente
 //		for (int curSeg = 0; curSeg < session.getNumerOfSegments(); curSeg++) {
 //

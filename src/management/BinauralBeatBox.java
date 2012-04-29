@@ -170,20 +170,22 @@ public class BinauralBeatBox{
 	
 	private void initListenerForPlayerPanel() {
 		PlayerPanel pnl = mf.getPlayerPanel();
+
 		pnl.addListenerToElement(PlayerPanel.PLAY_BUTTON, new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
 					
 					//PLAY
 					sw = new SessionWiedergabe(fileManager.getActiveSession());
-					if (sw.getCuDuration()==0) {
+					if(fileManager.getActiveSession() != null) {
+						if (sw.getCuDuration()==0) {
 							sw.playSession(100,130);
-					} else {
+						} else {
 						sw.continueSession();
-					}
+						}
 					
-
 					//animation 
 						if(!isPause)
 						{
@@ -221,13 +223,16 @@ public class BinauralBeatBox{
 						{
 							animation.pause(false);	
 						}
+					}
 				} 
 				else 
 				{
-					//PAUSE:
-					animation.pause(true);
-					isPause = true;
-					sw.pauseSession();
+					if(fileManager.getActiveSession() != null) {
+						//PAUSE:
+						animation.pause(true);
+						isPause = true;
+						sw.pauseSession();
+					}
 				}
 			}
 		});
@@ -236,14 +241,16 @@ public class BinauralBeatBox{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:
-				animation.finish(true);
-				//uebermalt alte animation falls mal pause gedrueckt wurde
-				Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl().getGraphics();
-				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf.getVirtualizationPnl().getSize().width, mf.getVirtualizationPnl().getSize().height);
-				rec.setColor(Color.GRAY);
-				rec.fill(rectangle);
-				isPause = false;
-				sw.stopSession();
+				if(fileManager.getActiveSession() != null) {
+					animation.finish(true);
+					//uebermalt alte animation falls mal pause gedrueckt wurde
+					Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl().getGraphics();
+					Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf.getVirtualizationPnl().getSize().width, mf.getVirtualizationPnl().getSize().height);
+					rec.setColor(Color.GRAY);
+					rec.fill(rectangle);
+					isPause = false;
+					sw.stopSession();
+				}
 			}
 		});
 		
