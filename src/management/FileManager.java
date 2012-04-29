@@ -7,7 +7,7 @@ import interfaces.wavFile.WavFile;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
+import java.io.IOException; 
 /* (Currently) unused imports
  import java.io.FileInputStream;
  import java.io.FileOutputStream;
@@ -16,8 +16,9 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-/* (Currently) unused Imports
+import com.thoughtworks.xstream.io.xml.DomDriver; 
+
+/* (Currently) unused Imports 
  import javax.sound.sampled.AudioFileFormat;
  import javax.sound.sampled.AudioInputStream;
  import javax.sound.sampled.AudioSystem;
@@ -82,7 +83,7 @@ public class FileManager {
 	 * @param session
 	 */
 	
-	public static void writeSession(Session session){
+	public  void writeSession(Session session){
 		//creating xstream object
 		XStream xstream = new XStream(new DomDriver());
 		xstream.alias("Session", Session.class);

@@ -1,6 +1,6 @@
 /**
- * @author Fabian Schäfer
- *
+ * @author Fabian Schaefer
+ * Animation zur Darstellung eines Farbverlaufs und diverser Fraktal 
  */
 
 package logic;
@@ -18,7 +18,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-
+//TODO Fraktale Animation
 
 public class FrakFarbverlauf extends Animation {
 	//Konstanten für Farbverlaufwechsel
@@ -42,7 +42,7 @@ public class FrakFarbverlauf extends Animation {
     	this.setMood(mood);
     	this.setFraktal(isFraktal);
     	//Initialisierung - checkSize und posColor müssen im Konstruktor initialisiert sein !!! (wegen resizing)
-    	setCheckResize(0);
+    	checkResize = 0;
     	posColor = (int) (Math.random()*3);
     	init();
     }
@@ -86,47 +86,42 @@ public class FrakFarbverlauf extends Animation {
 			//Größe der Apfelmännchens
 			//Breite: Differenz von restart und reend --> neg = links / pos = rechts
 			// restart und reend sollten im Bereich von -10 bis 10 --> optimal bei -4 und -1 liegen
-			  double restart=-3;
-			  double reend=0;
+			double restart=-3;
+			double reend=0;
 			  
-			  //Höhe: Differenz von imstart und imend --> neg = tiefere position / pos = höhere position
-			  double imstart=-2;
-			  double imend=0;
-			//Alternative Startwerte zum Experimentieren   
-//			  double restart=-3; 
-//			  double reend=2;
-//			  double imstart=-2;
-//			  double imend=2;
-			 
-			  double restep,imstep,repart,impart;
-			  int x,y,farbe;
+			//Höhe: Differenz von imstart und imend --> neg = tiefere position / pos = höhere position
+			double imstart=-2;
+			double imend=0;
+			
+			double restep,imstep,repart,impart;
+			int x,y,farbe;
 			 /* Veränderung der Schrittweiten bei der Berechnung beeinflusst ebenfalls Größe und Position 
 			des Fraktals */
 			// Schrittweite für den Realteil 
-			  restep=(reend-restart)/(width/2); 
+			restep=(reend-restart)/(width/2); 
 			// Schrittweite für den Imaginärteil 
-			  imstep=(imend-imstart)/(height/2); 
+			imstep=(imend-imstart)/(height/2); 
 			// Zuweisung eines Startwertes für den 
 			// Imaginärteil in der Rekursion
-			  impart=imstart; 
+			impart=imstart; 
 			 
-			  for (y=0;y<height-1;y++)  
-			  {
-				  // Zuweisung eines Startwertes für den Realteil 
-				  repart=restart; 
-				  for (x=0;x<width-1;x++) 
-				  {
-					  //Berechnung der Entscheidungsvariable für die Farbe eines Bildpunktes  
-					  farbe=iteration(repart,impart);
-					  if(farbe==1000) 
-					  {
-						  //Farbe für das Apfelmännchen-Innere
-						  animationPnl.setPaint(createGradient(colors[posColor], colors[posColor+1]));
-						  //Malt den Hintergrund in Abhänigkeit von width und height
-						  animationPnl.drawLine(x,y,x+1,y);
-					  } 
-					  else 
-					  { 
+			for (y=0;y<height-1;y++)  
+			{
+				// Zuweisung eines Startwertes für den Realteil 
+				repart=restart; 
+				for (x=0;x<width-1;x++) 
+				{
+					//Berechnung der Entscheidungsvariable für die Farbe eines Bildpunktes  
+					farbe=iteration(repart,impart);
+					if(farbe==1000) 
+					{
+						//Farbe für das Apfelmännchen-Innere
+						animationPnlBuffer.setPaint(createGradient(colors[posColor], colors[posColor+1]));
+						//Malt den Hintergrund in Abhänigkeit von width und height
+						animationPnlBuffer.drawLine(x,y,x+1,y);
+					} 
+					else 
+					{ 
 			/* Hier wird die Farbe eines Bildpunktes vom eigentlichen Apfelmännchen explizit berechnet. 
 			Die 3 Angaben in der Color-Angabe sind RGB-Werte (Rot-Grün-Blau) und legen die jeweilige 
 			Intensität der Farbanteile fest. Nur der erste Parameter wird jeweils neu berechnet. Dabei 
@@ -207,7 +202,7 @@ public class FrakFarbverlauf extends Animation {
 					{  
 						try 
 						{
-							thisThread.wait();
+							thisThread.wait(90);
 		            	} 
 						catch (Exception e) 
 						{
@@ -220,7 +215,7 @@ public class FrakFarbverlauf extends Animation {
 //				bodySize = (int) (Math.random()*100+1);
 				createBody();
 				gradPos += h;
-				if(gradPos > 1000)
+				if(gradPos > 750)
 				{
 					h = -3.1f;
 					posColor = (int) (Math.random()*3);
@@ -281,8 +276,8 @@ public class FrakFarbverlauf extends Animation {
 		height = pnl.getSize().height;
 		animationPnl = (Graphics2D) pnl.getGraphics();
 		img = animationPnl.getDeviceConfiguration().createCompatibleImage(width, height, Transparency.BITMASK);
-		setCheckResize(getCheckResize() + 1);
-		if(getCheckResize()%2 == 0)
+		checkResize++;
+		if(checkResize%2 == 0)
 		{
 			tempo = 10;
 		}
@@ -302,6 +297,7 @@ public class FrakFarbverlauf extends Animation {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean finish (boolean state) {
 		if(state == false)
@@ -314,17 +310,12 @@ public class FrakFarbverlauf extends Animation {
 			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, width, height);
 			animationPnl.setColor(Color.GRAY);
 			animationPnl.fill(rectangle);
-			animation = null;
+			animation.stop();
 			return true;
 		}
 		
 	}
 
-	@Override
-	public void setHandle(Graphics2D animationpnl) {
-		// TODO Auto-generated method stub
-
-	}
 	//getter & setter
 	 public void setTempo(int tempo) {
 			this.tempo = tempo;

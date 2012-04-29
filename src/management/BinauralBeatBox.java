@@ -3,7 +3,7 @@ package management;
 import interfaces.Mood;
 
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.Component; 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -13,10 +13,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
-import java.io.IOException;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JProgressBar;
@@ -54,8 +51,6 @@ public class BinauralBeatBox{
 	private int					animationCounter;
 	private Category			currentCategory;
 	
-	private Session				activeSession;
-	
 	/**
 	 * @param args
 	 */
@@ -80,7 +75,6 @@ public class BinauralBeatBox{
 		sw = new SessionWiedergabe(session);
 
 		animationCounter = 0;
-		activeSession = new Session();
 		isPause = false;
 		resize = 1;
 		// Animation-resize
@@ -94,7 +88,7 @@ public class BinauralBeatBox{
 			            // Neuer size
 			            Dimension newSize = c.getSize();
 			            animation.setSize(newSize);
-			            //f�r resize notwendig
+			            //fuer resize notwendig
 			            resize++;
 			            animation.init();
 		            }
@@ -130,7 +124,7 @@ public class BinauralBeatBox{
 				rec.fill(rectangle);
 				if(!isPause) {
 					//Setzen des Animationscounters
-					if(animationCounter > 2)
+					if(animationCounter > 1)
 					{
 						animationCounter = 0;
 					}
@@ -139,7 +133,7 @@ public class BinauralBeatBox{
 						animationCounter++;
 					}
 					//Auswahl der Animation
-					//TODO freq und Mood �bergabe aus activeSession
+					//TODO freq und Mood uebergabe aus activeSession
 					if(animationCounter == 0)
 					{
 						int [] freq={-30,0,30};
@@ -186,30 +180,50 @@ public class BinauralBeatBox{
 						sw.continueSession();
 					}
 					
-					//animation
-					if(!isPause)
-					{
-						//uebermalt alte animation falls mal pause gedrueckt wurde
-						Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl().getGraphics();
-						Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf.getVirtualizationPnl().getSize().width, mf.getVirtualizationPnl().getSize().height);
-						rec.setColor(Color.GRAY);
-						rec.fill(rectangle);
-						//TODO Freq-�bergabe aus activeSession
-						int [] freq={-30,0,30};
-						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
-						if(resize%2 == 0)
+
+					//animation 
+						if(!isPause)
 						{
-							animation.init();
+							//Auswahl der Animation
+							//TODO freq und Mood �bergabe aus activeSession
+							if(animationCounter == 0)
+							{
+								int [] freq={-30,0,30};
+								animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
+								if(resize%2 == 0)
+								{
+									animation.init();
+								}
+							}
+							else if (animationCounter == 1)
+							{
+								//animationFrakFarbverlauf: false = nur farbverlauf
+								animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
+								if(resize%2 == 0)
+								{
+									animation.init();
+								}
+							}
+							else
+							{
+								//animationFrakFarbverlauf: true = frak,
+								animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),true);
+								if(resize%2 == 0)
+								{
+									animation.init();
+								}
+							}			
 						}
-					}
-					else
-					{
-						animation.pause(false);	
-					}
-				} else {
+						else
+						{
+							animation.pause(false);	
+						}
+				} 
+				else 
+				{
 					//PAUSE:
 					animation.pause(true);
-					isPause = false;
+					isPause = true;
 					sw.pauseSession();
 				}
 			}
@@ -220,6 +234,11 @@ public class BinauralBeatBox{
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:
 				animation.finish(true);
+				//uebermalt alte animation falls mal pause gedrueckt wurde
+				Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl().getGraphics();
+				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf.getVirtualizationPnl().getSize().width, mf.getVirtualizationPnl().getSize().height);
+				rec.setColor(Color.GRAY);
+				rec.fill(rectangle);
 				isPause = false;
 				sw.stopSession();
 			}
