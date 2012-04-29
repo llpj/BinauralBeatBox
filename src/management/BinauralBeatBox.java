@@ -300,4 +300,5 @@ public class BinauralBeatBox{
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		fileManager.getCategories().get("Category 3").addSession(session);
 	}
+		
 }

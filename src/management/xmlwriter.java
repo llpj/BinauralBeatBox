@@ -3,10 +3,12 @@ package management;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+import container.Category;
 import container.Segment;
 import container.Session;
 
@@ -36,7 +38,7 @@ public class xmlwriter {
 		//writes string in file
 		FileWriter writer;
 	    try {
-	      writer = new FileWriter("./src/resources/sessions/session.xml");				//get Session Name onClick?
+	      writer = new FileWriter("./src/resources/sessions/"+Session.getName()+"xml");				//get Session Name onClick? wie greife ich auf das lokale object zu?
 	      writer.write(xml);
 	      writer.close();
 	    } catch (IOException e) {
@@ -45,4 +47,22 @@ public class xmlwriter {
 		
 	    }
 	}
+	
+	public static void writeCategory(HashMap<String, Category> categories){
+		//creating xstream object
+		XStream xstream = new XStream(new DomDriver());
+		String xml = xstream.toXML(categories);
+		//writes string in file
+		FileWriter writer;
+	    try {
+	      writer = new FileWriter("./src/resources/categories.xml");
+	      writer.write(xml);
+	      writer.close();
+	    } catch (IOException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+		
+	    }
+	}
+	
 }
