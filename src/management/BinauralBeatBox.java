@@ -63,6 +63,11 @@ public class BinauralBeatBox{
 	private BinauralBeatBox() {
 		fileManager	= new FileManager();
 		test_Sessions();
+
+		System.out.println("------Category1------");
+		for(Session s : fileManager.getCategories().get("Category 1").getSessions() ) {
+			System.out.println( s.getName() );
+		}
 		
 		mf = new MainFrame();
 		currentCategory = null;
@@ -73,11 +78,12 @@ public class BinauralBeatBox{
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
-
+		
 		animationCounter = 0;
 		isPause = false;
 		resize = 1;
 		sw = new SessionWiedergabe(fileManager.getActiveSession());
+		
 		// Animation-resize
 		mf.addComponentListener(new ComponentListener() 
 		{  
@@ -101,6 +107,7 @@ public class BinauralBeatBox{
 				@Override
 				public void componentShown(ComponentEvent arg0) { }
 		});
+
 		
 		mf.getVirtualizationPnl().addMouseListener( new MouseListener() {
 			@Override
@@ -165,6 +172,7 @@ public class BinauralBeatBox{
 				}
 			}
 		});
+		
 	}
 	
 	private void initListenerForPlayerPanel() {
@@ -397,7 +405,7 @@ public class BinauralBeatBox{
 		fileManager.addCategory( new Category("Category 2") );
 		fileManager.addCategory( new Category("Category 3") ); 
 		fileManager.addCategory( new Category("Category 4") );
-		fileManager.writeCategories(fileManager.getCategories()); 
+//		fileManager.writeCategories(fileManager.getCategories()); 
 		
 		Session session = new Session();
 		session.setName("Session 1");
@@ -419,7 +427,11 @@ public class BinauralBeatBox{
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		fileManager.getCategories().get("Category 1").addSession(session);
-		
+
+		System.out.println("Category1");
+		for(Session s : fileManager.getCategories().get("Category 1").getSessions() ) {
+			System.out.println( s.getName() );
+		}
 
 		session = new Session();
 		session.setName("sdgsdgg");
@@ -442,7 +454,10 @@ public class BinauralBeatBox{
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		fileManager.getCategories().get("Category 2").addSession(session);
 		
-
+		System.out.println("Category2");
+		for(Session s : fileManager.getCategories().get("Category 2").getSessions() ) {
+			System.out.println( s.getName() );
+		}
 		
 		session = new Session();
 		session.setName("sdgsdgg 34sdf23");
@@ -464,6 +479,16 @@ public class BinauralBeatBox{
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		fileManager.getCategories().get("Category 3").addSession(session);
+		
+		System.out.println("Category3");
+		for(Session s : fileManager.getCategories().get("Category 3").getSessions() ) {
+			System.out.println( s.getName() );
+		}
+		
+		System.out.println("------Category1------");
+		for(Session s : fileManager.getCategories().get("Category 1").getSessions() ) {
+			System.out.println( s.getName() );
+		}
 	}
 		
 }
