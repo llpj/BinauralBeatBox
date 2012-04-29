@@ -28,7 +28,7 @@ public class SessionWiedergabe {
 	private byte[] totalBeat;
 	private File file;
 	private Clip clip1 = null;
-	private tioneirt wClip clip2 = null;
+	private Clip clip2 = null;
 	private AudioInputStream ais = null;
     private AudioInputStream ais2 = null;
     private SourceDataLine sourceDataLine;
