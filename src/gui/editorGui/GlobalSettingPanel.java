@@ -11,6 +11,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 
 import container.Session;
 
@@ -24,6 +25,9 @@ public class GlobalSettingPanel extends JPanel {
 	private JList		categoryList;
 	private JList		soundList;
 	private JSlider		volumeSlider;
+	
+	public static final int CATEGORY_LIST 	= 0;
+	public static final int SOUND_LIST 	= 1;
 	
 	public GlobalSettingPanel() {
 		setLayout( new GridLayout(4,2,5,10) );
@@ -57,9 +61,24 @@ public class GlobalSettingPanel extends JPanel {
 		sessionNameEdt.setText( s.getName() );
 	}
 	
+	public String getCategory() {
+		return categoryList.getModel().getElementAt( categoryList.getSelectedIndex()  ).toString();
+	}
+	
 	public Session getValues(Session s) {
 		s.setName( sessionNameEdt.getText() );
 //		s.setHintergrundklang(  );
 		return s;
+	}
+	
+	public void setListModel(ListModel lm, int element) {
+		switch(element) {
+			case CATEGORY_LIST:
+				categoryList.setModel(lm);
+				break;
+			case SOUND_LIST:
+				soundList.setModel(lm);
+				break;
+		}
 	}
 }

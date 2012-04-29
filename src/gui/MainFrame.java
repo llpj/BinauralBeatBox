@@ -29,15 +29,6 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		playerPnl			= new PlayerPanel();
 		listPnl				= new SessionListPanel();
-		
-		ActionListener al = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				editorLayout();
-			}
-		};
-		listPnl.addListenerToElement(SessionListPanel.ADD_BUTTON, al);
-		
 		virtualizationPnl	= new JPanel();
 		virtualizationPnl.setBackground(Color.GRAY);
 

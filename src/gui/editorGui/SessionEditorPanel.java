@@ -81,4 +81,8 @@ public class SessionEditorPanel extends JPanel implements ActionListenerAddable 
 		s = segmentPnl.getValues(s);
 		return s;
 	}
+	
+	public GlobalSettingPanel getGlobalSettingPanel() {
+		return settingPnl;
+	}
 }

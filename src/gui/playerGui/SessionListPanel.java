@@ -129,6 +129,7 @@ public class SessionListPanel extends JPanel implements ActionListenerAddable {
 				categoryList.setModel(lm);
 				break;
 			case SESSION_LIST:
+				System.out.println("neues session list model "+lm.getElementAt(0));
 				sessionList.setModel(lm);
 				break;
 		}
