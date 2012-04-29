@@ -61,15 +61,10 @@ public class SessionWiedergabe {
 		i++;
 		
 		int sampleRate = 44100;
-		int duration = session.getDuration();
+//		int duration = session.getDuration();
+		
 		// Information von aktueller Sesison laden
-	
-		// Aus dem FileManager
-//		// Berechne die Anzahl Frames, die fuer die angegebene Dauer benoetigt wird
-//		long numFrames = (long) (duration * sampleRate);
-//
-//		// Erstelle einen grosszuegigen Buffer von 100 frames
-//		double[][] buffer = new double[2][100];
+
 //
 //		// Loop ueber alle Segmente
 //		for (int curSeg = 0; curSeg < session.getNumerOfSegments(); curSeg++) {
@@ -139,7 +134,11 @@ public class SessionWiedergabe {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-	        
+	    
+
+		
+		
+		
 		// Abspielen (clip1 + clip2)
 	        
         // Dauerschleife
@@ -286,13 +285,6 @@ public class SessionWiedergabe {
 	 * @param volumn: floet, Wert um wieviel die Lautstärke veringert (Negativer Wert) oder erhöht werden soll)
 	 * zB -10.0f veringert die Lautsätke um -10 Decibel
 	 */
-	private void changeVolumn(float volumn) {
-		FloatControl gainControl = (FloatControl) clip1.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl.setValue(volumn); //  veringert die Lautsärke um 10 Decibel
-	}
-	
-	private void changeBalance(int balance) {
-		this.balance = balance;
-	}
+
 
 }
