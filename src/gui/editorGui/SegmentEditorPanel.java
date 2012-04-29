@@ -61,6 +61,14 @@ public class SegmentEditorPanel extends JPanel {
 		addSegmentPanelsToPane();
 	}
 	
+	public Session getValues(Session s) {
+		for(SegmentPanel segPnl : segmentList) {
+			s.addSegment( segPnl.getValues() );
+		}
+		
+		return s;
+	}
+	
 	private void addSegmentPanelsToPane() {
 		segmentPane.removeAll();
 		segmentPane.setLayout( new GridLayout( segmentList.size() ,1,0,10) );

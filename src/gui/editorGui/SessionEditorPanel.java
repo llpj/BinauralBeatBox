@@ -70,4 +70,15 @@ public class SessionEditorPanel extends JPanel implements ActionListenerAddable 
 		settingPnl.setDefaultValues(s);
 		segmentPnl.setDefaultValues(s);
 	}
+	
+	public String getCategory() {
+		return "Category 1";
+	}
+	
+	public Session getValues() {
+		Session s = new Session();
+		s = settingPnl.getValues(s);
+		s = segmentPnl.getValues(s);
+		return s;
+	}
 }

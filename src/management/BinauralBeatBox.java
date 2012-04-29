@@ -34,6 +34,7 @@ import container.Session;
 import logic.*;
 import gui.MainFrame;
 import gui.ToggleButton;
+import gui.editorGui.SessionEditorPanel;
 import gui.playerGui.PlayerPanel;
 import gui.playerGui.SessionListPanel;
 
@@ -203,6 +204,7 @@ public class BinauralBeatBox{
 			public void actionPerformed(ActionEvent arg0) {
 				if( fileManager.getActiveSession() != null ) {
 					mf.setEditorLayout();
+					initListenerForSessionEditor();
 					mf.getSessionEditorPnl().setDefaultValues( fileManager.getActiveSession() );
 				}
 			}
@@ -246,7 +248,11 @@ public class BinauralBeatBox{
 				}
 			}
 		});
+		
+		setListModel();
+	}
 	
+	private void setListModel() {
 		DefaultListModel catModel = new DefaultListModel();
 		mf.getSessionListPnl().setListModel(catModel, SessionListPanel.CATEGORY_LIST);
 		
@@ -255,6 +261,27 @@ public class BinauralBeatBox{
 		}
 	}
 
+	private void initListenerForSessionEditor() {
+		SessionEditorPanel editPnl = mf.getSessionEditorPnl();
+		
+		ActionListener newSession = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				String catName = mf.getSessionEditorPnl().getCategory();
+				Session s = mf.getSessionEditorPnl().getValues();
+				if( fileManager.getCategories().containsKey( catName ) ){
+					fileManager.getCategories().get( catName ).addSession(s);
+				} else {
+					fileManager.addCategory( new Category(catName, s) );
+				}
+				setListModel();
+			}
+		};
+		
+		editPnl.addListenerToElement(SessionEditorPanel.SAVE_BUTTON,	newSession);
+		editPnl.addListenerToElement(SessionEditorPanel.EXPORT_BUTTON,	newSession);
+	}
+	
 	private void test_Sessions() {
 		fileManager.addCategory( new Category("Category 1") );
 		fileManager.addCategory( new Category("Category 2") );

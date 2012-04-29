@@ -16,6 +16,7 @@ import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.border.TitledBorder;
 
+import container.BinauralBeat;
 import container.Segment;
 import container.Session;
 
@@ -162,5 +163,19 @@ public class SegmentPanel extends JPanel {
 
 		startRightFreq.setValue( s.getBeat().getFreq2_start() );
 		targetRightFreq.setValue( s.getBeat().getFreq2_target() );
+	}
+	
+	public Segment getValues() {
+		int duration	= Integer.parseInt( durationSpin.getValue().toString() );
+		System.out.println(duration);
+		int freq1_start	= Integer.parseInt( startLeftFreq.getValue().toString() );
+		int freq1_target= Integer.parseInt( targetLeftFreq.getValue().toString() );
+		
+		int freq2_start	= Integer.parseInt( startRightFreq.getValue().toString() );
+		int freq2_target= Integer.parseInt( targetRightFreq.getValue().toString() );
+		
+		BinauralBeat bb = new BinauralBeat(freq1_start, freq1_target, freq2_start, freq2_target);
+		
+		return new Segment(duration, bb);
 	}
 }

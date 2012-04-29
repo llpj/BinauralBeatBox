@@ -33,15 +33,6 @@ public class GlobalSettingPanel extends JPanel {
 		soundList		= new JList();
 		volumeSlider	= new JSlider();
 		
-//		add( new JLabel("Name der Session:") );
-//		add( sessionNameEdt );
-//		add( new JLabel("Kategorie:") );
-//		add( categoryList );
-//		add( new JLabel("Hintergrundklang:") );
-//		add( soundList );
-//		add( new JLabel("Lautstärke:") );
-//		add( volumeSlider );
-		
 		GridBagLayout gbl = new GridBagLayout();
 		JPanel p = new JPanel();
 		p.setLayout(gbl);
@@ -64,5 +55,11 @@ public class GlobalSettingPanel extends JPanel {
 
 	public void setDefaultValues(Session s) {
 		sessionNameEdt.setText( s.getName() );
+	}
+	
+	public Session getValues(Session s) {
+		s.setName( sessionNameEdt.getText() );
+//		s.setHintergrundklang(  );
+		return s;
 	}
 }
