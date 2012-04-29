@@ -75,12 +75,12 @@ public class BinauralBeatBox{
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
-		sw = new SessionWiedergabe(session);
 
 		animationCounter = 0;
 		activeSession = new Session();
 		isPause = false;
 		resize = 1;
+		sw = new SessionWiedergabe(fileManager.getActiveSession());
 		// Animation-resize
 		mf.addComponentListener(new ComponentListener() 
 		{  
