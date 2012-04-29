@@ -31,6 +31,7 @@ import container.Session;
 import logic.*;
 import gui.MainFrame;
 import gui.ToggleButton;
+import gui.editorGui.GlobalSettingPanel;
 import gui.editorGui.SessionEditorPanel;
 import gui.playerGui.PlayerPanel;
 import gui.playerGui.SessionListPanel;
@@ -265,11 +266,18 @@ public class BinauralBeatBox{
 	private void initListenerForSessionListPanel() {
 		SessionListPanel pnl = mf.getSessionListPnl();
 		
+		pnl.addListenerToElement(SessionListPanel.ADD_BUTTON, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				mf.setEditorLayout();
+				initListenerForSessionEditor();
+			}
+		});
+		
 		pnl.addListenerToElement(SessionListPanel.EDIT_BUTTON, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if( fileManager.getActiveSession() != null ) {
-					mf.setEditorLayout();
 					initListenerForSessionEditor();
 					mf.getSessionEditorPnl().setDefaultValues( fileManager.getActiveSession() );
 				}
@@ -282,7 +290,7 @@ public class BinauralBeatBox{
 				if( fileManager.getCategories().containsKey( currentCategory.toString() ) ){
 					fileManager.getCategories().get( currentCategory.toString() ).removeSession( fileManager.getActiveSession() );
 				}
-				setCategoryListModel();
+				setCategoryListModel(0);
 				setSessionListModel(currentCategory);
 			}
 		});
@@ -313,28 +321,48 @@ public class BinauralBeatBox{
 			}
 		});
 		
-		System.out.println("asfsad");
-		
-		setCategoryListModel();
+		setCategoryListModel(0);
 	}
 	
-	private void setCategoryListModel() {
-		System.out.println("asd");
+	/**
+	 * Erstellt ein ListModel und füllt es mit allen verfügbaren Kategorien.
+	 * Das ListModel wird je nach Parameter der Categorylist vom SessionListPanel, oder
+	 * der Categorylsit vom GlobalSettingPanel (Sessioneditor) übergeben
+	 * @param erlaubte Werte: {0,1} mit 0 wird die Categorylist vom SesisonListPanel gefüllt, mir 1 die Categoryliste vom GlobalSettubgPanel
+	 */
+	private void setCategoryListModel(int list) {
 		DefaultListModel catModel = new DefaultListModel();
-		mf.getSessionListPnl().setListModel(catModel, SessionListPanel.CATEGORY_LIST);
 		
 		for(Category c : fileManager.getCategories().values() ) {
 			catModel.addElement( c );
 		}
+		
+		switch(list) {
+			case 0:
+				mf.getSessionListPnl().setListModel(catModel, SessionListPanel.CATEGORY_LIST);
+				break;
+			case 1:
+				mf.getSessionEditorPnl().getGlobalSettingPanel().setListModel(catModel, GlobalSettingPanel.CATEGORY_LIST);
+				break;
+		}
 	}
-	
-	private void setSessionListModel(Category c) {
-		DefaultListModel sessionModel = new DefaultListModel();
-		mf.getSessionListPnl().setListModel(sessionModel, SessionListPanel.SESSION_LIST);
 
+	/**
+	 * Erstellt ein ListModel und füllt es mit allen Sessions, die der Kategorie c untergeordnet sind.
+	 * Das ListModel wird der Sessionliste vom SessionListPanel übergeben
+	 * @param c	Kategorie der Session, die im ListModel angezeigt werden sollen
+	 */
+	private void setSessionListModel(Category c) {
+		System.out.println(c);
+		DefaultListModel sessionModel = new DefaultListModel();
+
+		System.out.println("Geht der hier nicht rein? "+c.getName());
 		for(Session s : c.getSessions() ) {
+			System.out.println("Session: " + s.getName() );
 			sessionModel.addElement( s );
 		}
+		
+		mf.getSessionListPnl().setListModel(sessionModel, SessionListPanel.SESSION_LIST);
 	}
 
 	private void initListenerForSessionEditor() {
@@ -350,14 +378,20 @@ public class BinauralBeatBox{
 				} else {
 					fileManager.addCategory( new Category(catName, s) );
 				}
-				setCategoryListModel();
+				setCategoryListModel(0);
 			}
 		};
 		
 		editPnl.addListenerToElement(SessionEditorPanel.SAVE_BUTTON,	newSession);
 		editPnl.addListenerToElement(SessionEditorPanel.EXPORT_BUTTON,	newSession);
+		
+		setCategoryListModel(1);
 	}
-	
+
+	/**
+	 * NUR ZUM TESTEN!!!
+	 * Erstellt ein paar Kategorien  und Sessions.
+	 */
 	private void test_Sessions() {
 		fileManager.addCategory( new Category("Category 1") );
 		fileManager.addCategory( new Category("Category 2") );
@@ -411,21 +445,21 @@ public class BinauralBeatBox{
 
 		
 		session = new Session();
-		session.setName("sdgsdgg 3423");
+		session.setName("sdgsdgg 34sdf23");
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(30, new BinauralBeat(500, 530)) );
 		fileManager.getCategories().get("Category 3").addSession(session);
 		
 		session = new Session();
-		session.setName("sagadfgsdg 123423");
+		session.setName("sagadfgsdg 12dfs3423");
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		fileManager.getCategories().get("Category 3").addSession(session);
 		
 		session = new Session();
-		session.setName("sdlkgjhlkasdf 123432");
+		session.setName("sdlkgjhlkasdf 123af432");
 		session.addSegment( new Segment(15, new BinauralBeat(500, 530)) );
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
