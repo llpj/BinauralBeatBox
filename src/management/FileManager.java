@@ -218,11 +218,18 @@ public class FileManager {
 	 * 
 	 * @throws IOException
 	 */
-	public Category readCategories() throws IOException {
+//	public Category readCategories() throws IOException {
+//		String categoriesString = readFileAsString("./src/resources/categories.xml");
+//		XStream xstream = new XStream(new DomDriver());
+//		Category categories = new Category("Empty");
+//		categories = (Category) xstream.fromXML(categoriesString);
+//		return categories;
+//	}
+	public HashMap<String, Category> readCategories() throws IOException {
 		String categoriesString = readFileAsString("./src/resources/categories.xml");
 		XStream xstream = new XStream(new DomDriver());
-		Category categories = new Category("Empty");
-		categories = (Category) xstream.fromXML(categoriesString);
+		HashMap<String, Category> categories = new HashMap<String, Category>();
+		categories = (HashMap<String, Category>) xstream.fromXML(categoriesString);
 		return categories;
 	}
 

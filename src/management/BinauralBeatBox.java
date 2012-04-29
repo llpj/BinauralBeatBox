@@ -13,6 +13,8 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -62,7 +64,13 @@ public class BinauralBeatBox{
 	
 	private BinauralBeatBox() {
 		fileManager	= new FileManager();
-		test_Sessions();
+		try {
+			fileManager.setCategories( (HashMap<String, Category>)fileManager.readCategories() );
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		test_Sessions();
 		
 		mf = new MainFrame();
 		currentCategory = null;
@@ -380,6 +388,7 @@ public class BinauralBeatBox{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				addNewSession();
+				fileManager.writeCategories( fileManager.getCategories() );
 			}
 		});
 
