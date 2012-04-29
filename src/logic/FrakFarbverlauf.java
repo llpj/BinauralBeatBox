@@ -86,47 +86,42 @@ public class FrakFarbverlauf extends Animation {
 			//Größe der Apfelmännchens
 			//Breite: Differenz von restart und reend --> neg = links / pos = rechts
 			// restart und reend sollten im Bereich von -10 bis 10 --> optimal bei -4 und -1 liegen
-			  double restart=-3;
-			  double reend=0;
+			double restart=-3;
+			double reend=0;
 			  
-			  //Höhe: Differenz von imstart und imend --> neg = tiefere position / pos = höhere position
-			  double imstart=-2;
-			  double imend=0;
-			//Alternative Startwerte zum Experimentieren   
-//			  double restart=-3; 
-//			  double reend=2;
-//			  double imstart=-2;
-//			  double imend=2;
-			 
-			  double restep,imstep,repart,impart;
-			  int x,y,farbe;
+			//Höhe: Differenz von imstart und imend --> neg = tiefere position / pos = höhere position
+			double imstart=-2;
+			double imend=0;
+			
+			double restep,imstep,repart,impart;
+			int x,y,farbe;
 			 /* Veränderung der Schrittweiten bei der Berechnung beeinflusst ebenfalls Größe und Position 
 			des Fraktals */
 			// Schrittweite für den Realteil 
-			  restep=(reend-restart)/(width/2); 
+			restep=(reend-restart)/(width/2); 
 			// Schrittweite für den Imaginärteil 
-			  imstep=(imend-imstart)/(height/2); 
+			imstep=(imend-imstart)/(height/2); 
 			// Zuweisung eines Startwertes für den 
 			// Imaginärteil in der Rekursion
-			  impart=imstart; 
+			impart=imstart; 
 			 
-			  for (y=0;y<height-1;y++)  
-			  {
-				  // Zuweisung eines Startwertes für den Realteil 
-				  repart=restart; 
-				  for (x=0;x<width-1;x++) 
-				  {
-					  //Berechnung der Entscheidungsvariable für die Farbe eines Bildpunktes  
-					  farbe=iteration(repart,impart);
-					  if(farbe==1000) 
-					  {
-						  //Farbe für das Apfelmännchen-Innere
-						  animationPnl.setPaint(createGradient(colors[posColor], colors[posColor+1]));
-						  //Malt den Hintergrund in Abhänigkeit von width und height
-						  animationPnl.drawLine(x,y,x+1,y);
-					  } 
-					  else 
-					  { 
+			for (y=0;y<height-1;y++)  
+			{
+				// Zuweisung eines Startwertes für den Realteil 
+				repart=restart; 
+				for (x=0;x<width-1;x++) 
+				{
+					//Berechnung der Entscheidungsvariable für die Farbe eines Bildpunktes  
+					farbe=iteration(repart,impart);
+					if(farbe==1000) 
+					{
+						//Farbe für das Apfelmännchen-Innere
+						animationPnlBuffer.setPaint(createGradient(colors[posColor], colors[posColor+1]));
+						//Malt den Hintergrund in Abhänigkeit von width und height
+						animationPnlBuffer.drawLine(x,y,x+1,y);
+					} 
+					else 
+					{ 
 			/* Hier wird die Farbe eines Bildpunktes vom eigentlichen Apfelmännchen explizit berechnet. 
 			Die 3 Angaben in der Color-Angabe sind RGB-Werte (Rot-Grün-Blau) und legen die jeweilige 
 			Intensität der Farbanteile fest. Nur der erste Parameter wird jeweils neu berechnet. Dabei 

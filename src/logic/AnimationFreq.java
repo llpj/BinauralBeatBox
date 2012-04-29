@@ -69,7 +69,7 @@ public class AnimationFreq extends Animation {
 					else y[i]+=q;
 				}
 				animationPnlBuffer.setColor(c[j]);
-				//TODO THREAD error beheben
+				//TODO THREAD error beheben --> kommt nur manchmal
 				animationPnlBuffer.setStroke(new BasicStroke(5.0f));
 				animationPnlBuffer.drawPolyline(x, y, x.length);
 			}
