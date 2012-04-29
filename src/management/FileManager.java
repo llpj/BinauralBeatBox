@@ -42,30 +42,9 @@ public class FileManager {
 	private HashMap<String, Category> categories;
 	private Session activeSession;
 	
-	//Xml
-	//creating xstream object
+
 	
-	public void writeCategories(){
-		XStream xstream = new XStream(new DomDriver());
-		xstream.alias("Session", Session.class);
-		String xml = xstream.toXML(categories);
-		//writes string in file
-		FileWriter writer;
-	    try {
-	      writer = new FileWriter("categories.xml");
-	      writer.write(xml);
-	      writer.close();
-	    } catch (IOException e) {
-	      // TODO Auto-generated catch block
-	      e.printStackTrace();
-		
-	    }
-	}
-	
-	public void writeCat(){
-		
-	}
-	
+
 
 	// Konstruktor
 	public FileManager() {
@@ -97,6 +76,52 @@ public class FileManager {
 	public void removeCategory(int index) {
 		this.categories.remove(index);
 	}
+	
+	/**
+	 * Writes a Session into an XML File into the ressources/session directory
+	 * @param session
+	 */
+	
+	public static void writeSession(Session session){
+		//creating xstream object
+		XStream xstream = new XStream(new DomDriver());
+		xstream.alias("Session", Session.class);
+		String xml = xstream.toXML(session);
+		//writes string in file
+		FileWriter writer;
+	    try {
+	      writer = new FileWriter("./src/resources/sessions/"+Session.getName()+"xml");				//get Session Name onClick? wie greife ich auf das lokale object zu?
+	      writer.write(xml);
+	      writer.close();
+	    } catch (IOException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+		
+	    }
+	}
+	
+	/**
+	 * writes the Hashmap with all categories and sessions into the ressources directory
+	 * @param categories
+	 */
+	
+	public static void writeCategories(HashMap<String, Category> categories){
+		//creating xstream object
+		XStream xstream = new XStream(new DomDriver());
+		String xml = xstream.toXML(categories);
+		//writes string in file
+		FileWriter writer;
+	    try {
+	      writer = new FileWriter("./src/resources/categories.xml");
+	      writer.write(xml);
+	      writer.close();
+	    } catch (IOException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+		
+	    }
+	}
+	
 
 	/**
 	 * Exportiert die aktuelle Session als WAVE-File. Die Samplerate betraegt
