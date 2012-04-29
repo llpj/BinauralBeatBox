@@ -18,7 +18,7 @@ public class Session implements Serializable {
 	private String Hintergrundklang; // path to background noise
 	private ArrayList<Segment> segments;
 	private int duration;
-	private String name;
+	private static String name;
 
 	// Konstruktoren
 	/**
@@ -140,7 +140,7 @@ public class Session implements Serializable {
 		this.name = name;
 	}
 	
-	public String getName() {
+	public static String getName() {
 		return name;
 	}
 	

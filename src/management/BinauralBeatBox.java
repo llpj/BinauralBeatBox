@@ -3,7 +3,7 @@ package management;
 import interfaces.Mood;
 
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.Component; 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -13,10 +13,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
-import java.io.IOException;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JProgressBar;
@@ -52,8 +49,7 @@ public class BinauralBeatBox{
 	// ist resize%2 == 0, so ist das animationPnl in maximiertem Zustand, wenn != 0 in minimiertem Zustand
 	private int					resize;
 	private int					animationCounter;
-	
-	private Session				activeSession;
+	private Category			currentCategory;
 	
 	/**
 	 * @param args
@@ -68,6 +64,7 @@ public class BinauralBeatBox{
 		test_Sessions();
 		
 		mf = new MainFrame();
+		currentCategory = null;
 		initListenerForPlayerPanel();
 		initListenerForSessionListPanel();
 		
@@ -77,7 +74,6 @@ public class BinauralBeatBox{
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 
 		animationCounter = 0;
-		activeSession = new Session();
 		isPause = false;
 		resize = 1;
 		sw = new SessionWiedergabe(fileManager.getActiveSession());
@@ -92,7 +88,7 @@ public class BinauralBeatBox{
 			            // Neuer size
 			            Dimension newSize = c.getSize();
 			            animation.setSize(newSize);
-			            //f�r resize notwendig
+			            //fuer resize notwendig
 			            resize++;
 			            animation.init();
 		            }
@@ -128,7 +124,7 @@ public class BinauralBeatBox{
 				rec.fill(rectangle);
 				if(!isPause) {
 					//Setzen des Animationscounters
-					if(animationCounter > 2)
+					if(animationCounter > 1)
 					{
 						animationCounter = 0;
 					}
@@ -137,7 +133,7 @@ public class BinauralBeatBox{
 						animationCounter++;
 					}
 					//Auswahl der Animation
-					//TODO freq und Mood �bergabe aus activeSession
+					//TODO freq und Mood uebergabe aus activeSession
 					if(animationCounter == 0)
 					{
 						int [] freq={-30,0,30};
@@ -184,30 +180,50 @@ public class BinauralBeatBox{
 						sw.continueSession();
 					}
 					
-					//animation
-					if(!isPause)
-					{
-						//uebermalt alte animation falls mal pause gedrueckt wurde
-						Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl().getGraphics();
-						Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf.getVirtualizationPnl().getSize().width, mf.getVirtualizationPnl().getSize().height);
-						rec.setColor(Color.GRAY);
-						rec.fill(rectangle);
-						//TODO Freq-�bergabe aus activeSession
-						int [] freq={-30,0,30};
-						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
-						if(resize%2 == 0)
+
+					//animation 
+						if(!isPause)
 						{
-							animation.init();
+							//Auswahl der Animation
+							//TODO freq und Mood �bergabe aus activeSession
+							if(animationCounter == 0)
+							{
+								int [] freq={-30,0,30};
+								animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
+								if(resize%2 == 0)
+								{
+									animation.init();
+								}
+							}
+							else if (animationCounter == 1)
+							{
+								//animationFrakFarbverlauf: false = nur farbverlauf
+								animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
+								if(resize%2 == 0)
+								{
+									animation.init();
+								}
+							}
+							else
+							{
+								//animationFrakFarbverlauf: true = frak,
+								animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),true);
+								if(resize%2 == 0)
+								{
+									animation.init();
+								}
+							}			
 						}
-					}
-					else
-					{
-						animation.pause(false);	
-					}
-				} else {
+						else
+						{
+							animation.pause(false);	
+						}
+				} 
+				else 
+				{
 					//PAUSE:
 					animation.pause(true);
-					isPause = false;
+					isPause = true;
 					sw.pauseSession();
 				}
 			}
@@ -218,6 +234,11 @@ public class BinauralBeatBox{
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:
 				animation.finish(true);
+				//uebermalt alte animation falls mal pause gedrueckt wurde
+				Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl().getGraphics();
+				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf.getVirtualizationPnl().getSize().width, mf.getVirtualizationPnl().getSize().height);
+				rec.setColor(Color.GRAY);
+				rec.fill(rectangle);
 				isPause = false;
 				sw.stopSession();
 			}
@@ -258,7 +279,11 @@ public class BinauralBeatBox{
 		pnl.addListenerToElement(SessionListPanel.REMOVE_BUTTON, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-
+				if( fileManager.getCategories().containsKey( currentCategory.toString() ) ){
+					fileManager.getCategories().get( currentCategory.toString() ).removeSession( fileManager.getActiveSession() );
+				}
+				setCategoryListModel();
+				setSessionListModel(currentCategory);
 			}
 		});
 		
@@ -267,14 +292,8 @@ public class BinauralBeatBox{
 			public void valueChanged(ListSelectionEvent e) {
 				Category c = (Category)((JList)e.getSource()).getSelectedValue();
 				if( ! e.getValueIsAdjusting() && c != null ) {
-					System.out.println(c);
-					
-					DefaultListModel sessionModel = new DefaultListModel();
-					mf.getSessionListPnl().setListModel(sessionModel, SessionListPanel.SESSION_LIST);
-
-					for(Session s : ((Category)((JList)e.getSource()).getSelectedValue()).getSessions() ) {
-						sessionModel.addElement( s );
-					}
+					currentCategory = c;
+					setSessionListModel( c );
 				}
 			}
 		});
@@ -296,16 +315,25 @@ public class BinauralBeatBox{
 		
 		System.out.println("asfsad");
 		
-		setListModel();
+		setCategoryListModel();
 	}
 	
-	private void setListModel() {
+	private void setCategoryListModel() {
 		System.out.println("asd");
 		DefaultListModel catModel = new DefaultListModel();
 		mf.getSessionListPnl().setListModel(catModel, SessionListPanel.CATEGORY_LIST);
 		
 		for(Category c : fileManager.getCategories().values() ) {
 			catModel.addElement( c );
+		}
+	}
+	
+	private void setSessionListModel(Category c) {
+		DefaultListModel sessionModel = new DefaultListModel();
+		mf.getSessionListPnl().setListModel(sessionModel, SessionListPanel.SESSION_LIST);
+
+		for(Session s : c.getSessions() ) {
+			sessionModel.addElement( s );
 		}
 	}
 
@@ -322,7 +350,7 @@ public class BinauralBeatBox{
 				} else {
 					fileManager.addCategory( new Category(catName, s) );
 				}
-				setListModel();
+				setCategoryListModel();
 			}
 		};
 		
