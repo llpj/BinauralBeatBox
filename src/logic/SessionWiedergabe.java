@@ -19,19 +19,20 @@ import javax.sound.sampled.*;
 
 public class SessionWiedergabe {
 	
-	private Session session;
-	private long cuDuration = 0;
-	float balc1;
-	float balc2;
-	private AudioFormat playme;
-	private byte sampleSize;
-	private byte[] totalBeat;
-	private File file;
-	private Clip clip1 = null;
-	private Clip clip2 = null;
-	private AudioInputStream ais = null;
-    private AudioInputStream ais2 = null;
-    private SourceDataLine sourceDataLine;
+	private Session 			session;
+	private long 				cuDuration = 0;
+	float 						balc1;
+	float						balc2;
+	private AudioFormat 		playme;
+	private byte 				sampleSize;
+	private byte[] 				totalBeat;
+	private File 				file;
+	private Clip 				clip1 = null;
+	private Clip 				clip2 = null;
+	private AudioInputStream 	ais = null;
+    private AudioInputStream 	ais2 = null;
+    private SourceDataLine 		sourceDataLine;
+	private SessionWiedergabe	sw;
     
     // Testvariablen
     static int i= 0;
@@ -60,7 +61,7 @@ public class SessionWiedergabe {
 	  */
 	public void playSession(int freqLinks, int  freqRechts) {
 		i++;
-		
+
 		int sampleRate = 44100;
 
 //		int duration = session.getDuration();
@@ -287,8 +288,7 @@ public class SessionWiedergabe {
 			//destPos += data.length;
 		}
 	}
-	
-	
+		
 	/**
 	 * 
 	 * private void changeVolumn(int volumn)
@@ -317,6 +317,4 @@ public class SessionWiedergabe {
 		gainControl1.setValue(balc1);
 		gainControl2.setValue(balc2);
 	}
-
-
 }
