@@ -89,7 +89,6 @@ public class ContainerTester {
 
 		FileManager fm = new FileManager();
 		fm.setActiveSession(exportableSession);
-		fm.writeCategories();
 		System.out.println("Erstelle Wavefile mit Sinustoenen...");
 		fm.exportAsWav();
 		System.out.println("Wavefile erfolgreich erstellt.");

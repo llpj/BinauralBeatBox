@@ -38,7 +38,7 @@ public class xmlwriter {
 		//writes string in file
 		FileWriter writer;
 	    try {
-	      writer = new FileWriter("./src/resources/sessions/"+Session.getName()+"xml");				//get Session Name onClick? wie greife ich auf das lokale object zu?
+	      writer = new FileWriter("./src/resources/sessions/"+session.getName()+"xml");				//get Session Name onClick? wie greife ich auf das lokale object zu?
 	      writer.write(xml);
 	      writer.close();
 	    } catch (IOException e) {
@@ -47,6 +47,11 @@ public class xmlwriter {
 		
 	    }
 	}
+	
+	/**
+	 * writes the Hashmap with all categories and sessions into the ressources directory
+	 * @param categories
+	 */
 	
 	public static void writeCategory(HashMap<String, Category> categories){
 		//creating xstream object
