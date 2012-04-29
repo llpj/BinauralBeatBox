@@ -65,6 +65,10 @@ public class Category {
 			System.out.println(e.getLocalizedMessage());
 		}
 	}
+	
+	public void removeSession(Session session) {
+		sessions.remove( session );
+	}
 
 	public int size() {
 		return this.sessions.size();

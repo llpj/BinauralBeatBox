@@ -52,6 +52,7 @@ public class BinauralBeatBox{
 	// ist resize%2 == 0, so ist das animationPnl in maximiertem Zustand, wenn != 0 in minimiertem Zustand
 	private int					resize;
 	private int					animationCounter;
+	private Category			currentCategory;
 	
 	private Session				activeSession;
 	
@@ -68,6 +69,7 @@ public class BinauralBeatBox{
 		test_Sessions();
 		
 		mf = new MainFrame();
+		currentCategory = null;
 		initListenerForPlayerPanel();
 		initListenerForSessionListPanel();
 		
@@ -258,7 +260,11 @@ public class BinauralBeatBox{
 		pnl.addListenerToElement(SessionListPanel.REMOVE_BUTTON, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-
+				if( fileManager.getCategories().containsKey( currentCategory.toString() ) ){
+					fileManager.getCategories().get( currentCategory.toString() ).removeSession( fileManager.getActiveSession() );
+				}
+				setCategoryListModel();
+				setSessionListModel(currentCategory);
 			}
 		});
 		
@@ -267,14 +273,8 @@ public class BinauralBeatBox{
 			public void valueChanged(ListSelectionEvent e) {
 				Category c = (Category)((JList)e.getSource()).getSelectedValue();
 				if( ! e.getValueIsAdjusting() && c != null ) {
-					System.out.println(c);
-					
-					DefaultListModel sessionModel = new DefaultListModel();
-					mf.getSessionListPnl().setListModel(sessionModel, SessionListPanel.SESSION_LIST);
-
-					for(Session s : ((Category)((JList)e.getSource()).getSelectedValue()).getSessions() ) {
-						sessionModel.addElement( s );
-					}
+					currentCategory = c;
+					setSessionListModel( c );
 				}
 			}
 		});
@@ -296,16 +296,25 @@ public class BinauralBeatBox{
 		
 		System.out.println("asfsad");
 		
-		setListModel();
+		setCategoryListModel();
 	}
 	
-	private void setListModel() {
+	private void setCategoryListModel() {
 		System.out.println("asd");
 		DefaultListModel catModel = new DefaultListModel();
 		mf.getSessionListPnl().setListModel(catModel, SessionListPanel.CATEGORY_LIST);
 		
 		for(Category c : fileManager.getCategories().values() ) {
 			catModel.addElement( c );
+		}
+	}
+	
+	private void setSessionListModel(Category c) {
+		DefaultListModel sessionModel = new DefaultListModel();
+		mf.getSessionListPnl().setListModel(sessionModel, SessionListPanel.SESSION_LIST);
+
+		for(Session s : c.getSessions() ) {
+			sessionModel.addElement( s );
 		}
 	}
 
@@ -322,7 +331,7 @@ public class BinauralBeatBox{
 				} else {
 					fileManager.addCategory( new Category(catName, s) );
 				}
-				setListModel();
+				setCategoryListModel();
 			}
 		};
 		
