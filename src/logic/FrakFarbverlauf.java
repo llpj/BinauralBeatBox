@@ -302,6 +302,7 @@ public class FrakFarbverlauf extends Animation {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean finish (boolean state) {
 		if(state == false)
@@ -314,6 +315,7 @@ public class FrakFarbverlauf extends Animation {
 			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, width, height);
 			animationPnl.setColor(Color.GRAY);
 			animationPnl.fill(rectangle);
+			animation.stop();
 			animation = null;
 			return true;
 		}

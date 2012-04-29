@@ -137,7 +137,7 @@ public class BinauralBeatBox{
 						animationCounter++;
 					}
 					//Auswahl der Animation
-					//TODO freq und Mood ï¿½bergabe aus activeSession
+					//TODO freq und Mood übergabe aus activeSession
 					if(animationCounter == 0)
 					{
 						int [] freq={-30,0,30};
@@ -184,27 +184,26 @@ public class BinauralBeatBox{
 						sw.continueSession();
 					}
 					
-					//animation
-					if(!isPause)
-					{
-						//uebermalt alte animation falls mal pause gedrueckt wurde
-						Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl().getGraphics();
-						Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf.getVirtualizationPnl().getSize().width, mf.getVirtualizationPnl().getSize().height);
-						rec.setColor(Color.GRAY);
-						rec.fill(rectangle);
-						//TODO Freq-ï¿½bergabe aus activeSession
-						int [] freq={-30,0,30};
-						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
-						if(resize%2 == 0)
+
+					//animation 
+						if(!isPause)
 						{
-							animation.init();
+							//TODO Freq-Übergabe aus activeSession
+							int [] freq={-30,0,30};
+							animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
+							if(resize%2 == 0)
+							{
+								animation.init();
+							}
 						}
-					}
-					else
-					{
-						animation.pause(false);	
-					}
-				} else {
+						else
+						{
+							animation.pause(false);	
+							isPause = true;
+						}
+				} 
+				else 
+				{
 					//PAUSE:
 					animation.pause(true);
 					isPause = false;
@@ -218,6 +217,11 @@ public class BinauralBeatBox{
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:
 				animation.finish(true);
+				//uebermalt alte animation falls mal pause gedrueckt wurde
+				Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl().getGraphics();
+				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf.getVirtualizationPnl().getSize().width, mf.getVirtualizationPnl().getSize().height);
+				rec.setColor(Color.GRAY);
+				rec.fill(rectangle);
 				isPause = false;
 				sw.stopSession();
 			}
