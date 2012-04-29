@@ -68,16 +68,16 @@ public class BinauralBeatBox{
 		test_Sessions();
 		
 		mf = new MainFrame();
+		initListenerForPlayerPanel();
+		initListenerForSessionListPanel();
+		initListenerForSessionEditor();
 		
 		Session session = new Session();
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		sw = new SessionWiedergabe(session);
-		
-		initListenerForPlayerPanel();
-		initListenerForSessionListPanel();
-		
+
 		animationCounter = 0;
 		activeSession = new Session();
 		isPause = false;
@@ -138,7 +138,7 @@ public class BinauralBeatBox{
 						animationCounter++;
 					}
 					//Auswahl der Animation
-					//TODO freq und Mood übergabe aus activeSession
+					//TODO freq und Mood ï¿½bergabe aus activeSession
 					if(animationCounter == 0)
 					{
 						int [] freq={-30,0,30};
@@ -193,7 +193,7 @@ public class BinauralBeatBox{
 						Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf.getVirtualizationPnl().getSize().width, mf.getVirtualizationPnl().getSize().height);
 						rec.setColor(Color.GRAY);
 						rec.fill(rectangle);
-						//TODO Freq-Übergabe aus activeSession
+						//TODO Freq-ï¿½bergabe aus activeSession
 						int [] freq={-30,0,30};
 						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
 						if(resize%2 == 0)
@@ -295,10 +295,13 @@ public class BinauralBeatBox{
 			}
 		});
 		
+		System.out.println("asfsad");
+		
 		setListModel();
 	}
 	
 	private void setListModel() {
+		System.out.println("asd");
 		DefaultListModel catModel = new DefaultListModel();
 		mf.getSessionListPnl().setListModel(catModel, SessionListPanel.CATEGORY_LIST);
 		
