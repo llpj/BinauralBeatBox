@@ -33,6 +33,7 @@ public class SessionWiedergabe {
     private AudioInputStream 	ais2 = null;
     private SourceDataLine 		sourceDataLine;
 	private SessionWiedergabe	sw;
+	private byte[]			 	data;
     
     // Testvariablen
     static int i= 0;
@@ -61,9 +62,9 @@ public class SessionWiedergabe {
 	  */
 	public void playSession(int freqLinks, int  freqRechts) {
 		i++;
-
-		int sampleRate = 44100;
-
+		System.out.println("Funktion aufgerufen: "+i);
+		
+		// Teste ob Session ergolgreich geladne wurde
 		try{
 			if(session!=null){
 				int duration = session.getDuration();
@@ -72,53 +73,12 @@ public class SessionWiedergabe {
 		}catch(Exception e){
 			System.err.println(e.getStackTrace());
 		}
-		
 
-//		// Loop ueber alle Segmente
-//		for (int curSeg = 0; curSeg < session.getNumerOfSegments(); curSeg++) {
-//
-//			// Hole das aktuelle Segment
-//			Segment activeSegment = session.getSegments().get(curSeg);
-//
-//			// Berechne die Anzahl Frames, die fuer das aktuelle Segment benoetigt wird
-//			numFrames = (long) (activeSegment.getDuration() * sampleRate);
-//
-//			// Initialisiere lokalen Frame-Zaehler
-//			long frameCounter = 0;
-//
-//			// Loop, bis alle Frames geschrieben wurden
-//			while (frameCounter < numFrames) {
-//				// Bestimme die maximal zu schreibende Anzahl an Frames
-//				long remaining = numFrames - frameCounter;
-//				int toWrite = (remaining > 100) ? 100 : (int) remaining;
-//
-//				// Fuelle den Buffer. Ein Ton pro Stereokanal
-//				for (int s = 0; s < toWrite; s++, frameCounter++) {
-//					// Hole die aktuelle Frequenz aus dem aktuellen Segment
-//					// TODO: Funktion, die die Frequenz ueber einen Zeitraum
-//					// anpasst, also slowdown oder wakeup
-//					int freq1 = activeSegment.getBeat().getFreq1_start();
-//					int freq2 = activeSegment.getBeat().getFreq2_start();
-//
-//					buffer[0][s] = Math.sin(2.0 * Math.PI * freq1
-//							* frameCounter / sampleRate);
-//					buffer[1][s] = Math.sin(2.0 * Math.PI * freq2
-//							* frameCounter / sampleRate);
-//
-//				}
-//			}
-//		}
-//		
-		
-		System.out.println("Funktion aufgerufen: "+i);
-		
-		System.out.println("Links: "+freqLinks+ " Rechts: "+freqRechts);
-		file = new File("./src/resources/wav/Victoria_Falls.wav");
 		AudioFormat playme = getAudioFormat();
-		byte[] data = getStereoSinusTone(freqLinks, freqRechts, playme, 10);
 		
+		// // Hintergrundmusik (clip1)
+		file = new File(session.getHintergrundklang());
 		
-		// Hintergrundmusik (clip1)
 		try {
 			clip1 = AudioSystem.getClip();
 			ais = AudioSystem.getAudioInputStream(file);
@@ -133,44 +93,63 @@ public class SessionWiedergabe {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-				
+		
+        clip1.loop(-1);
+		
 		// Frequenzton (clip2)
+		
 		try {
-		clip2 = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
-			clip2.open(playme, data, 0, data.length);
-			} catch (LineUnavailableException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			clip2 = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
+		} catch (LineUnavailableException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+			
+		// Loop ueber alle Segmente
+		for (int curSeg = 0; curSeg < session.getNumerOfSegments(); curSeg++) {
+
+			// Hole das aktuelle Segment
+			Segment activeSegment = session.getSegments().get(curSeg);
+			int freq1 = activeSegment.getBeat().getFreq1_start();
+			int freq2 = activeSegment.getBeat().getFreq2_start();
+			
+			System.out.println("Links: "+freq1+ " Rechts: "+freq2);
+			
+			// generiere Stereo Frequenz
+			byte[] data = getStereoSinusTone(freq1, freq2, playme, 10);			
+			
+			try {	
+				clip2.open(playme, data, 0, data.length);
+				} catch (LineUnavailableException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			System.out.println(session.getDuration());
+			
+			clip2.loop(activeSegment.getDuration());
+			//clip2.loop(5);
+
+			// Warteschleife
+			long j = 10000000;
+			for(int i = 0; i < j ; i++) {
+				System.out.println(i);
 			}
-	    
+			
+
+			clip2.stop();
+			clip2.close();
+
+			System.out.println("Loop Ende");
+			
+			// session.getSegments() gibt ne arraylist zurück
+			// und mit session.getSegments().get(segmentNumber) kriegst du ein segment
+			
+		}
 		
 		// Balance geandert (damit clip1 leiser ist als Clip2)
 		FloatControl gainControl = (FloatControl) clip1.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl.setValue(-20); //  veringert die Lautsärke um 10 Decibel
-	
-		// Abspielen (clip1 + clip2)
-	        
-        // Dauerschleife
-        clip1.loop(-1);
-        clip2.loop(-1);
-        if (clip2.isRunning()) {
-            try {
-            	//System.out.println("clip2 spielt "+ clip2.getMicrosecondPosition());
-                // Thread.sleep(50);
-            	
-            } 
-            catch (Exception ex) {}
-        }
-//		while (!clip2.isRunning()){
-//			System.out.println("Clip2 wird nicht abgespielt.");
-//		} else {
-//			System.out.println("Clip2 wird abgespielt.");
-//		}
+		gainControl.setValue(-20); //  veringert / erhoeht die Lautsärke um x Decibel
 
-             
-        // -------------- IDEE --------------- 
-        // http://www.java-forum.org/allgemeine-java-themen/14532-mehrere-audioclips-gleichzeitig-wiedergeben.html
-       
 
         System.out.println("Ende...");
     }
