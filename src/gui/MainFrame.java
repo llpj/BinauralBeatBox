@@ -61,12 +61,17 @@ public class MainFrame extends JFrame {
 		setLayout(gbl);
 
 		editorPnl			= new SessionEditorPanel();
-		editorPnl.addListenerToElement(SessionEditorPanel.CANCEL_BUTTON, new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					playerLayout();
-				}
-			});
+		ActionListener al = new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						playerLayout();
+					}
+				};
+
+		editorPnl.addListenerToElement(SessionEditorPanel.SAVE_BUTTON, al);
+		editorPnl.addListenerToElement(SessionEditorPanel.EXPORT_BUTTON, al);
+		editorPnl.addListenerToElement(SessionEditorPanel.CANCEL_BUTTON, al);
+		
 		
 		GuiFunctionLib.addGridBagContainer(this, gbl, editorPnl,	0, 0, 1, 1, 1, 1);
 		GuiFunctionLib.addGridBagContainer(this, gbl, playerPnl,	0, 1, 1, 1, 1, 0);
