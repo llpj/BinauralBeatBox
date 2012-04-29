@@ -97,14 +97,20 @@ public class SessionWiedergabe {
         // Dauerschleife
         clip1.loop(-1);
         clip2.loop(-1);
-        while(clip2.isRunning()) {
+        if (!clip2.isRunning()) {
             try {
-            	System.out.println("clip2 spielt "+ clip2.getMicrosecondPosition());
+            	System.out.println("Clip 2 wird nicht abgespielt");
+            	//System.out.println("clip2 spielt "+ clip2.getMicrosecondPosition());
                 // Thread.sleep(50);
             	
             } 
             catch (Exception ex) {}
         }
+//		while (!clip2.isRunning()){
+//			System.out.println("Clip2 wird nicht abgespielt.");
+//		} else {
+//			System.out.println("Clip2 wird abgespielt.");
+//		}
 
              
         // -------------- IDEE --------------- 
