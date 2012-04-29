@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import container.Session;
+
 public class SessionEditorPanel extends JPanel implements ActionListenerAddable {
 	
 	/**
@@ -62,5 +64,10 @@ public class SessionEditorPanel extends JPanel implements ActionListenerAddable 
 				cancelBtn.addActionListener( (ActionListener)el );
 				break;
 		}
+	}
+	
+	public void setDefaultValues(Session s) {
+		settingPnl.setDefaultValues(s);
+		segmentPnl.setDefaultValues(s);
 	}
 }

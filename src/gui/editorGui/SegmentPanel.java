@@ -16,6 +16,9 @@ import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.border.TitledBorder;
 
+import container.Segment;
+import container.Session;
+
 public class SegmentPanel extends JPanel {
 
 	/**
@@ -45,7 +48,6 @@ public class SegmentPanel extends JPanel {
 	private JPanel			rightFreqPnl;
 	private JSpinner		startRightFreq;
 	private JSpinner		targetRightFreq;
-	private JSlider			rightVolume;
 	
 	public SegmentPanel(String title) {
 		this.title = title;
@@ -63,8 +65,8 @@ public class SegmentPanel extends JPanel {
 		GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
 		
-		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Start Stimmug:"),		0, 0, 1, 1, 0, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Ziel Stimmug:"),		0, 1, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Start Stimmug:"),		0, 1, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Ziel Stimmug:"),		0, 2, 1, 1, 0, 0);
 		
 		GuiFunctionLib.addGridBagContainer(this, gbl, startMood,						1, 0, 1, 1, 2, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, targetModd,						1, 1, 1, 1, 2, 0);
@@ -87,9 +89,8 @@ public class SegmentPanel extends JPanel {
 		GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
 //																						x, y, w, h, wx,wy
-		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Start Frquenz:"),		0, 0, 1, 1, 0, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Ziel Frequenz"),		0, 1, 1, 1, 0, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Lautstärke:"),		0, 2, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Start Frquenz:"),		0, 0, 1, 1, 0, 0);
 
 		GuiFunctionLib.addGridBagContainer(this, gbl, leftFreqPnl,						1, 0, 1, 3, 1, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Länge des Segments"),	1, 3, 1, 1, 0, 0);
@@ -133,16 +134,10 @@ public class SegmentPanel extends JPanel {
 		leftFreqPnl.setLayout( new GridLayout(3, 1) );
 		
 		startLeftFreq	= new JSpinner();
-//		leftFreqPnl.add( new JLabel("Start Frquenz:") );
 		leftFreqPnl.add(startLeftFreq);
 		
 		targetLeftFreq	= new JSpinner();
-//		leftFreqPnl.add( new JLabel("Ziel Frequenz") );
 		leftFreqPnl.add(targetLeftFreq);
-		
-		leftVolume		= new JSlider();
-//		leftFreqPnl.add( new JLabel("Lautstärke:") );
-		leftFreqPnl.add(leftVolume);
 
 
 
@@ -151,15 +146,21 @@ public class SegmentPanel extends JPanel {
 		rightFreqPnl.setLayout( new GridLayout(3, 1) );
 		
 		startRightFreq	= new JSpinner();
-//		rightFreqPnl.add( new JLabel("Start Frquenz:") );
 		rightFreqPnl.add(startRightFreq);
 
 		targetRightFreq	= new JSpinner();
-//		rightFreqPnl.add( new JLabel("Ziel Frequenz") );
 		rightFreqPnl.add(targetRightFreq);
+	}
+	
+	public void setDefaultValues(Segment s) {
+//		startMood;
+//		targetModd;
+		durationSpin.setValue( s.getDuration() );		
 
-		rightVolume		= new JSlider();
-//		rightFreqPnl.add( new JLabel("Lautstärke:") );
-		rightFreqPnl.add(rightVolume);
+		startLeftFreq.setValue( s.getBeat().getFreq1_start() );
+		targetLeftFreq.setValue( s.getBeat().getFreq1_target() );
+
+		startRightFreq.setValue( s.getBeat().getFreq2_start() );
+		targetRightFreq.setValue( s.getBeat().getFreq2_target() );
 	}
 }

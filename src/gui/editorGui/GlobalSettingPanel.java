@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 
+import container.Session;
+
 public class GlobalSettingPanel extends JPanel {
 
 	/**
@@ -59,5 +61,8 @@ public class GlobalSettingPanel extends JPanel {
 		setLayout( new BorderLayout() );
 		add( p, BorderLayout.NORTH );
 	}
-	
+
+	public void setDefaultValues(Session s) {
+		sessionNameEdt.setText( s.getName() );
+	}
 }

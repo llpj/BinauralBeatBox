@@ -41,15 +41,7 @@ public class SessionListPanel extends JPanel implements ActionListenerAddable {
 	public static final int CATEGORY_LIST 	= 3;
 	public static final int SESSION_LIST 	= 4;
 //	public static final int OPEN_BTN	 	= 5;
-	
-//	public enum Elements {
-////		CATEGORY_LIST,
-////		SESSION_LIST,
-////		OPEN_BTN,
-//		ADD_BUTTON,
-//		EDIT_BUTTON,
-//		REMOVE_BUTTON
-//	}
+
 
 	public SessionListPanel() {
 		initMenuPnl();

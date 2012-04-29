@@ -176,7 +176,8 @@ public class BinauralBeatBox{
 		pnl.addListenerToElement(SessionListPanel.EDIT_BUTTON, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO gewählte Session bearbeiten
+				if( fileManager.getActiveSession() != null )
+					mf.getSessionEditorPnl().setDefaultValues( fileManager.getActiveSession() );
 			}
 		});
 		
