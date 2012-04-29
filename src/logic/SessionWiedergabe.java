@@ -21,7 +21,8 @@ public class SessionWiedergabe {
 	
 	private Session session;
 	private long cuDuration = 0;
-	private int balance;
+	float balc1;
+	float balc2;
 	private AudioFormat playme;
 	private byte sampleSize;
 	private byte[] totalBeat;
@@ -61,7 +62,16 @@ public class SessionWiedergabe {
 		i++;
 		
 		int sampleRate = 44100;
+
 //		int duration = session.getDuration();
+
+		try{
+			if(session!=null){
+				int duration = session.getDuration();
+			}else System.err.println("SessionWiedergabe: Keine Session vorhanden.");
+		}catch(Exception e){
+			System.err.println(e.getStackTrace());
+		}
 		
 		// Information von aktueller Sesison laden
 
@@ -135,10 +145,11 @@ public class SessionWiedergabe {
 				e1.printStackTrace();
 			}
 	    
-
 		
-		
-		
+		// Balance geandert (damit clip1 leiser ist als Clip2)
+		FloatControl gainControl = (FloatControl) clip1.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl.setValue(-20); //  veringert die Lautsärke um 10 Decibel
+	
 		// Abspielen (clip1 + clip2)
 	        
         // Dauerschleife
@@ -285,6 +296,27 @@ public class SessionWiedergabe {
 	 * @param volumn: floet, Wert um wieviel die Lautstärke veringert (Negativer Wert) oder erhöht werden soll)
 	 * zB -10.0f veringert die Lautsätke um -10 Decibel
 	 */
+	private void changeVolumn(float volumn) {
+		FloatControl gainControl = (FloatControl) clip1.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl.setValue(volumn); //  veringert / erhoeht die Lautsärke um x Decibel
+	}
+	
+	private void changeBalance(float balance, boolean c1c2) { //c1c2 bedeutet, wenn true dann setzen lautsärke von Clip1 um - balance/2 und clip2 um + balance/2, und andersrum	
+		float hier = balance /2;		
+		FloatControl gainControl1 = (FloatControl) clip1.getControl(FloatControl.Type.MASTER_GAIN);
+		FloatControl gainControl2 = (FloatControl) clip2.getControl(FloatControl.Type.MASTER_GAIN);
+				
+		if (c1c2) {
+			balc1 = balc1 - hier;
+			balc2 = balc2 + hier;	
+		} else {
+			balc1 = balc1 + hier;
+			balc2 = balc2 - hier;
+		}
+
+		gainControl1.setValue(balc1);
+		gainControl2.setValue(balc2);
+	}
 
 
 }
