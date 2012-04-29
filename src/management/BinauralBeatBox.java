@@ -63,11 +63,6 @@ public class BinauralBeatBox{
 	private BinauralBeatBox() {
 		fileManager	= new FileManager();
 		test_Sessions();
-
-		System.out.println("------Category1------");
-		for(Session s : fileManager.getCategories().get("Category 1").getSessions() ) {
-			System.out.println( s.getName() );
-		}
 		
 		mf = new MainFrame();
 		currentCategory = null;
@@ -363,9 +358,7 @@ public class BinauralBeatBox{
 		System.out.println(c);
 		DefaultListModel sessionModel = new DefaultListModel();
 
-		System.out.println("Geht der hier nicht rein? "+c.getName());
 		for(Session s : c.getSessions() ) {
-			System.out.println("Session: " + s.getName() );
 			sessionModel.addElement( s );
 		}
 		
@@ -427,11 +420,6 @@ public class BinauralBeatBox{
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		fileManager.getCategories().get("Category 1").addSession(session);
 
-		System.out.println("Category1");
-		for(Session s : fileManager.getCategories().get("Category 1").getSessions() ) {
-			System.out.println( s.getName() );
-		}
-
 		session = new Session();
 		session.setName("sdgsdgg");
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
@@ -453,11 +441,6 @@ public class BinauralBeatBox{
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		fileManager.getCategories().get("Category 2").addSession(session);
 		
-		System.out.println("Category2");
-		for(Session s : fileManager.getCategories().get("Category 2").getSessions() ) {
-			System.out.println( s.getName() );
-		}
-		
 		session = new Session();
 		session.setName("sdgsdgg 34sdf23");
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
@@ -478,16 +461,6 @@ public class BinauralBeatBox{
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		fileManager.getCategories().get("Category 3").addSession(session);
-		
-		System.out.println("Category3");
-		for(Session s : fileManager.getCategories().get("Category 3").getSessions() ) {
-			System.out.println( s.getName() );
-		}
-		
-		System.out.println("------Category1------");
-		for(Session s : fileManager.getCategories().get("Category 1").getSessions() ) {
-			System.out.println( s.getName() );
-		}
 	}
 		
 }
