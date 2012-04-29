@@ -152,7 +152,7 @@ public class FileManager {
 								* frameCounter / sampleRate);
 						buffer[1][s] = Math.sin(2.0 * Math.PI * freq2
 								* frameCounter / sampleRate);
-
+ 
 					}
 
 					// Schreibe den Buffer

@@ -1,5 +1,10 @@
 package logic;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
 import container.BinauralBeat;
 import container.Segment;
 import container.Session;
@@ -16,12 +21,17 @@ import javax.sound.sampled.*;
 public class SessionWiedergabe {
 	
 	private Session session;
-	private static long cuDuration = 0;
+	private long cuDuration = 0;
 	private int balance;
-	private static Clip c;
-	private static AudioFormat playme;
+	private AudioFormat playme;
 	private byte sampleSize;
 	private byte[] totalBeat;
+	private File file;
+	private Clip clip1 = null;
+	private Clip clip2 = null;
+	private AudioInputStream ais = null;
+    private AudioInputStream ais2 = null;
+    private SourceDataLine sourceDataLine;
     
     // Testvariablen
     static int i= 0;
@@ -30,11 +40,10 @@ public class SessionWiedergabe {
 	public SessionWiedergabe(Session session) {
 		this.session = session;
 		
-        playme = new AudioFormat(44100, 16, 2, true, true); // Parameter 1: Samplerate, 2: SampleBits, 3: Kanaele)
-		sampleSize = (byte) (playme.getSampleSizeInBits() / 8);
+		AudioFormat playme = getAudioFormat();
+		byte sampleSize = (byte) (playme.getSampleSizeInBits() / 8);
 		
 		totalBeat = new byte[(int) playme.getSampleRate() * sampleSize  * session.getDuration()];
-		
 		transition();
 	}
 	
@@ -47,44 +56,101 @@ public class SessionWiedergabe {
 	  * @param freDsuer: Frequennz Wiederholungen
 	  * 
 	  * mit Hilfe von c.getMicrosecondPosition() ist es moeglich, die aktuelle Zeit zu bestimmen
+	  * 
 	  */
-	public static void playSession(int freqLinks, int  freqRechts) {
+	public void playSession(int freqLinks, int  freqRechts) {
 		i++;
 		System.out.println("Funktion aufgerufen: "+i);
+		System.out.println("Links: "+freqLinks+ " Rechts: "+freqRechts);
+		file = new File("./src/resources/wav/amsel.wav");
+		AudioFormat playme = getAudioFormat();
+		byte[] data = getStereoSinusTone(freqLinks, freqRechts, playme);
+		
+		
+		// Hintergrundmusik (clip1)
+		try {
+			clip1 = AudioSystem.getClip();
+			ais = AudioSystem.getAudioInputStream(file);
+			clip1.open(ais);
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
+		// Frequenzton (clip2)
+		try {
+		clip2 = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
+			clip2.open(playme, data, 0, data.length);
+			} catch (LineUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	        
+		// Abspielen (clip1 + clip2)
+	        
+        // Dauerschleife
+        clip1.loop(-1);
+        clip2.loop(-1);
+        while(clip2.isRunning()) {
+            try {
+            	System.out.println("clip2 spielt "+ clip2.getMicrosecondPosition());
+                // Thread.sleep(50);
+            	
+            } 
+            catch (Exception ex) {}
+        }
 
-        byte[] data = getStereoSinusTone(freqLinks, freqRechts, playme,10);
-        
-        try {
-            c = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
-            c.open(playme, data, 0, data.length);
-            c.start();
-            //c.loop(Clip.LOOP_CONTINUOUSLY);
-            c.loop(1);
-            while(c.isRunning()) {
-                try {
-                	System.out.println("spielt "+ c.getMicrosecondPosition());
-                    // Thread.sleep(50);
-                	
-                } 
-                catch (Exception ex) {}
-            }
-        }
-        catch (LineUnavailableException ex) {
-        	ex.printStackTrace();         
-        }
+             
+        // -------------- IDEE --------------- 
+        // http://www.java-forum.org/allgemeine-java-themen/14532-mehrere-audioclips-gleichzeitig-wiedergeben.html
+       
+
         System.out.println("Ende...");
     }
 	
+	
 	//Berechnung, um die Frequenzen auf die Boxen zu verteilen
-	private static byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat playme, int duration) {
-		byte sampleSize = (byte) (playme.getSampleSizeInBits() / 8);
-        byte[] data = new byte[(int) playme.getSampleRate() * sampleSize  * duration];
-        double stepWidth = (2 * Math.PI) / playme.getSampleRate();
-        int sample_max_value = (int) Math.pow(2, playme.getSampleSizeInBits()) / 2 - 1;
+//	public byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat playme, int duration) {
+//        byte[] data = new byte[(int) playme.getSampleRate() * sampleSize  * duration];
+//        double stepWidth = (2 * Math.PI) / playme.getSampleRate();
+//        int sample_max_value = (int) Math.pow(2, playme.getSampleSizeInBits()) / 2 - 1;
+//        double x = 0;
+//        
+//    	for (int i = 0; i < data.length; i += sampleSize * 2) {
+//            
+//            int value = (int) (sample_max_value * Math.sin(frequency1 * x));
+//            for (int j = 0; j < sampleSize; j++) {
+//                byte sampleByte = (byte) ((value >> (8 * j)) & 0xff);
+//                data[i + j] = sampleByte;
+//            }
+//            
+//            value = (int) (sample_max_value * Math.sin(frequency2 * x));
+//            for (int j = 0; j < sampleSize; j++) {
+//                byte sampleByte = (byte) ((value >> (8 * j)) & 0xff);
+//                int index = i + j + sampleSize;
+//                data[index] = sampleByte;
+//            }
+//            
+//            
+//            x += stepWidth;
+//        }
+//        return data;
+//    }	
+	
+    public byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat af) {
+        byte sampleSize = (byte) (af.getSampleSizeInBits() / 8);
+        byte[] data = new byte[(int) af.getSampleRate() * sampleSize  * 2];
+        double stepWidth = (2 * Math.PI) / af.getSampleRate();
         double x = 0;
-        
-    	for (int i = 0; i < data.length; i += sampleSize * 2) {
+        for (int i = 0; i < data.length; i += sampleSize * 2) {
             
+        	int sample_max_value = (int) Math.pow(2, af.getSampleSizeInBits()) / 2 - 1;
             int value = (int) (sample_max_value * Math.sin(frequency1 * x));
             for (int j = 0; j < sampleSize; j++) {
                 byte sampleByte = (byte) ((value >> (8 * j)) & 0xff);
@@ -101,7 +167,25 @@ public class SessionWiedergabe {
             x += stepWidth;
         }
         return data;
-    }		   
+    }
+    
+    // Audioformat bestimmen (Durch eigene funktion werden Fehler behoben :)
+    private AudioFormat getAudioFormat() {
+        float sampleRate = 44100;
+        //8000,11025,16000,22050,44100
+        int sampleSizeInBits = 16;
+        //8,16
+        int channels = 1;
+        //1,2
+        boolean signed = true;
+        //true,false
+        boolean bigEndian = false;
+        //true,false
+        //return new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, 8000.0f, 8, 1, 1,
+        //8000.0f, false );
+
+        return new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
+    }
 
 	
 	/**
@@ -111,12 +195,12 @@ public class SessionWiedergabe {
 	  * steht, dann soll der Pause Knopf nix tun		
 	  * 
 	  */
-	public static void pauseSession() {
+	public void pauseSession() {
 		System.out.println("Pausenbuttontest");
-		cuDuration = c.getMicrosecondPosition();
+		cuDuration = clip1.getMicrosecondPosition();
 		System.out.println("Aktuelle Position: "+cuDuration);
-		if (c.isRunning()) {
-			c.stop();
+		if (clip1.isRunning()) {
+			clip1.stop();
 		} else {
 			System.out.println("Pause Fehler: Clip c wurde nicht abgespielt.");
 		}		
@@ -128,21 +212,24 @@ public class SessionWiedergabe {
 	 * setzt die Session Wiedergabe da fort, wo pause gedrueckt worden ist
 	 */
 	
-	public static long getCuDuration() {
+	public long getCuDuration() {
 		return cuDuration;
 	}
 	
-	public static void continueSession() {
+	public void continueSession() {
 		System.out.println("Continuebuttontest");
-		c.setMicrosecondPosition(cuDuration);
+		clip1.setMicrosecondPosition(cuDuration);
 		System.out.println("Continue at: "+cuDuration);
-		c.start();
+		clip1.start();
 	}	
 	
-	public static void stopSession() {
+	public void stopSession() {
 		System.out.println("Stopbuttontest");
-		if (c.isRunning()) {
-			c.stop();
+		if (clip1.isRunning()) {
+			clip1.stop();
+			clip2.stop();
+			clip1.close();
+			clip2.close();
 			cuDuration=0; // Session auf den Anfang setzen
 		}  	
 	}
@@ -155,9 +242,9 @@ public class SessionWiedergabe {
 
 		for( Segment s : session.getSegments() ) {
 			BinauralBeat b = s.getBeat();
-			byte[] data = getStereoSinusTone(b.getFreq1_start(), b.getFreq2_start(), playme, s.getDuration());
-			System.arraycopy(data, 0, totalBeat, destPos, data.length);
-			destPos += data.length;
+			//byte[] data = getStereoSinusTone(b.getFreq1_start(), b.getFreq2_start(), playme, s.getDuration());
+			//System.arraycopy(data, 0, totalBeat, destPos, data.length);
+			//destPos += data.length;
 		}
 	}
 	
@@ -170,7 +257,7 @@ public class SessionWiedergabe {
 	 * zB -10.0f veringert die Lautsätke um -10 Decibel
 	 */
 	private void changeVolumn(float volumn) {
-		FloatControl gainControl = (FloatControl) c.getControl(FloatControl.Type.MASTER_GAIN);
+		FloatControl gainControl = (FloatControl) clip1.getControl(FloatControl.Type.MASTER_GAIN);
 		gainControl.setValue(volumn); //  veringert die Lautsärke um 10 Decibel
 	}
 	

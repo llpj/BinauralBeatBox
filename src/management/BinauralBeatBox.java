@@ -1,12 +1,20 @@
 package management;
 
+import interfaces.Mood;
+
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JProgressBar;
@@ -34,7 +42,12 @@ public class BinauralBeatBox{
 	private Animation			animation;
 	
 	private FileManager			fileManager;
+	private SessionWiedergabe	sw;
 	
+	// �berpr�ft ob pause gedr�ckt wurde
+	private boolean				isPause;
+	// ist resize%2 == 0, so ist das animationPnl in maximiertem Zustand, wenn != 0 in minimiertem Zustand
+	private int					resize;
 	/**
 	 * @param args
 	 */
@@ -53,22 +66,27 @@ public class BinauralBeatBox{
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
 		session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
 		session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+		sw = new SessionWiedergabe(session);
 		
 		initListenerForPlayerPanel();
 		initListenerForSessionListPanel();
 		
-
-		// F�r Animation-resize
+		isPause = false;
+		resize = 1;
+		// Animation-resize
 		mf.addComponentListener(new ComponentListener() 
 		{  
-		        // Diese Methode wird aufgerufen, wenn JFrame wird max-/minimiert
+		        // Diese Methode wird aufgerufen, wenn JFrame max-/minimiert wird
 		        public void componentResized(ComponentEvent evt) {
 		            if (animation != null) {
 		            	Component c = (Component)evt.getSource();
 			            
-			            // Neue Gr��e
+			            // Neuer size
 			            Dimension newSize = c.getSize();
 			            animation.setSize(newSize);
+			            //f�r resize notwendig
+			            resize++;
+			            animation.init();
 		            }
 		        }
 				@Override
@@ -86,25 +104,40 @@ public class BinauralBeatBox{
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				if( ( (ToggleButton)ae.getSource() ).isSelected() ) {
-				
+					
 					//PLAY
-					if (SessionWiedergabe.getCuDuration()==0) {
-						SessionWiedergabe.playSession(500,1000);
+					if (sw.getCuDuration()==0) {
+							sw.playSession(100,130);
 					} else {
-						SessionWiedergabe.continueSession();
+						sw.continueSession();
 					}
 					
 						//animationfreq
-						int [] freq={-30,0,30};
-						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
+					if(!isPause)
+					{
+						//�bermalt alte animation falls mal pause gedr�ckt wurde
+						Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl().getGraphics();
+						Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf.getVirtualizationPnl().getSize().width, mf.getVirtualizationPnl().getSize().height);
+						rec.setColor(Color.GRAY);
+						rec.fill(rectangle);
+//						int [] freq={-30,0,30};
+//						animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
 						//animationFrakFarbverlauf: true = frak, false = nur farbverlauf
-//						animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
-//					
+						animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
+						if(resize%2 == 0)
+						{
+							animation.init();
+						}
+					}
+					else
+					{
+						animation.pause(false);	
+					}
 				} else {
 					//PAUSE:
-//					animation.pause(true);
-					animation.finish(true);
-					SessionWiedergabe.pauseSession();
+					animation.pause(true);
+					isPause = false;
+					sw.pauseSession();
 				}
 			}
 		});
@@ -114,7 +147,8 @@ public class BinauralBeatBox{
 			public void actionPerformed(ActionEvent arg0) {
 				//STOP:
 				animation.finish(true);
-				SessionWiedergabe.stopSession();
+				isPause = false;
+				sw.stopSession();
 			}
 		});
 		

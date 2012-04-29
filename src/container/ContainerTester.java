@@ -21,10 +21,12 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
+
+import logic.SessionWiedergabe;
 import management.FileManager;
 
 public class ContainerTester {
@@ -43,22 +45,21 @@ public class ContainerTester {
 		 * beat.getFreq2_start(), 1000);
 		 */
 
-		// Session session = new Session();
-		// session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
-		// session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
-		// session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
-		// Sessionww.faWiedergabe sessionWiedergabe = new
-		// SessionWiedergabe(session);
-		//
-		// sessionWiedergabe.playSession((int) beat.getFreq1_start(),(int)
-		// beat.getFreq2_start());
+//		 Session session = new Session();
+//		 session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+//		 session.addSegment( new Segment(40, new BinauralBeat(800, 830)) );
+//		 session.addSegment( new Segment(10, new BinauralBeat(500, 530)) );
+//		 SessionWiedergabe sw = new SessionWiedergabe(session);
+//		 sw.playSession((int) beat.getFreq1_start(),(int)
+//			 beat.getFreq2_start());
 
-		/*
-		 * for(int i = 0; i<1000; i++){
-		 * SessionWiedergabe.playSession((int)beat.getFreq1_start(),
-		 * (int)beat.getFreq2_start()); if(i%1000 == 0)
-		 * System.out.println("Spielt..."); } System.out.println("Fertig.");
-		 */
+
+		
+//		  for(int i = 0; i<1000; i++){
+//		  SessionWiedergabe.playSession((int)beat.getFreq1_start(),
+//		  (int)beat.getFreq2_start()); if(i%1000 == 0)
+//		  System.out.println("Spielt..."); } System.out.println("Fertig.");
+		 
 
 		// Test Categories
 		Segment segment1 = new Segment(10, beat);

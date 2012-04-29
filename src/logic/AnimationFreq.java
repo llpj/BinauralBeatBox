@@ -1,61 +1,76 @@
 /**
- * @author Fabian Schï¿½fer
+ * @author Fabian Schaefer
  *
  */
 
 package logic;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
 public class AnimationFreq extends Animation {
 /**
- * Klassenname wurde geï¿½ndert von Frequenz zu AnimationFreq - Grund: Somit ist der Bezeichner eindeutig
+ * Klassenname wurde geaendert von Frequenz zu AnimationFreq - Grund: Somit ist der Bezeichner eindeutig
  */
 	// ersetzt das Attribut String color, da weniger code und einfacheres Handle
 	Color colors[] = {Color.BLUE, Color.RED, Color.GREEN}; 
 	//Koordinaten auf der Sinuskurve
 	int[] x;
 	int[] y;
-	
+	BufferedImage img;
 	double xPos;
 	
-	public AnimationFreq (int [] freq, JPanel pnl)//TODO Session session
+	
+	public AnimationFreq (int [] freq, JPanel pnl)
 	{
 		super(pnl);
 		super.setFreq(freq);
-		width = pnl.getSize().width; // muss über Dimension gemacht werden, da Punkte und Pixel nicht vergleichbar wären
-		height = pnl.getSize().height;
 		y = new int[360]; 
 		x = new int[360];
-		//Initialisierung
-		init();//TODO session
+		//Initialisierung - checkSize muss im Konstruktor initialisiert sein !!! (wegen resizing)
+		setCheckResize(0);
+		init();
 	}
 
-	protected void sin ()
+	protected void sin (boolean set)
 	{	
-		// TODO in: freq
-		animationPnl = (Graphics2D) pnl.getGraphics();
+		Color[] c = new Color[3];
+		if(set == false)
+		{
+			c[0] = Color.GRAY;
+			c[1] = Color.GRAY;
+			c[2] = Color.GRAY;
+		}
+		else
+		{
+			c[0] = colors[0];
+			c[1] = colors[1];
+			c[2] = colors[2];
+		}
+		Graphics2D animationPnlBuffer;
+		animationPnlBuffer = (Graphics2D) img.createGraphics();
 		int nextPos = 0;
 		int i,j;
-		int q = height/3;
+		int q = height/5;
 		while(nextPos < width)
 		{
 			for( j = 0; j < 3; j++)
 			{
 				for( i = 0; i < y.length; i++ )
 				{
-					y[i]=(100-(int)Math.round(Math.sin(Math.toRadians(i)+xPos)*super.getFreq()[j]));
+					y[i]=(int) (q*2.5-(int)Math.round(Math.sin(Math.toRadians(i)+xPos)*super.getFreq()[j]));
 					x[i]=i;
-					if(j == 0)y[i]-=q-150;//20
-					else if (j==1) y[i]+=100;//30
-					else y[i]+=q+50;//80
+					if(j == 0)y[i]-=q;
+					else if (j==1) y[i]+=0;
+					else y[i]+=q;
 				}
-				animationPnl.setColor(colors[j]);
-				animationPnl.setStroke(new BasicStroke(5.0f));
-				animationPnl.drawPolyline(x, y, x.length);
+				animationPnlBuffer.setColor(c[j]);
+				animationPnlBuffer.setStroke(new BasicStroke(5.0f));
+				animationPnlBuffer.drawPolyline(x, y, x.length);
 			}
-			animationPnl.translate((int)x[x.length-1],0);
+			animationPnlBuffer.translate((int)x[x.length-1],0);
 			nextPos += (int)x[x.length-1];
 		}
 	}
@@ -69,51 +84,90 @@ public class AnimationFreq extends Animation {
 	public void init() {//TODO Session session
 		// TODO Auto-generated method stub
 		// Initialisierung der Werte
+		width = pnl.getSize().width; // muss über Dimension gemacht werden, da Punkte und Pixel nicht vergleichbar wären
+		height = pnl.getSize().height;
+		animationPnl = (Graphics2D) pnl.getGraphics();
+		img = animationPnl.getDeviceConfiguration().createCompatibleImage(width, height, Transparency.BITMASK);
 		xPos = 0;
-		pnl.setDoubleBuffered(true);
+		setCheckResize(getCheckResize() + 1);
+		if(getCheckResize()%2 == 0)
+		{
+			tempo = 0;
+		}
+		else
+		{
+			tempo = 30;
+		}
 		super.start();
 	}
 
 	@Override
-	public boolean pause (boolean state) {
-		// TODO Auto-generated method stub
-		if(state == false)return false;
+	public void run() {
+	Thread thisThread = Thread.currentThread();
+	while (animation == thisThread) 
+		{
+			synchronized(thisThread)
+			{	while(pause)
+				{  
+					try 
+					{
+		                  thisThread.wait();
+		            } 
+					catch (Exception e) 
+					{
+		                  e.printStackTrace();
+		            }
+				}
+			}
+			xPos += 0.1f;
+			sin(true);
+			animationPnl.drawImage(img, null, 0, 0);
+			sin(false);
+
+			try 
+			{
+				Thread.sleep (tempo);	
+			}	
+			catch (InterruptedException e) 
+			{
+				//nichts
+			}				
+        }
+	}
+	
+	@Override
+	public void pause (boolean state) {
+		if(state == false) pause = false;
 		else 	
 		{
-			try {
-				Thread.sleep(0); //TODO pause
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return true;
+			pause = true;
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean finish (boolean state) {
-		// TODO Auto-generated method stub
 		if(state == false)
 		{
 			return false;
 		}
 		else 	
 		{
-			animation.stop();
-			if(animation != null)
-			{
-				animation = null;
-			}
+			//Animation wird übermalt
+			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, width, height);
+			animationPnl.setColor(Color.GRAY);
+			animationPnl.fill(rectangle);
+			animation = null;
 			return true;
 		}
 		
 	}
-
+	
 	@Override
-	public void setHandle (Graphics2D animationPnl) {
+	public void setHandle(Graphics2D animationpnl) {
 		// TODO Auto-generated method stub
+		
 	}
+	
 	//getter & setter
 	public Color [] getColor ()
 	{
@@ -124,26 +178,5 @@ public class AnimationFreq extends Animation {
 	{
 		this.colors = color;
 	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-	Thread thisThread = Thread.currentThread();
-	 // Gibt 0 zurück --> soll für das Eingrenzen der Animation benutzt werden
-	while (animation == thisThread) 
-		{
-			xPos += 0.1f;
-			sin();
-			try 
-			{
-				Thread.sleep (40);	
-			}
-			catch (InterruptedException e) 
-			{
-				//nichts
-			}
-			pnl.repaint();
-        }
-
-	}
+	
 }
