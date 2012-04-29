@@ -333,40 +333,6 @@
           <duration>0</duration>
           <name>Session 3</name>
         </container.Session>
-        <container.Session>
-          <Hintergrundklang>./src/resources/wav/amsel.wav</Hintergrundklang>
-          <segments>
-            <container.Segment>
-              <duration>10</duration>
-              <beat>
-                <freq1__start>500</freq1__start>
-                <freq2__start>530</freq2__start>
-                <freq1__target>500</freq1__target>
-                <freq2__target>530</freq2__target>
-              </beat>
-            </container.Segment>
-            <container.Segment>
-              <duration>40</duration>
-              <beat>
-                <freq1__start>800</freq1__start>
-                <freq2__start>830</freq2__start>
-                <freq1__target>800</freq1__target>
-                <freq2__target>830</freq2__target>
-              </beat>
-            </container.Segment>
-            <container.Segment>
-              <duration>10</duration>
-              <beat>
-                <freq1__start>500</freq1__start>
-                <freq2__start>530</freq2__start>
-                <freq1__target>500</freq1__target>
-                <freq2__target>530</freq2__target>
-              </beat>
-            </container.Segment>
-          </segments>
-          <duration>0</duration>
-          <name>Session 2</name>
-        </container.Session>
       </sessions>
     </container.Category>
   </entry>
