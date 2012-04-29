@@ -18,14 +18,25 @@ public class xmlwriter {
 		Segment steadySegment = new Segment(60, 155, 160);
 		Session exportableSession = new Session(steadySegment);
 		
+		writeSession(exportableSession);
+	    
+	}
+	
+	
+	/**
+	 * Writes a Session into an XML File into the ressources/session directory
+	 * @param session
+	 */
+	
+	public static void writeSession(Session session){
 		//creating xstream object
 		XStream xstream = new XStream(new DomDriver());
 		xstream.alias("Session", Session.class);
-		String xml = xstream.toXML(exportableSession);
+		String xml = xstream.toXML(session);
 		//writes string in file
 		FileWriter writer;
 	    try {
-	      writer = new FileWriter();
+	      writer = new FileWriter("./src/resources/sessions/session.xml");				//get Session Name onClick?
 	      writer.write(xml);
 	      writer.close();
 	    } catch (IOException e) {
@@ -33,10 +44,5 @@ public class xmlwriter {
 	      e.printStackTrace();
 		
 	    }
-	    
-	    
-	    
-	    
-	    
 	}
 }

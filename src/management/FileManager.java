@@ -45,7 +45,7 @@ public class FileManager {
 	//Xml
 	//creating xstream object
 	
-	public void xmlsave(){
+	public void writeCategories(){
 		XStream xstream = new XStream(new DomDriver());
 		xstream.alias("Session", Session.class);
 		String xml = xstream.toXML(categories);
@@ -62,7 +62,9 @@ public class FileManager {
 	    }
 	}
 	
-	
+	public void writeCat(){
+		
+	}
 	
 
 	// Konstruktor
