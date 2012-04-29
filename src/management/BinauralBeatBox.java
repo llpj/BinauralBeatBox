@@ -3,7 +3,7 @@ package management;
 import interfaces.Mood;
 
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.Component; 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -13,10 +13,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
-import java.io.IOException;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JProgressBar;
@@ -52,9 +49,7 @@ public class BinauralBeatBox{
 	// ist resize%2 == 0, so ist das animationPnl in maximiertem Zustand, wenn != 0 in minimiertem Zustand
 	private int					resize;
 	private int					animationCounter;
-	
-	private Session				activeSession;
-	
+
 	/**
 	 * @param args
 	 */
@@ -78,7 +73,6 @@ public class BinauralBeatBox{
 		sw = new SessionWiedergabe(session);
 
 		animationCounter = 0;
-		activeSession = new Session();
 		isPause = false;
 		resize = 1;
 		// Animation-resize
@@ -92,7 +86,7 @@ public class BinauralBeatBox{
 			            // Neuer size
 			            Dimension newSize = c.getSize();
 			            animation.setSize(newSize);
-			            //fï¿½r resize notwendig
+			            //fuer resize notwendig
 			            resize++;
 			            animation.init();
 		            }
@@ -128,7 +122,7 @@ public class BinauralBeatBox{
 				rec.fill(rectangle);
 				if(!isPause) {
 					//Setzen des Animationscounters
-					if(animationCounter > 2)
+					if(animationCounter > 1)
 					{
 						animationCounter = 0;
 					}
@@ -137,7 +131,7 @@ public class BinauralBeatBox{
 						animationCounter++;
 					}
 					//Auswahl der Animation
-					//TODO freq und Mood übergabe aus activeSession
+					//TODO freq und Mood uebergabe aus activeSession
 					if(animationCounter == 0)
 					{
 						int [] freq={-30,0,30};
@@ -188,25 +182,46 @@ public class BinauralBeatBox{
 					//animation 
 						if(!isPause)
 						{
-							//TODO Freq-Übergabe aus activeSession
-							int [] freq={-30,0,30};
-							animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
-							if(resize%2 == 0)
+							//Auswahl der Animation
+							//TODO freq und Mood übergabe aus activeSession
+							if(animationCounter == 0)
 							{
-								animation.init();
+								int [] freq={-30,0,30};
+								animation = new AnimationFreq (freq, mf.getVirtualizationPnl());
+								if(resize%2 == 0)
+								{
+									animation.init();
+								}
 							}
+							else if (animationCounter == 1)
+							{
+								//animationFrakFarbverlauf: false = nur farbverlauf
+								animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),false);
+								if(resize%2 == 0)
+								{
+									animation.init();
+								}
+							}
+							else
+							{
+								//animationFrakFarbverlauf: true = frak,
+								animation = new FrakFarbverlauf (Mood.THETA,mf.getVirtualizationPnl(),true);
+								if(resize%2 == 0)
+								{
+									animation.init();
+								}
+							}			
 						}
 						else
 						{
 							animation.pause(false);	
-							isPause = true;
 						}
 				} 
 				else 
 				{
 					//PAUSE:
 					animation.pause(true);
-					isPause = false;
+					isPause = true;
 					sw.pauseSession();
 				}
 			}

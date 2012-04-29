@@ -1,6 +1,6 @@
 /**
- * @author Fabian Schäfer
- *
+ * @author Fabian Schaefer
+ * Animation zur Darstellung eines Farbverlaufs und diverser Fraktal 
  */
 
 package logic;
@@ -18,7 +18,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-
+//TODO Fraktale Animation
 
 public class FrakFarbverlauf extends Animation {
 	//Konstanten für Farbverlaufwechsel
@@ -42,7 +42,7 @@ public class FrakFarbverlauf extends Animation {
     	this.setMood(mood);
     	this.setFraktal(isFraktal);
     	//Initialisierung - checkSize und posColor müssen im Konstruktor initialisiert sein !!! (wegen resizing)
-    	setCheckResize(0);
+    	checkResize = 0;
     	posColor = (int) (Math.random()*3);
     	init();
     }
@@ -207,7 +207,7 @@ public class FrakFarbverlauf extends Animation {
 					{  
 						try 
 						{
-							thisThread.wait();
+							thisThread.wait(90);
 		            	} 
 						catch (Exception e) 
 						{
@@ -220,7 +220,7 @@ public class FrakFarbverlauf extends Animation {
 //				bodySize = (int) (Math.random()*100+1);
 				createBody();
 				gradPos += h;
-				if(gradPos > 1000)
+				if(gradPos > 750)
 				{
 					h = -3.1f;
 					posColor = (int) (Math.random()*3);
@@ -281,8 +281,8 @@ public class FrakFarbverlauf extends Animation {
 		height = pnl.getSize().height;
 		animationPnl = (Graphics2D) pnl.getGraphics();
 		img = animationPnl.getDeviceConfiguration().createCompatibleImage(width, height, Transparency.BITMASK);
-		setCheckResize(getCheckResize() + 1);
-		if(getCheckResize()%2 == 0)
+		checkResize++;
+		if(checkResize%2 == 0)
 		{
 			tempo = 10;
 		}
@@ -316,17 +316,11 @@ public class FrakFarbverlauf extends Animation {
 			animationPnl.setColor(Color.GRAY);
 			animationPnl.fill(rectangle);
 			animation.stop();
-			animation = null;
 			return true;
 		}
 		
 	}
 
-	@Override
-	public void setHandle(Graphics2D animationpnl) {
-		// TODO Auto-generated method stub
-
-	}
 	//getter & setter
 	 public void setTempo(int tempo) {
 			this.tempo = tempo;

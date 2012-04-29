@@ -17,6 +17,7 @@ import java.util.HashMap;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver; 
+
 /* (Currently) unused Imports 
  import javax.sound.sampled.AudioFileFormat;
  import javax.sound.sampled.AudioInputStream;
@@ -82,7 +83,7 @@ public class FileManager {
 	 * @param session
 	 */
 	
-	public static void writeSession(Session session){
+	public  void writeSession(Session session){
 		//creating xstream object
 		XStream xstream = new XStream(new DomDriver());
 		xstream.alias("Session", Session.class);

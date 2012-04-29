@@ -1,6 +1,6 @@
 /**
  * @author Fabian Schaefer
- *
+ * Animation zur Darstellung der Sinuskurven des Binauralen Beats
  */
 
 package logic;
@@ -19,10 +19,12 @@ public class AnimationFreq extends Animation {
 	//Koordinaten auf der Sinuskurve
 	int[] x;
 	int[] y;
+	//Zur Zwischenspeicherung der Sinuskurven - verhindern von Flackern
 	BufferedImage img;
+	//x-Achsen Verschiebung der Sinuskurven
 	double xPos;
 	
-	
+	//Konstruktor
 	public AnimationFreq (int [] freq, JPanel pnl)
 	{
 		super(pnl);
@@ -30,7 +32,7 @@ public class AnimationFreq extends Animation {
 		y = new int[360]; 
 		x = new int[360];
 		//Initialisierung - checkSize muss im Konstruktor initialisiert sein !!! (wegen resizing)
-		setCheckResize(0);
+		checkResize = 0;
 		init();
 	}
 
@@ -67,6 +69,7 @@ public class AnimationFreq extends Animation {
 					else y[i]+=q;
 				}
 				animationPnlBuffer.setColor(c[j]);
+				//TODO THREAD error beheben
 				animationPnlBuffer.setStroke(new BasicStroke(5.0f));
 				animationPnlBuffer.drawPolyline(x, y, x.length);
 			}
@@ -84,13 +87,14 @@ public class AnimationFreq extends Animation {
 	public void init() {//TODO Session session
 		// TODO Auto-generated method stub
 		// Initialisierung der Werte
-		width = pnl.getSize().width; // muss über Dimension gemacht werden, da Punkte und Pixel nicht vergleichbar wären
+		width = pnl.getSize().width; // muss ueber Dimension gemacht werden, da Punkte und Pixel nicht vergleichbar waeren
 		height = pnl.getSize().height;
 		animationPnl = (Graphics2D) pnl.getGraphics();
 		img = animationPnl.getDeviceConfiguration().createCompatibleImage(width, height, Transparency.BITMASK);
 		xPos = 0;
-		setCheckResize(getCheckResize() + 1);
-		if(getCheckResize()%2 == 0)
+		checkResize++;
+		//Anpassung des Animationstempos bei Resizing
+		if(checkResize%2 == 0)
 		{
 			tempo = 0;
 		}
@@ -111,7 +115,7 @@ public class AnimationFreq extends Animation {
 				{  
 					try 
 					{
-		                  thisThread.wait();
+		                  thisThread.wait(90);
 		            } 
 					catch (Exception e) 
 					{
@@ -153,23 +157,16 @@ public class AnimationFreq extends Animation {
 		}
 		else 	
 		{
-			//Animation wird übermalt
+			//Animation wird uebermalt und gestoppt
 			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, width, height);
 			animationPnl.setColor(Color.GRAY);
 			animationPnl.fill(rectangle);
 			animation.stop();
-			animation = null;
 			return true;
 		}
 		
 	}
-	
-	@Override
-	public void setHandle(Graphics2D animationpnl) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+
 	//getter & setter
 	public Color [] getColor ()
 	{
