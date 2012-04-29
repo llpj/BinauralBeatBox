@@ -1,9 +1,8 @@
 package logic;
 
-import java.io.ByteArrayInputStream;
+
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import container.BinauralBeat;
 import container.Segment;
@@ -22,7 +21,8 @@ public class SessionWiedergabe {
 	
 	private Session session;
 	private long cuDuration = 0;
-	private int balance;
+	float balc1;
+	float balc2;
 	private AudioFormat playme;
 	private byte sampleSize;
 	private byte[] totalBeat;
@@ -41,10 +41,10 @@ public class SessionWiedergabe {
 		this.session = session;
 		
 		AudioFormat playme = getAudioFormat();
-		byte sampleSize = (byte) (playme.getSampleSizeInBits() / 8);
+		//byte sampleSize = (byte) (playme.getSampleSizeInBits() / 8);
 		
-		totalBeat = new byte[(int) playme.getSampleRate() * sampleSize  * session.getDuration()];
-		transition();
+		//totalBeat = new byte[(int) playme.getSampleRate() * sampleSize  * session.getDuration()];
+		//transition();
 	}
 	
 	
@@ -60,9 +60,62 @@ public class SessionWiedergabe {
 	  */
 	public void playSession(int freqLinks, int  freqRechts) {
 		i++;
+		
+		int sampleRate = 44100;
+
+//		int duration = session.getDuration();
+
+		try{
+			if(session!=null){
+				int duration = session.getDuration();
+			}else System.err.println("SessionWiedergabe: Keine Session vorhanden.");
+		}catch(Exception e){
+			System.err.println(e.getStackTrace());
+		}
+		
+		// Information von aktueller Sesison laden
+
+//
+//		// Loop ueber alle Segmente
+//		for (int curSeg = 0; curSeg < session.getNumerOfSegments(); curSeg++) {
+//
+//			// Hole das aktuelle Segment
+//			Segment activeSegment = session.getSegments().get(curSeg);
+//
+//			// Berechne die Anzahl Frames, die fuer das aktuelle Segment benoetigt wird
+//			numFrames = (long) (activeSegment.getDuration() * sampleRate);
+//
+//			// Initialisiere lokalen Frame-Zaehler
+//			long frameCounter = 0;
+//
+//			// Loop, bis alle Frames geschrieben wurden
+//			while (frameCounter < numFrames) {
+//				// Bestimme die maximal zu schreibende Anzahl an Frames
+//				long remaining = numFrames - frameCounter;
+//				int toWrite = (remaining > 100) ? 100 : (int) remaining;
+//
+//				// Fuelle den Buffer. Ein Ton pro Stereokanal
+//				for (int s = 0; s < toWrite; s++, frameCounter++) {
+//					// Hole die aktuelle Frequenz aus dem aktuellen Segment
+//					// TODO: Funktion, die die Frequenz ueber einen Zeitraum
+//					// anpasst, also slowdown oder wakeup
+//					int freq1 = activeSegment.getBeat().getFreq1_start();
+//					int freq2 = activeSegment.getBeat().getFreq2_start();
+//
+//					buffer[0][s] = Math.sin(2.0 * Math.PI * freq1
+//							* frameCounter / sampleRate);
+//					buffer[1][s] = Math.sin(2.0 * Math.PI * freq2
+//							* frameCounter / sampleRate);
+//
+//				}
+//			}
+//		}
+//		
+		
 		System.out.println("Funktion aufgerufen: "+i);
+		
 		System.out.println("Links: "+freqLinks+ " Rechts: "+freqRechts);
-		file = new File("./src/resources/wav/amsel.wav");
+		file = new File("./src/resources/wav/Victoria_Falls.wav");
 		AudioFormat playme = getAudioFormat();
 		byte[] data = getStereoSinusTone(freqLinks, freqRechts, playme, 10);
 		
@@ -91,15 +144,19 @@ public class SessionWiedergabe {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-	        
+	    
+		
+		// Balance geandert (damit clip1 leiser ist als Clip2)
+		FloatControl gainControl = (FloatControl) clip1.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl.setValue(-20); //  veringert die Lautsärke um 10 Decibel
+	
 		// Abspielen (clip1 + clip2)
 	        
         // Dauerschleife
         clip1.loop(-1);
         clip2.loop(-1);
-        if (!clip2.isRunning()) {
+        if (clip2.isRunning()) {
             try {
-            	System.out.println("Clip 2 wird nicht abgespielt");
             	//System.out.println("clip2 spielt "+ clip2.getMicrosecondPosition());
                 // Thread.sleep(50);
             	
@@ -119,39 +176,11 @@ public class SessionWiedergabe {
 
         System.out.println("Ende...");
     }
-	
-	
+
 	//Berechnung, um die Frequenzen auf die Boxen zu verteilen
-//	public byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat playme, int duration) {
-//        byte[] data = new byte[(int) playme.getSampleRate() * sampleSize  * duration];
-//        double stepWidth = (2 * Math.PI) / playme.getSampleRate();
-//        int sample_max_value = (int) Math.pow(2, playme.getSampleSizeInBits()) / 2 - 1;
-//        double x = 0;
-//        
-//    	for (int i = 0; i < data.length; i += sampleSize * 2) {
-//            
-//            int value = (int) (sample_max_value * Math.sin(frequency1 * x));
-//            for (int j = 0; j < sampleSize; j++) {
-//                byte sampleByte = (byte) ((value >> (8 * j)) & 0xff);
-//                data[i + j] = sampleByte;
-//            }
-//            
-//            value = (int) (sample_max_value * Math.sin(frequency2 * x));
-//            for (int j = 0; j < sampleSize; j++) {
-//                byte sampleByte = (byte) ((value >> (8 * j)) & 0xff);
-//                int index = i + j + sampleSize;
-//                data[index] = sampleByte;
-//            }
-//            
-//            
-//            x += stepWidth;
-//        }
-//        return data;
-//    }	
-	
-    public byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat af, int duration) {
-        //byte sampleSize = (byte) (af.getSampleSizeInBits() / 8);
-        byte[] data = new byte[(int) af.getSampleRate() * sampleSize  * duration];
+    public byte[] getStereoSinusTone(int frequency1, int frequency2, AudioFormat af, double duration) {
+        byte sampleSize = (byte) (af.getSampleSizeInBits() / 8);
+        byte[] data = new byte[(int) ((int) af.getSampleRate() * sampleSize  * duration)];
         double stepWidth = (2 * Math.PI) / af.getSampleRate();
         double x = 0;
         for (int i = 0; i < data.length; i += sampleSize * 2) {
@@ -269,11 +298,25 @@ public class SessionWiedergabe {
 	 */
 	private void changeVolumn(float volumn) {
 		FloatControl gainControl = (FloatControl) clip1.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl.setValue(volumn); //  veringert die Lautsärke um 10 Decibel
+		gainControl.setValue(volumn); //  veringert / erhoeht die Lautsärke um x Decibel
 	}
 	
-	private void changeBalance(int balance) {
-		this.balance = balance;
+	private void changeBalance(float balance, boolean c1c2) { //c1c2 bedeutet, wenn true dann setzen lautsärke von Clip1 um - balance/2 und clip2 um + balance/2, und andersrum	
+		float hier = balance /2;		
+		FloatControl gainControl1 = (FloatControl) clip1.getControl(FloatControl.Type.MASTER_GAIN);
+		FloatControl gainControl2 = (FloatControl) clip2.getControl(FloatControl.Type.MASTER_GAIN);
+				
+		if (c1c2) {
+			balc1 = balc1 - hier;
+			balc2 = balc2 + hier;	
+		} else {
+			balc1 = balc1 + hier;
+			balc2 = balc2 - hier;
+		}
+
+		gainControl1.setValue(balc1);
+		gainControl2.setValue(balc2);
 	}
+
 
 }
