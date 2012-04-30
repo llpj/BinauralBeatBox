@@ -334,7 +334,6 @@ public class BinauralBeatBox{
 					// TODO eventuelle aktuelle Session stoppen
 					// TODO Infos in GUI darstellen (duration in timeSlider)
 					mf.getPlayerPanel().setDuration( s.getDuration() );
-					System.out.println(s);
 					fileManager.setActiveSession(s);
 				}
 			}
@@ -372,7 +371,6 @@ public class BinauralBeatBox{
 	 * @param c	Kategorie der Session, die im ListModel angezeigt werden sollen
 	 */
 	private void setSessionListModel(Category c) {
-		System.out.println(c);
 		DefaultListModel sessionModel = new DefaultListModel();
 
 		for(Session s : c.getSessions() ) {
