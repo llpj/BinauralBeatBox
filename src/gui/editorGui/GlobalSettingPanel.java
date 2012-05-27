@@ -33,6 +33,7 @@ public class GlobalSettingPanel extends JPanel {
 	private JTextField sessionNameEdt;
 	private JComboBox categoryList;
 	private JComboBox soundList; // Liste fuer die Hintergrundgeraesche
+	private Map<String,File> soundMap; // speichert alle Hintergrundgeraesche als Map<Filename (String), File>
 
 	public static final int CATEGORY_LIST = 0;
 	public static final int SOUND_LIST = 1;
@@ -102,7 +103,7 @@ public class GlobalSettingPanel extends JPanel {
 	 */
 	public Session getValues(Session s) {
 		s.setName(sessionNameEdt.getText());
-		// s.setHintergrundklang( );
+		s.setHintergrundklang( soundMap.get( soundList.getSelectedItem() ).toString() );
 		return s;
 	}
 
@@ -121,6 +122,7 @@ public class GlobalSettingPanel extends JPanel {
 				categoryList.addItem(c);
 			break;
 		case SOUND_LIST:
+			soundMap = (Map<String, File>) map;
 			for( Object f :  map.values() )
 				soundList.addItem( ((File)f).getName() );
 			break;

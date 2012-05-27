@@ -1,5 +1,6 @@
 package gui.editorGui;
 
+import gui.ActionListenerAddable;
 import gui.GuiFunctionLib;
 import gui.ToggleButton;
 
@@ -7,31 +8,34 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.EventListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.border.TitledBorder;
 
 import container.BinauralBeat;
 import container.Segment;
-import container.Session;
 
-public class SegmentPanel extends JPanel {
+/**
+ * Anzeige fuer Einstellmoeglichkeiten der Segmente
+ * @author felix
+ *
+ */
+public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 9208218652817209244L;
-
-	private String		title;
 	
 	//basic Elemente (casual mode)
-	private JList			startMood;
-	private JList			targetModd;
+	private JComboBox		startMood;
+	private JComboBox		targetMood;
 	private JSpinner		durationSpin;
 	
 	private JButton			removeBtn;
@@ -44,22 +48,31 @@ public class SegmentPanel extends JPanel {
 	private JPanel			leftFreqPnl;
 	private JSpinner		startLeftFreq;
 	private JSpinner		targetLeftFreq;
-	private JSlider			leftVolume;
 	
 	private JPanel			rightFreqPnl;
 	private JSpinner		startRightFreq;
 	private JSpinner		targetRightFreq;
 	
+	public static final int MOVE_UP_BUTTON		= 0;
+	public static final int MOVE_DOWN_BUTTON	= 1;
+	public static final int REMOVE_BUTTON		= 2;
+	
+	/**
+	 * Initialisierung eines SegmentPanels
+	 * @param title Title des Rahmens vom Panel
+	 */
 	public SegmentPanel(String title) {
-		this.title = title;
-		setBorder(  new TitledBorder(this.title) );
+		setBorder(  new TitledBorder(title) );
 
 		initBasicElements();
 		initProfiModeElements();
 
 		casualModeLayout();
 	}
-	
+
+	/**
+	 * Aktualisiert das Layout fuer den Causual Mode
+	 */
 	private void casualModeLayout() {
 		removeAll();
 		
@@ -70,7 +83,7 @@ public class SegmentPanel extends JPanel {
 		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Ziel Stimmug:"),		0, 1, 1, 1, 0, 0);
 		
 		GuiFunctionLib.addGridBagContainer(this, gbl, startMood,						1, 0, 1, 1, 2, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, targetModd,						1, 1, 1, 1, 2, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, targetMood,						1, 1, 1, 1, 2, 0);
 		
 		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Länge des Segments"),	2, 0, 1, 1, 1, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, durationSpin,						2, 1, 1, 1, 1, 0);
@@ -84,6 +97,9 @@ public class SegmentPanel extends JPanel {
 		updateUI();
 	}
 	
+	/**
+	 * Aktualisiert das Layout fuer den Profi Mode
+	 */
 	private void profiModeLayout() {
 		removeAll();
 		
@@ -104,12 +120,23 @@ public class SegmentPanel extends JPanel {
 		GuiFunctionLib.addGridBagContainer(this, gbl, editBtn,							3, 2, 1, 1, 0, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, moveDownBtn,						3, 3, 1, 1, 0, 0);
 		
+		startLeftFreq.setValue( getMoodFreq( startMood.getSelectedItem().toString() ) );
+		targetLeftFreq.setValue( getMoodFreq( targetMood.getSelectedItem().toString() ) );
+		
+		startRightFreq.setValue( (Integer)startLeftFreq.getValue() + 2 );
+		targetRightFreq.setValue( (Integer)targetLeftFreq.getValue() + 2 );
+		
 		updateUI();
 	}
 	
+	/**
+	 * Initialisierung von allen Elementen des Causual Mode
+	 */
 	private void initBasicElements() {
-		startMood		= new JList();
-		targetModd		= new JList();
+		String[] moods = {"DELTA", "THETA", "ALPHA", "BETA", "GAMMA"};
+		
+		startMood		= new JComboBox(moods);
+		targetMood		= new JComboBox(moods);
 		durationSpin	= new JSpinner();
 		
 		removeBtn		= new JButton("-");
@@ -129,6 +156,9 @@ public class SegmentPanel extends JPanel {
 		moveDownBtn		= new JButton("v");
 	}
 	
+	/**
+	 * Initialisierung von extra Elementen des Profi Mode
+	 */
 	private void initProfiModeElements() {
 		leftFreqPnl		= new JPanel();
 		leftFreqPnl.setBorder( new TitledBorder("Linke Frequenz:") );
@@ -153,6 +183,25 @@ public class SegmentPanel extends JPanel {
 		rightFreqPnl.add(targetRightFreq);
 	}
 	
+	private Integer getMoodFreq(String mood) {
+		if( mood == "DELTA" )
+			return 1;
+		if( mood == "THETA" )
+			return 4;
+		if( mood == "ALPHA" )
+			return 8;
+		if( mood == "BETA" )
+			return 13;
+		if( mood == "GAMMA" )
+			return 30;
+		
+		return 0;
+	}
+	
+	/**
+	 * Uebernimmt Werte einer Session als default Werte
+	 * @param s	Session deren Werte als defualt uebernommen werden
+	 */
 	public void setDefaultValues(Segment s) {
 //		startMood;
 //		targetModd;
@@ -165,6 +214,10 @@ public class SegmentPanel extends JPanel {
 		targetRightFreq.setValue( s.getBeat().getFreq2_target() );
 	}
 	
+	/**
+	 * Erstellt ein Segment auf Basis der eingegebenen Werten
+	 * @return Segment mit den eingegebenen Werten
+	 */
 	public Segment getValues() {
 		int duration	= Integer.parseInt( durationSpin.getValue().toString() );
 		System.out.println(duration);
@@ -177,5 +230,37 @@ public class SegmentPanel extends JPanel {
 		BinauralBeat bb = new BinauralBeat(freq1_start, freq1_target, freq2_start, freq2_target);
 		
 		return new Segment(duration, bb);
+	}
+	
+	/**
+	 * aktualisiert den Title des Rahmens vom Panel
+	 * @param title
+	 */
+	public void setTitle(String title) {
+		setBorder(  new TitledBorder(title) );
+	}
+	
+	/**
+	 * Fuegt verschiedenen Elementen des SegmentPanels einen
+	 * EventListener hinzu.
+	 * 
+	 * @param element
+	 *            Konstante zum Auswehlen des GUI-Elements
+	 * @param el
+	 *            Hinzuzufuegener EventListener
+	 */
+	@Override
+	public void addListenerToElement(int element, EventListener el) {
+		switch (element) {
+		case MOVE_UP_BUTTON:
+			moveUpBtn.addActionListener((ActionListener) el);
+			break;
+		case MOVE_DOWN_BUTTON:
+			moveDownBtn.addActionListener((ActionListener) el);
+			break;
+		case REMOVE_BUTTON:
+			removeBtn.addActionListener((ActionListener) el);
+			break;
+		}
 	}
 }
