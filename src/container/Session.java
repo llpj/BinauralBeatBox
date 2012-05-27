@@ -114,6 +114,15 @@ public class Session implements Serializable {
 		this.segments.remove(position);
 		this.calcDuration();
 	}
+	
+	/**
+	 * Loescht alle Segmente
+	 */
+	public void removeAllSegments() {
+		this.segments = null;
+		segments = new ArrayList<Segment>();
+		this.calcDuration();
+	}
 
 	public int getNumerOfSegments() {
 		return this.segments.size();
