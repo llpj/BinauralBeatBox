@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.ibm.xtq.ast.parsers.xpath.tempconstructors.ILetClause;
+
 /**
  * Die Session-Klasse. Achtung: bei jedem hinzufuegen eines Segments muss die
  * Laenge der Session (duration) neu berechnet werden.
@@ -134,6 +136,43 @@ public class Session implements Serializable {
 			}
 			return lDuration;
 		}
+	}
+	
+	/**
+	 * 
+	 * @param x
+	 * @param left
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public double getFreqAt(double x, boolean left) throws IllegalArgumentException {
+		if( x < 0 || calcDuration() < x ) {
+			throw new IllegalArgumentException("Unerlaubte Zeitangabe!");
+		}
+		
+		int dur = 0;
+		
+		for (Segment s : getSegments() ) {
+			dur += s.getDuration();
+			
+			if (x <= dur ) {
+				
+				double	dy	= 0;
+				int		n	= 0;
+				if(left) {
+					dy	= s.getBeat().getFreq1_target() - s.getBeat().getFreq1_start();
+					n	= s.getBeat().getFreq1_start();
+				} else {
+					dy	= s.getBeat().getFreq2_target() - s.getBeat().getFreq2_start();
+					n	= s.getBeat().getFreq2_start();
+				}
+
+				// TODO Uebergaenge sind noch deutlich hoerbar
+				return dy / s.getDuration() * x + n;
+			}
+		}
+
+		return 0;
 	}
 	
 	public void setName(String name) {
