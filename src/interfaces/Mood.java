@@ -1,12 +1,12 @@
 package interfaces;
 
 /**
- * Interface für die verschiedenen möglichen Stimmungen, denn diese sind
+ * Interface fï¿½r die verschiedenen mï¿½glichen Stimmungen, denn diese sind
  * statisch. Ich bin mir nicht ganz sicher, ob die ein eigenes Package brauchen,
  * aber auf die wird auf jeden Fall von Container, Controller und GUI
  * zugegriffen.
  * 
- * @author Magnus Brühl
+ * @author Magnus Brï¿½hl
  * 
  */
 public enum Mood {
