@@ -74,6 +74,24 @@ public class FileManager {
 	public void removeCategory(int index) {
 		this.categories.remove(index);
 	}
+	
+	public HashMap<String, File> getListOfWav() {
+		File dir = new File("./bin/resources/wav/");
+		HashMap<String, File> result = new HashMap<String, File>();
+
+		if( dir.exists() ) {
+			File[] fileList = dir.listFiles();
+	
+			for(File f : fileList) {
+				if ( f.getName().endsWith(".wav") )
+					result.put(f.getName(), f);
+			}
+		} else {
+			// TODO Error handling
+		}
+		
+		return result;
+	}
 
 	/**
 	 * Writes a Session into an XML File into the ressources/session directory

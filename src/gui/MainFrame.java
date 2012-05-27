@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 public class MainFrame extends JFrame {
 	
 	/**
-	 * 
+	 * Stellt alle GUI-Elemente im Hauptfenster dar und ist Schnittstelle zw. der BinauralBeatBox Management-Klasse und den GUI Elementen.
 	 */
 	private static final long serialVersionUID = -5636677183953711899L;
 	
@@ -40,8 +40,9 @@ public class MainFrame extends JFrame {
 		setVisible(true);
 	}
 
-	
-	
+	/**
+	 * Laedt und initialisiert das Player Layout (Playerleiste, Animationsflaeche, Liste der Kategorien und Sessions)
+	 */
 	private void playerLayout() {
 		this.getContentPane().removeAll();
 		GridBagLayout gbl = new GridBagLayout();
@@ -55,6 +56,9 @@ public class MainFrame extends JFrame {
 		pack();
 	}
 	
+	/**
+	 * Laedt und inintialisiert das Editor Layout
+	 */
 	private void editorLayout() {
 		getContentPane().removeAll();
 		GridBagLayout gbl = new GridBagLayout();
@@ -80,22 +84,41 @@ public class MainFrame extends JFrame {
 		pack();
 	}
 	
+	/**
+	 * Getter: Gibt das JPanel fuer die Animation zurueck
+	 * @return JPanel
+	 */
 	public JPanel getVirtualizationPnl() {
 		return virtualizationPnl;
 	}
 	
+	/**
+	 * Getter
+	 * @return PlayerPanel
+	 */
 	public PlayerPanel getPlayerPanel() {
 		return playerPnl;
 	}
 	
+	/**
+	 * Getter fuer SessionListPanel
+	 * @return SessionListPanel
+	 */
 	public SessionListPanel getSessionListPnl() {
 		return listPnl;
 	}
 	
+	/**
+	 * Wechselt zum Editor Layout
+	 */
 	public void setEditorLayout() {
 		editorLayout();
 	}
 	
+	/**
+	 * Getter
+	 * @return SessionEditorPanel
+	 */
 	public SessionEditorPanel getSessionEditorPnl() {
 		return editorPnl;
 	}
