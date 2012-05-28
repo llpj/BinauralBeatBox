@@ -277,6 +277,7 @@ public class BinauralBeatBox {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
 				JProgressBar muteBar = (JProgressBar) ce.getSource();
+				sw.changeVolumn(muteBar.getValue());
 				// TODO Gesamtlautstaerke einbinden (Wertebereich von
 				// muteBar.getValue(): 0-100)
 				System.out.println(muteBar.getValue());

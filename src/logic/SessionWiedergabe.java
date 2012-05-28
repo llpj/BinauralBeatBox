@@ -112,10 +112,6 @@ public class SessionWiedergabe implements Runnable{
 		beatLine.start();
 		clip.start();
 		
-		// Balance geandert (damit clip1 leiser ist als Clip2)
-		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl.setValue(-20); // veringert / erhoeht die Lautsärke um x
-									// Decibel
 	}
 	
 	public long getClipDuration() {
@@ -234,14 +230,18 @@ public class SessionWiedergabe implements Runnable{
 	 *            Wert) oder erhöht werden soll) zB -10.0f veringert die
 	 *            Lautsätke um -10 Decibel
 	 */
-	private void changeVolumn(float volumn) {
+	public void changeVolumn(float controll) {
+		double volumn = controll / 100; 
+		float dB = (float) (Math.log(volumn) / Math.log(10.0) * 20.0);
 		FloatControl gainControl1 = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 		FloatControl gainControl2 = (FloatControl) beatLine.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl1.setValue(volumn); // veringert / erhoeht die Lautsärke um x // Decibel
-		gainControl2.setValue(volumn); // veringert / erhoeht die Lautsärke um x // Decibel
+		gainControl1.setValue(dB); // veringert / erhoeht die Lautsärke um x // Decibel
+		gainControl2.setValue(dB); // veringert / erhoeht die Lautsärke um x // Decibel
 	}
 	
-	private void changeBalance(float balance, boolean clipBeatLine) { //clipBeatLine bedeutet, wenn true dann setzen lautsärke von Clip um - balance/2 und beatLine um + balance/2, (und andersrum)	
+	public void changeBalance(float balance, boolean clipBeatLine) { //clipBeatLine bedeutet, wenn true dann setzen lautsärke von Clip um - balance/2 und beatLine um + balance/2, (und andersrum)
+		System.out.println("Balance Test");
+		
 		float hier = balance /2;		
 		FloatControl gainControl1 = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 		FloatControl gainControl2 = (FloatControl) beatLine.getControl(FloatControl.Type.MASTER_GAIN);
