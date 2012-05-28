@@ -272,14 +272,11 @@ public class BinauralBeatBox {
 				System.out.println(s.getValue());
 			}
 		});
-
 		pnl.addListenerToElement(PlayerPanel.MUTE_BAR, new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
-				JProgressBar muteBar = (JProgressBar) ce.getSource();
+				JProgressBar muteBar = (JProgressBar) ce.getSource();	// TODO MuteBar default Wert ändern
 				sw.changeVolumn(muteBar.getValue());
-				// TODO Gesamtlautstaerke einbinden (Wertebereich von
-				// muteBar.getValue(): 0-100)
 				System.out.println(muteBar.getValue());
 			}
 		});

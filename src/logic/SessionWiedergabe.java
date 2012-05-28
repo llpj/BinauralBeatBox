@@ -36,6 +36,8 @@ public class SessionWiedergabe implements Runnable{
 	private long 				clipDuration = 0;
 	private File				fileBg;
 	float 						balc1, balc2;
+	double volumn;
+	float dB;
 
 	
 	private Thread	t;
@@ -231,8 +233,8 @@ public class SessionWiedergabe implements Runnable{
 	 *            Lautsätke um -10 Decibel
 	 */
 	public void changeVolumn(float controll) {
-		double volumn = controll / 100; 
-		float dB = (float) (Math.log(volumn) / Math.log(10.0) * 20.0);
+		volumn = controll / 100; 
+		dB = (float) (Math.log(volumn) / Math.log(10.0) * 20.0);
 		FloatControl gainControl1 = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 		FloatControl gainControl2 = (FloatControl) beatLine.getControl(FloatControl.Type.MASTER_GAIN);
 		gainControl1.setValue(dB); // veringert / erhoeht die Lautsärke um x // Decibel
@@ -241,6 +243,8 @@ public class SessionWiedergabe implements Runnable{
 	
 	public void changeBalance(float balance, boolean clipBeatLine) { //clipBeatLine bedeutet, wenn true dann setzen lautsärke von Clip um - balance/2 und beatLine um + balance/2, (und andersrum)
 		System.out.println("Balance Test");
+		volumn = balance / 100; 
+		dB = (float) (Math.log(volumn) / Math.log(10.0) * 20.0);
 		
 		float hier = balance /2;		
 		FloatControl gainControl1 = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
