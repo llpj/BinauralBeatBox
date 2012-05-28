@@ -95,10 +95,15 @@ public class SessionWiedergabe implements Runnable{
 			e.printStackTrace();
 		}
 		
-		clip.loop(-1);
+		clip.loop(-1);		
 		t.start();
 	}
 	
+	/**
+	 * public void continueSession()
+	 * 
+	 * setzt die Session Wiedergabe da fort, wo pause gedrueckt worden ist
+	 */
 	public void continueSession()	{
 		System.out.println("Continuebuttontest");
 		pause = false; 
@@ -106,12 +111,26 @@ public class SessionWiedergabe implements Runnable{
 		System.out.println("Continue at: " + clipDuration);
 		beatLine.start();
 		clip.start();
+		
+		// Balance geandert (damit clip1 leiser ist als Clip2)
+		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl.setValue(-20); // veringert / erhoeht die Lautsärke um x
+									// Decibel
 	}
 	
 	public long getClipDuration() {
 		return clipDuration;
 	}
 	
+	
+	/**
+	 * public void pauseSession()
+	 * 
+	 * Session Pausieren. Nur moeglich, wenn die Session schon einmal abgespielt
+	 * worden ist, d.h. wenn die aktuelle Zeit bei 0 steht, dann soll der Pause
+	 * Knopf nix tun
+	 * 
+	 */
 	public void pauseSession() {
 		pause = true;
 		System.out.println("Pausenbuttontest");
@@ -158,6 +177,7 @@ public class SessionWiedergabe implements Runnable{
 				while(pause) {
 					try {
 						wait(1);
+						// TODO fixen, dass wenn Pause gedrückt ist, dann stop, kein Interrupted Exception kommt.
 					} catch (InterruptedException e) { e.printStackTrace(); }
 				}
 			}
