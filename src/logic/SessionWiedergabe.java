@@ -14,6 +14,11 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import container.Session;
 
+/**
+ * @author Boris Beck and Felix Pistorius
+ * @return This class load and play a Session
+ * 
+ */
 
 
 public class SessionWiedergabe implements Runnable{
@@ -25,7 +30,10 @@ public class SessionWiedergabe implements Runnable{
 	private int					sample_max_value;
 	private SourceDataLine		beatLine;
 	private DataLine.Info		beatInfo;
-	private AudioInputStream	audioInputStream;
+	private AudioInputStream	ais = null;
+	private Clip				clip;
+	private File				fileBg;
+
 	
 	private Thread	t;
 	private boolean pause;
@@ -36,12 +44,35 @@ public class SessionWiedergabe implements Runnable{
 	public SessionWiedergabe(Session session) {
 		this.session = session;
 		
-		this.posX		= 0;
-		this.pause		= false;
-		this.beatFormat 	= new AudioFormat(44100, 16, 1, true, false);
-		this.stepWidth	= (2 * Math.PI) / beatFormat.getSampleRate();
-		this.sample_max_value = (int) Math.pow(2, beatFormat.getSampleSizeInBits()) / 2 - 1;
+		this.posX				= 0;
+		this.pause				= false;
+		this.beatFormat 		= new AudioFormat(44100, 16, 1, true, false);
+		this.stepWidth			= (2 * Math.PI) / beatFormat.getSampleRate();
+		this.sample_max_value 	= (int) Math.pow(2, beatFormat.getSampleSizeInBits()) / 2 - 1;
+		this.fileBg				= new File(session.getHintergrundklang());
 		
+		if (!fileBg.exists()) {
+			System.out.println("File not found: " + fileBg);
+		 	return;
+		}
+		
+		//Hintergrundmusik (clip)
+		try {
+			clip = AudioSystem.getClip();
+			ais = AudioSystem.getAudioInputStream(fileBg);
+			clip.open(ais);
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	
 		
 		beatInfo = new DataLine.Info(SourceDataLine.class, beatFormat);
         try {
@@ -53,6 +84,16 @@ public class SessionWiedergabe implements Runnable{
 	
 	public void playSession() {
 		t = new Thread(this);
+		
+		try {
+			if (session != null) {
+				System.out.println("Ausgewaehlte Session in den Player geladen");
+			} else
+				System.err.println("SessionWiedergabe: Keine Session vorhanden.");
+		} catch (Exception e) {
+			System.err.println(e.getStackTrace());
+		}
+		
 		t.start();
 	}
 	
@@ -69,6 +110,7 @@ public class SessionWiedergabe implements Runnable{
 		catch (LineUnavailableException e) { e.printStackTrace(); }
 		
 		beatLine.start();
+		clip.loop(-1);
 		
 		while(posX < session.getDuration() ) {
 			
@@ -90,8 +132,10 @@ public class SessionWiedergabe implements Runnable{
 	}
 
 	public void stopSession() {
-		beatLine.close();
 		beatLine.stop();
+		beatLine.close();
+		clip.stop();
+		clip.close();
 		t.interrupt();
 	}
 	

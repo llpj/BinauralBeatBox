@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.ibm.xtq.ast.parsers.xpath.tempconstructors.ILetClause;
+//import com.ibm.xtq.ast.parsers.xpath.tempconstructors.ILetClause; // für was brauch wir das?
 
 /**
  * Die Session-Klasse. Achtung: bei jedem hinzufuegen eines Segments muss die
