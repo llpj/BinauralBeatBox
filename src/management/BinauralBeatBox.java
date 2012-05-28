@@ -63,7 +63,7 @@ public class BinauralBeatBox {
 		new BinauralBeatBox();
 	}
 
-	private BinauralBeatBox() {
+	public BinauralBeatBox() {
 		fileManager = new FileManager();
 		try {
 			fileManager.setCategories((HashMap<String, Category>) fileManager
