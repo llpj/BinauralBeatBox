@@ -8,6 +8,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -32,7 +33,9 @@ public class SessionWiedergabe implements Runnable{
 	private DataLine.Info		beatInfo;
 	private AudioInputStream	ais = null;
 	private Clip				clip;
+	private long 				clipDuration = 0;
 	private File				fileBg;
+	float 						balc1, balc2;
 
 	
 	private Thread	t;
@@ -56,24 +59,6 @@ public class SessionWiedergabe implements Runnable{
 		 	return;
 		}
 		
-		//Hintergrundmusik (clip)
-		try {
-			clip = AudioSystem.getClip();
-			ais = AudioSystem.getAudioInputStream(fileBg);
-			clip.open(ais);
-		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedAudioFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	
-		
 		beatInfo = new DataLine.Info(SourceDataLine.class, beatFormat);
         try {
 			beatLine	= (SourceDataLine) AudioSystem.getLine(beatInfo);
@@ -94,12 +79,68 @@ public class SessionWiedergabe implements Runnable{
 			System.err.println(e.getStackTrace());
 		}
 		
+		//Hintergrundmusik (clip)
+		try {
+			clip = AudioSystem.getClip();
+			ais = AudioSystem.getAudioInputStream(fileBg);
+			clip.open(ais);
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		clip.loop(-1);
 		t.start();
 	}
 	
-	public void continueSession()	{	pause = false; }
+	public void continueSession()	{
+		System.out.println("Continuebuttontest");
+		pause = false; 
+		clip.setMicrosecondPosition(clipDuration);
+		System.out.println("Continue at: " + clipDuration);
+		beatLine.start();
+		clip.start();
+	}
 	
-	public void pauseSession()		{ pause = true; }
+	public long getClipDuration() {
+		return clipDuration;
+	}
+	
+	public void pauseSession() {
+		pause = true;
+		System.out.println("Pausenbuttontest");
+		clipDuration = clip.getMicrosecondPosition();
+		System.out.println("Aktuelle Position: " + clipDuration);
+		
+		if (clip.isRunning()) {
+			beatLine.stop();
+			clip.stop();
+		} else {
+			System.out.println("Pause Fehler: Hintergrundmusik wurde nicht abgespielt.");
+		}
+	}
+	
+	public void stopSession() {
+		System.out.println("Stopbuttontest");
+		if (beatLine.isOpen()) {
+			beatLine.stop();
+			beatLine.close();
+		}
+		if (clip.isOpen()) {
+			clip.stop();
+			clip.close();
+			clipDuration = 0; // Session auf den Anfang setzen
+		} else {
+			System.out.println("Stop Fehler: Hintergrunfmusik wurde nicht abgespielt.");
+		}
+		t.interrupt();
+	}
 
 	
 	@Override
@@ -110,7 +151,6 @@ public class SessionWiedergabe implements Runnable{
 		catch (LineUnavailableException e) { e.printStackTrace(); }
 		
 		beatLine.start();
-		clip.loop(-1);
 		
 		while(posX < session.getDuration() ) {
 			
@@ -126,17 +166,12 @@ public class SessionWiedergabe implements Runnable{
 			byte[] data = new byte[BUFFER];
 			int numBytesRead = getStereoTon(data, BUFFER);
 			
-			if(numBytesRead == 0) break;
+			if(numBytesRead == 0) {
+				stopSession();
+				break;
+			}
 			beatLine.write(data, 0, numBytesRead);
 		}
-	}
-
-	public void stopSession() {
-		beatLine.stop();
-		beatLine.close();
-		clip.stop();
-		clip.close();
-		t.interrupt();
 	}
 	
 	private int getStereoTon(byte[] data, int buffer) {
@@ -167,6 +202,40 @@ public class SessionWiedergabe implements Runnable{
 		data[1]		= (byte) ((value >> 8) & 0xff);
 		
 		return data;
+	}
+	
+	
+	/**
+	 * 
+	 * private void changeVolumn(int volumn)
+	 * 
+	 * @param volumn
+	 *            : float, Wert um wieviel die Lautstärke veringert (Negativer
+	 *            Wert) oder erhöht werden soll) zB -10.0f veringert die
+	 *            Lautsätke um -10 Decibel
+	 */
+	private void changeVolumn(float volumn) {
+		FloatControl gainControl1 = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		FloatControl gainControl2 = (FloatControl) beatLine.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl1.setValue(volumn); // veringert / erhoeht die Lautsärke um x // Decibel
+		gainControl2.setValue(volumn); // veringert / erhoeht die Lautsärke um x // Decibel
+	}
+	
+	private void changeBalance(float balance, boolean clipBeatLine) { //clipBeatLine bedeutet, wenn true dann setzen lautsärke von Clip um - balance/2 und beatLine um + balance/2, (und andersrum)	
+		float hier = balance /2;		
+		FloatControl gainControl1 = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		FloatControl gainControl2 = (FloatControl) beatLine.getControl(FloatControl.Type.MASTER_GAIN);
+				
+		if (clipBeatLine) {
+			balc1 = balc1 - hier;
+			balc2 = balc2 + hier;
+		} else {
+			balc1 = balc1 + hier;
+			balc2 = balc2 - hier;
+		}
+
+		gainControl1.setValue(balc1);
+		gainControl2.setValue(balc2);
 	}
 
 }

@@ -197,26 +197,7 @@ public class BinauralBeatBox {
 						} else {
 							sw.continueSession();
 						}
-					} else {
-						// PAUSE
-						if (sw != null)
-							sw.pauseSession();
-					}
-				}
-
-				if (((ToggleButton) ae.getSource()).isSelected()) {
-
-					// PLAY
-					if (fileManager.getActiveSession() != null) {
-						sw = new SessionWiedergabe(fileManager
-								.getActiveSession());
-						sw.playSession();
-						// if (sw.getCuDuration()==0) {
-						// sw.playSession();
-						// } else {
-						// sw.continueSession();
-						// }
-
+						
 						// animation
 						if (!isPause) {
 							// Auswahl der Animation
@@ -247,13 +228,14 @@ public class BinauralBeatBox {
 						} else {
 							animation.pause(false);
 						}
-					}
-				} else {
-					if (fileManager.getActiveSession() != null) {
-						// PAUSE:
-						animation.pause(true);
-						isPause = true;
-						// sw.pauseSession();
+						
+						
+					} else {
+						// PAUSE
+						if (sw != null)
+							sw.pauseSession();
+							animation.pause(true);
+							isPause = true;
 					}
 				}
 			}
@@ -265,22 +247,20 @@ public class BinauralBeatBox {
 				// STOP:
 				if (fileManager.getActiveSession() != null) {
 					if (sw != null) {
+						animation.finish(true);
+						// uebermalt alte animation falls mal pause gedrueckt wurde
+						Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl()
+								.getGraphics();
+						Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf
+								.getVirtualizationPnl().getSize().width, mf
+								.getVirtualizationPnl().getSize().height);
+						rec.setColor(Color.GRAY);
+						rec.fill(rectangle);
+						isPause = false;
+						
 						sw.stopSession();
 						sw = null;
 					}
-				}
-				if (fileManager.getActiveSession() != null) {
-					animation.finish(true);
-					// uebermalt alte animation falls mal pause gedrueckt wurde
-					Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl()
-							.getGraphics();
-					Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf
-							.getVirtualizationPnl().getSize().width, mf
-							.getVirtualizationPnl().getSize().height);
-					rec.setColor(Color.GRAY);
-					rec.fill(rectangle);
-					isPause = false;
-					sw.stopSession();
 				}
 			}
 		});
