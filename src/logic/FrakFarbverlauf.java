@@ -26,7 +26,7 @@ public class FrakFarbverlauf extends Animation {
 //	private final float [] hozGrad = {5,25,2,2};
 //	private final float [] smoothGrad = {5,5,20,20};
 	
-	private int bodySize; //random
+	private float bodySize; //random
 	private int bodyCount; //random
 	private Color [] colors = new Color [4]; 
     private boolean isFraktal;        // isFarbverlauf wird nun durch den Unterschied von true und false mit abgebildet
@@ -57,12 +57,12 @@ public class FrakFarbverlauf extends Animation {
     	   x2=y;
     	   y2=0;
     	   z=0;
-    	   for (k=0;k<1000;k++) {
+    	   for (k=0;k<20000;k++) {
     	// Der Apfelmännchen-Grundalgorithmus
     	     y=2*x*y+imaginaerteil;
     	     x=x2-y2+realteil;
-    	     x2=x*x;
-    	     y2=y*y;
+    	     x2=x*x+bodySize;
+    	     y2=y*y+(bodySize/3);
     	     z=x2+y2;
     	     if (z>4) return k; 
     	   }
@@ -83,11 +83,11 @@ public class FrakFarbverlauf extends Animation {
 		}
 		else
 		{
-			//Größe der Apfelmännchens
+			//Größe des Apfelmännchens
 			//Breite: Differenz von restart und reend --> neg = links / pos = rechts
 			// restart und reend sollten im Bereich von -10 bis 10 --> optimal bei -4 und -1 liegen
-			double restart=-3;
-			double reend=0;
+			double restart=-3;	//-3
+			double reend=0;		//0
 			  
 			//Höhe: Differenz von imstart und imend --> neg = tiefere position / pos = höhere position
 			double imstart=-2;
@@ -113,7 +113,7 @@ public class FrakFarbverlauf extends Animation {
 				{
 					//Berechnung der Entscheidungsvariable für die Farbe eines Bildpunktes  
 					farbe=iteration(repart,impart);
-					if(farbe==1000) 
+					if(farbe == 1000) 
 					{
 						//Farbe für das Apfelmännchen-Innere
 						animationPnlBuffer.setPaint(createGradient(colors[posColor], colors[posColor+1]));
@@ -194,6 +194,8 @@ public class FrakFarbverlauf extends Animation {
 		Thread thisThread = Thread.currentThread();
 		// animiert Farbverlauf
 		float h = 3.1f ;
+		float g = 0.5f;
+		boolean marker  = false;
 		while (animation == thisThread) 
 			{
 				synchronized(thisThread)
@@ -210,8 +212,27 @@ public class FrakFarbverlauf extends Animation {
 						}
 					}
 				}
-				bodyCount = (int) (Math.random()*10+1);
-				bodySize = 500;
+				//bodySize range für Fraktale Animation
+				if(bodySize >= 3 && marker == true)
+				{
+					marker = false;
+				}
+				else if(bodySize <= -10 && marker == false)
+				{
+					marker = true;
+				}
+				else if(marker == true)
+				{
+					bodySize += g;
+				}
+				else if(marker == false)
+				{
+					bodySize -= g;
+				}
+					
+				System.out.printf("...%f",bodySize);
+//				bodyCount = (int) (Math.random()*10+1);
+//				bodySize = 500;
 //				bodySize = (int) (Math.random()*100+1);
 				createBody();
 				gradPos += h;
@@ -229,6 +250,10 @@ public class FrakFarbverlauf extends Animation {
 				
 				try 
 				{
+					if(isFraktal)
+					{
+						tempo = 0;
+					}
 					Thread.sleep (tempo);	
 				}
 				catch (InterruptedException e) 
@@ -271,6 +296,7 @@ public class FrakFarbverlauf extends Animation {
 				colors[3] = Color.magenta;
 		}
 //		posColor = (int) (Math.random()*3);
+		bodySize = -10;
 		tempo = 1500;
 		width = pnl.getSize().width; // muss über Dimension gemacht werden, da Punkte und Pixel nicht vergleichbar wären
 		height = pnl.getSize().height;
@@ -329,7 +355,7 @@ public class FrakFarbverlauf extends Animation {
 			this.bodySize = bodySize;
 		}
 
-		public int getBodySize() {
+		public float getBodySize() {
 			return bodySize;
 		}
 
