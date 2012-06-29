@@ -184,6 +184,7 @@ public class BinauralBeatBox {
 
 		pnl.addListenerToElement(PlayerPanel.PLAY_BUTTON, new ActionListener() {
 
+			//TODO: Abfangen, dass bei nicht ausgewählter Session play button ohn efunktion bleibt
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 

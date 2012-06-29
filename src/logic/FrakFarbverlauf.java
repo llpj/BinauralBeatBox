@@ -11,7 +11,9 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.RenderingHints;
 import java.awt.Transparency;
+import java.awt.color.ColorSpace;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -21,20 +23,23 @@ import javax.swing.JPanel;
 //TODO Fraktale Animation
 
 public class FrakFarbverlauf extends Animation {
-	//Konstanten für Farbverlaufwechsel
-//	private final float [] vertGrad = {25,25,15,25};
-//	private final float [] hozGrad = {5,25,2,2};
-//	private final float [] smoothGrad = {5,5,20,20};
-	
+
 	private float bodySize; //random
 	private int bodyCount; //random
 	private Color [] colors = new Color [4]; 
-    private boolean isFraktal;        // isFarbverlauf wird nun durch den Unterschied von true und false mit abgebildet
+	// isFarbverlauf wird nun durch den Unterschied von true und false mit abgebildet
+    private boolean isFraktal;        
     private Mood mood;
     private int posColor;
     private float gradPos;
     Polygon poly;
     BufferedImage img;
+    //Attribute zur Manipulation der Fraktalten Animation
+    private float counter;
+    private double num1;
+    private double num2;
+    private double num3;
+    private double num4;
     
     public FrakFarbverlauf (Mood mood, JPanel pnl, boolean isFraktal)
     {
@@ -43,31 +48,109 @@ public class FrakFarbverlauf extends Animation {
     	this.setFraktal(isFraktal);
     	//Initialisierung - checkSize und posColor müssen im Konstruktor initialisiert sein !!! (wegen resizing)
     	checkResize = 0;
+    	counter = 0;
     	posColor = (int) (Math.random()*3);
     	init();
     }
     
-    public int iteration(double realteil,double imaginaerteil) {   
+    private void apfelMan (Graphics2D animationPnlBuffer)
+    {
+    	//Größe des Apfelmännchens
+		//Breite: Differenz von restart und reend --> neg = links / pos = rechts
+		// restart und reend sollten im Bereich von -10 bis 10 --> optimal bei -4 und -1 liegen
+		double restart= num1;	//-3
+		double reend= num2;		//0
+		//Höhe: Differenz von imstart und imend --> neg = tiefere position / pos = höhere position
+		double imstart=num3;	//-2
+		double imend=num4;		//0
+		double restep,imstep,repart,impart;
+		int x,y,farbe;
+		// Größe und Position des Fraktals 
+		// Schrittweite für den Realteil 
+		restep=(reend-restart)/((width/2)); 
+		// Schrittweite für den Imaginärteil 
+		imstep=(imend-imstart)/((height/2)); 
+		// Zuweisung eines Startwertes für den Imaginärteil in der Rekursion
+		impart=imstart; 
+
+		for (y=0;y<height-1;y++)  
+		{
+			// Zuweisung eines Startwertes für den Realteil 
+			//counter = 2;
+			repart=restart; 
+			for (x=0;x<width-1;x++) 
+			{
+				//Berechnung der Entscheidungsvariable für die Farbe eines Bildpunktes  
+				farbe=iteration(repart,impart);
+				Color jr;
+				switch(farbe)
+				{
+					case 0: 
+							jr = new Color(colors[posColor].getRGB()); 
+							animationPnlBuffer.setColor(jr); 
+							animationPnlBuffer.drawLine(x,y,x+1,y);
+							break;
+					case 1: 
+							jr = new Color(255-(farbe%26*10)+1, 20, colors[posColor].getBlue()); 
+							animationPnlBuffer.setColor(jr); 
+							animationPnlBuffer.drawLine(x,y,x+1,y);
+							break;
+					case 16: 
+							jr = new Color(255-(farbe%26*10)+16, 200, colors[posColor].getBlue()); 
+							animationPnlBuffer.setColor(jr); 
+							animationPnlBuffer.drawLine(x,y,x+1,y);
+							break;
+					case 32: 
+							jr = new Color(255-(farbe%26*10)+32, 80, colors[posColor].getBlue()); 
+							animationPnlBuffer.setColor(jr); 
+							animationPnlBuffer.drawLine(x,y,x+1,y);
+							break;
+					case 64: 
+							jr = new Color(255-(farbe%26*10)+64, 255, colors[posColor].getBlue()); 
+							animationPnlBuffer.setColor(jr); 
+							animationPnlBuffer.drawLine(x,y,x+1,y);
+							break;
+					case 128: 
+							jr = new Color(255-(farbe%26*10)+128, 0, colors[posColor].getBlue()); 
+							animationPnlBuffer.setColor(jr); 
+							animationPnlBuffer.drawLine(x,y,x+1,y);
+						break;
+					default:
+							jr = new Color(255-(farbe%26*10), 120, colors[posColor].getBlue()); 
+							animationPnlBuffer.setColor(jr); 
+							animationPnlBuffer.drawLine(x,y,x+1,y);
+							break;
+				}
+				// Neue Werte für die Iteration
+				repart=repart+restep;
+			}  
+			impart=impart+imstep;
+		}
+    }
+    
+    private int iteration(double realteil,double imaginaerteil) 
+    {   
     	/* Diese Methode enthält die eigentliche Iteration zur Berechnung der Farbe eines Bildpunktes 
     	des Apfelmännchens. Dabei werden zwei Parameter benötigt - der Realteil und der Imaginärteil. */
-    	   double x,y,x2,y2,z;
-    	   int k=0;
-    	   x=0;
-    	   y=0;
-    	   x2=y;
-    	   y2=0;
-    	   z=0;
-    	   for (k=0;k<20000;k++) {
-    	// Der Apfelmännchen-Grundalgorithmus
-    	     y=2*x*y+imaginaerteil;
-    	     x=x2-y2+realteil;
-    	     x2=x*x+bodySize;
-    	     y2=y*y+(bodySize/3);
-    	     z=x2+y2;
-    	     if (z>4) return k; 
-    	   }
-    	   return k ;
+    	double x,y,x2,y2,z;
+    	int k=0;
+    	x=0;
+    	y=0;
+    	x2=x;
+    	y2=y;
+    	z=0;
+    	for (k=0;k<500;k++) 
+    	{
+    		//Grundalgorithmus: Z(n)= Z(n+1)²+C
+    	    y=2*x*y+imaginaerteil;
+    	    x=x2-y2+realteil;
+    	    x2=x*x+bodySize; 
+    	    y2=y*y-bodySize;
+    	    z=x2+y2;
+    	    if (z>counter) return k; 
     	 }
+    	 return k ;
+    }
     
     protected void createBody ()
     {
@@ -83,95 +166,46 @@ public class FrakFarbverlauf extends Animation {
 		}
 		else
 		{
-			//Größe des Apfelmännchens
-			//Breite: Differenz von restart und reend --> neg = links / pos = rechts
-			// restart und reend sollten im Bereich von -10 bis 10 --> optimal bei -4 und -1 liegen
-			double restart=-3;	//-3
-			double reend=0;		//0
-			  
-			//Höhe: Differenz von imstart und imend --> neg = tiefere position / pos = höhere position
-			double imstart=-2;
-			double imend=0;
-			
-			double restep,imstep,repart,impart;
-			int x,y,farbe;
-			 /* Veränderung der Schrittweiten bei der Berechnung beeinflusst ebenfalls Größe und Position 
-			des Fraktals */
-			// Schrittweite für den Realteil 
-			restep=(reend-restart)/(width/2); 
-			// Schrittweite für den Imaginärteil 
-			imstep=(imend-imstart)/(height/2); 
-			// Zuweisung eines Startwertes für den 
-			// Imaginärteil in der Rekursion
-			impart=imstart; 
-			 
-			for (y=0;y<height-1;y++)  
-			{
-				// Zuweisung eines Startwertes für den Realteil 
-				repart=restart; 
-				for (x=0;x<width-1;x++) 
-				{
-					//Berechnung der Entscheidungsvariable für die Farbe eines Bildpunktes  
-					farbe=iteration(repart,impart);
-					if(farbe == 1000) 
-					{
-						//Farbe für das Apfelmännchen-Innere
-						animationPnlBuffer.setPaint(createGradient(colors[posColor], colors[posColor+1]));
-						//Malt den Hintergrund in Abhänigkeit von width und height
-						animationPnlBuffer.drawLine(x,y,x+1,y);
-					} 
-					else 
-					{ 
-			/* Hier wird die Farbe eines Bildpunktes vom eigentlichen Apfelmännchen explizit berechnet. 
-			Die 3 Angaben in der Color-Angabe sind RGB-Werte (Rot-Grün-Blau) und legen die jeweilige 
-			Intensität der Farbanteile fest. Nur der erste Parameter wird jeweils neu berechnet. Dabei 
-			ist bei Manipulationen des Rotbereichs darauf zu achten, dass das Resultat zwischen 0 und 255 
-			bleibt. Hier im Beispiel liegt die Grundfarbwahl im Rotbereich. Sie kann aber jederzeit durch 
-			Veränderung der Parameter in einen anderen Farbbereich verlegt werden. */
-//			  Color jr = new Color(255-(farbe%52*5),255-(farbe%52*5),125);
-			/* Alternative Grundfarbe. Dabei wird sowohl der Rotanteil, als auch der Grünanteil 
-			manipuliert. */
-			    	
-						//Farbe der Apfelmännchen-Umgebung
-						Color jr = new Color(255-(farbe%26*10), 120, colors[posColor].getBlue()); 
-						animationPnlBuffer.setColor(jr); 
-						// Zeichne an Position x,y einen Punkt mit 
-						// dem Farbwert jr
-						animationPnlBuffer.drawLine(x,y,x+1,y);} 
-					  	// Neue Werte für die Iteration
-					  	repart=repart+restep;}  
-				  		impart=impart+imstep;}
-			     	}
-			  
-
-//			poly = new Polygon();
-//			gradPos = 0;
-//			int i;
-//			int n = (int) (Math.random()*5+1); //Anzahl der Ecken
-//			for( i = 0; i < bodyCount; i++)
+//			int i = 0;
+//			while( i < bodyCount)
 //			{
-//				posColor = (int) (Math.random()*3);
-//				animationPnl.setPaint(createGradient (colors[posColor], colors[posColor]));
-//				int x = width/2;
-//				int y = height/2;
-//				
-//				for ( int j = 0; j < n; j++ )
+				apfelMan(animationPnlBuffer);
+//				switch(bodyCount)
 //				{
-//					poly.addPoint( (int) (x + bodySize * Math.cos( j * 2 * Math.PI / n )),
-//							(int) (y + bodySize * Math.sin( j * 2 * Math.PI / n )) );
+//					case 2:
+//						animationPnlBuffer.translate(100,-100);
+//						animationPnlBuffer.setRenderingHint( RenderingHints.KEY_ANTIALIASING,
+//			                     RenderingHints.VALUE_ANTIALIAS_ON );
+//						break;
+//					case 3:
+//						animationPnlBuffer.translate(100,-50);
+//						animationPnlBuffer.setRenderingHint( RenderingHints.KEY_ANTIALIASING,
+//			                     RenderingHints.VALUE_ANTIALIAS_ON );
+//						break;
+//					case 4:
+//						animationPnlBuffer.translate(100,0);
+//						animationPnlBuffer.setRenderingHint( RenderingHints.KEY_ANTIALIASING,
+//			                     RenderingHints.VALUE_ANTIALIAS_ON );
+//						break;
+//					default:
+//						animationPnlBuffer.translate(100,+50);
+//						animationPnlBuffer.setRenderingHint( RenderingHints.KEY_ANTIALIASING,
+//			                     RenderingHints.VALUE_ANTIALIAS_ON );
+//						break;
 //				}
-////				bodySize -= i*50;
-//				animationPnl.fill( poly );
-//				animationPnl.drawPolygon( poly );
-////				animationPnl.rotate(bodySize);
-    	  //animationPnl.rotate(1);
+					
+				
+//				i++;
+//			}
+			
+		}  
     }
     
     protected GradientPaint createGradient (Color color1, Color color2)
     {
     	// hier sind auch Drehungen möglich
     	Point2D.Float p1 = new Point2D.Float(150+gradPos, 75+gradPos); // Gradient line start
-        Point2D.Float p2 = new Point2D.Float(250+gradPos, 75+gradPos); // Gradient line end
+    	Point2D.Float p2 = new Point2D.Float(250+gradPos, 75+gradPos); // Gradient line end
     	GradientPaint gradient = new GradientPaint(p1, color1, p2, color2,true);//true= cyclic, false = acyclic
 		return gradient;
     }
@@ -194,8 +228,9 @@ public class FrakFarbverlauf extends Animation {
 		Thread thisThread = Thread.currentThread();
 		// animiert Farbverlauf
 		float h = 3.1f ;
-		float g = 0.5f;
-		boolean marker  = false;
+		boolean marker = true;
+		boolean marker2 = false;
+		int marker3 = 1;
 		while (animation == thisThread) 
 			{
 				synchronized(thisThread)
@@ -212,48 +247,63 @@ public class FrakFarbverlauf extends Animation {
 						}
 					}
 				}
-				//bodySize range für Fraktale Animation
-				if(bodySize >= 3 && marker == true)
+				if (isFraktal)
 				{
-					marker = false;
-				}
-				else if(bodySize <= -10 && marker == false)
-				{
-					marker = true;
-				}
-				else if(marker == true)
-				{
-					bodySize += g;
-				}
-				else if(marker == false)
-				{
-					bodySize -= g;
-				}
+					if(counter <= 0 && !marker2)
+					{
+						marker = true;
+					}
+					else if (marker2 && counter <= 5)
+					{
+						marker = true;
+//						num1 =-3; //(float) (Math.random()*-3+1);
+//						num2 =0;//(float) (Math.random()*1-3);
+//						num3 = -2;//(float) (Math.random()*1-2);
+//						num4 = 0;//(float) (Math.random()*1-1);
+						bodyCount = (int) (Math.random()*1+4);
+					}	
+					else if(counter >= 15)
+					{
+						marker = false;
+					}
 					
-				System.out.printf("...%f",bodySize);
-//				bodyCount = (int) (Math.random()*10+1);
-//				bodySize = 500;
-//				bodySize = (int) (Math.random()*100+1);
+					if(marker && counter < 15)
+					{
+						counter += 0.5f;
+						if(marker3%2 == 0)
+						{
+							bodySize += 0.1f;
+						}
+						else
+						{
+							bodySize -= 0.1f;
+						}
+					}
+					else
+					{
+						marker3++;
+						counter -= 2;
+						marker2 = true;
+					}
+					
+				}
+				System.out.println(bodySize);
 				createBody();
 				gradPos += h;
 				if(gradPos > 750)
 				{
 					h = -3.1f;
-					posColor = (int) (Math.random()*3);
+					posColor = (int) (Math.random()*2);
 					
 				}
 				else if(gradPos <= 0)
 				{
 					h = 3.1f;
-					posColor = (int) (Math.random()*3);
+					posColor = (int) (Math.random()*2);
 				}
 				
 				try 
 				{
-					if(isFraktal)
-					{
-						tempo = 0;
-					}
 					Thread.sleep (tempo);	
 				}
 				catch (InterruptedException e) 
@@ -270,42 +320,61 @@ public class FrakFarbverlauf extends Animation {
 		switch(mood)
 		{
 			case ALPHA: //Entspannung, Zustand kurz vor und nach dem Schlaf: Erhöhte Erinnerungs- und Lernfähigkeit
-				colors[0] = Color.blue;
-				colors[1] = Color.green;
-				colors[2] = Color.orange;
+				colors[0] = Color.blue.brighter();
+				colors[1] = Color.green.darker();
+				colors[2] = Color.orange.brighter();
 				colors[3] = Color.white;
 			case BETA:  //Hellwach, geistige Aktivität, Konzentration: Gute Aufnahmefähigkeit und Aufmerksamkeit
-				colors[0] = Color.yellow;
-				colors[1] = Color.orange;
-				colors[2] = Color.red;
+				colors[0] = Color.yellow.darker();
+				colors[1] = Color.orange.brighter();
+				colors[2] = Color.red.brighter();
 				colors[3] = Color.white;
 			case GAMMA: //Geistige Höchstleistung, Problemlösung, Angst: Transformation und neurale Reorganisation
-				colors[0] = Color.red;
-				colors[1] = Color.yellow;
-				colors[2] = Color.orange;
-				colors[3] = Color.pink;
+				colors[0] = Color.red.darker();
+				colors[1] = Color.yellow.darker();
+				colors[2] = Color.orange.brighter();
+				colors[3] = Color.pink.darker();
 			case DELTA: //Traumloser Schlaf
-				colors[0] = Color.green;
-				colors[1] = Color.blue;
-				colors[2] = Color.white;
-				colors[3] = Color.white;
+				colors[0] = Color.green.brighter();
+				colors[1] = Color.blue.brighter();
+				colors[2] = Color.white.brighter();
+				colors[3] = Color.white.brighter();
 			case THETA: //Leichter Schlaf, REM-Phase, Träume
-				colors[0] = Color.green;
-				colors[1] = Color.blue;
-				colors[2] = Color.cyan;
-				colors[3] = Color.magenta;
+				colors[0] = Color.green.brighter();
+				colors[1] = Color.blue.brighter();
+				colors[2] = Color.cyan.brighter();
+				colors[3] = Color.magenta.brighter();
 		}
-//		posColor = (int) (Math.random()*3);
-		bodySize = -10;
-		tempo = 1500;
+		bodySize = 1;
+		tempo = super.getFreq()[1];
 		width = pnl.getSize().width; // muss über Dimension gemacht werden, da Punkte und Pixel nicht vergleichbar wären
 		height = pnl.getSize().height;
 		animationPnl = (Graphics2D) pnl.getGraphics();
 		img = animationPnl.getDeviceConfiguration().createCompatibleImage(width, height, Transparency.BITMASK);
 		checkResize++;
+		if(isFraktal)
+		{
+			num1 = -3;
+			num2 = 0;
+			num3 = -2;
+			num4 = 0;
+//			num1 = (double) (Math.random()*-3+1);
+//			num2 =(double) (Math.random()*-3+2);
+//			num3 = (double) (Math.random()*-2+1);
+//			num4 =(double) (Math.random()*-1+2);
+			bodyCount = (int) (Math.random()*1+4);
+		}
+		
 		if(checkResize%2 == 0)
 		{
-			tempo = 10;
+			if(isFraktal)
+			{
+				tempo = 0;
+			}
+			else
+			{
+				tempo = 10;
+			}
 		}
 		else
 		{

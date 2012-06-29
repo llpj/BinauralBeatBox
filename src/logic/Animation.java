@@ -12,17 +12,19 @@ import javax.swing.JPanel;
 
 public abstract class Animation implements Runnable{
 	
+	//Grafikattribute
 	private int [] freq = new int[3];
 	protected Thread animation;
 	protected Graphics2D animationPnl;
 	protected JPanel pnl;
-	
 	protected int width;
 	protected int height;
-	protected boolean pause;
-	protected int tempo;
 	//Zur Abstimmung der Animationsgeschwindigkeit bei Resizing Window
 	protected int checkResize;
+	//Animationsattribute
+	protected boolean pause;
+	protected int tempo;
+
 	
 	//Konstruktor
 	public Animation(JPanel pnl) {
