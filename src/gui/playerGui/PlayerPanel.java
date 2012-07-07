@@ -37,7 +37,6 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 	
 	public static final int PLAY_BUTTON 	= 0;
 	public static final int STOP_BUTTON 	= 1;
-//	public static final int BALANCE_BUTTON	= 2;
 	public static final int TIME_BAR		= 3;
 	public static final int MUTE_SLIDER		= 4;
 	public static final int BEAT_SLIDER		= 5;
@@ -113,6 +112,8 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 			case MUTE_SLIDER:
 				muteSlider.addChangeListener( (ChangeListener)el );
 				break;
+			case BEAT_SLIDER:
+				beatSlider.addChangeListener( (ChangeListener)el );
 		}
 	}
 	
