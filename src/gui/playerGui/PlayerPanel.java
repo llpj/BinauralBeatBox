@@ -3,6 +3,7 @@ package gui.playerGui;
 import gui.ActionListenerAddable;
 import gui.ToggleButton;
 
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.util.EventListener;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSlider;
@@ -28,26 +30,17 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 	 */
 	private ToggleButton	playBtn;
 	private JButton			stopBtn;
-	private JButton			balanceBtn;
 	
-	/*
-	 * stellt die Zeitleiste dar
-	 */
-//	private JSlider			timeSlider;
-	private JSlider			muteSlider;
-	/*
-	 * Gesamtlautstärke der Sessionwiedergabe
-	 */
-//	private JProgressBar	muteBar;
-	private JProgressBar	timeBar;
+	private JProgressBar	timeBar;		// stellt die Zeitleiste dar
+	private JSlider			muteSlider;		// stellt die Leiste für Gesamtlautstärke dar
+	private JSlider			beatSlider;		// stellt die Leiste für die Beatlautstärke dar
 	
 	public static final int PLAY_BUTTON 	= 0;
 	public static final int STOP_BUTTON 	= 1;
 //	public static final int BALANCE_BUTTON	= 2;
-//	public static final int TIME_SLIDER		= 3;
 	public static final int TIME_BAR		= 3;
-//	public static final int MUTE_BAR		= 4;
 	public static final int MUTE_SLIDER		= 4;
+	public static final int BEAT_SLIDER		= 5;
 	
 
 	public PlayerPanel() {
@@ -55,11 +48,23 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 		
 		add(playBtn);
 		add(stopBtn);
-//		add(timeSlider);
 		add(timeBar);
-//		add(muteBar);
-		add(muteSlider);
-		add(balanceBtn);
+		
+		JPanel p = new JPanel();
+		p.setLayout( new GridLayout(2,1) );
+		
+		JPanel p1 = new JPanel();
+		p1.add( new JLabel("Total:") );
+		p1.add( muteSlider );
+		
+		JPanel p2 = new JPanel();
+		p2.add( new JLabel("Beat:") );
+		p2.add( beatSlider );
+		
+		p.add( p1 );
+		p.add( p2 );
+		
+		add(p);
 	}
 	
 	/**
@@ -76,56 +81,21 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 			}
 		});
 		
-		
-		balanceBtn = new JButton("b");
-		
-//		timeSlider = new JSlider();
-//		timeSlider.setSnapToTicks(false);
-//		timeSlider.setPaintTicks(true);
-//		timeSlider.setPaintLabels(true);
-//		timeSlider.setMinimum(0);
-//		timeSlider.setMaximum(0);
-//		timeSlider.setMajorTickSpacing(1);
-		
-		muteSlider = new JSlider();
-		//muteSlider.setSnapToTicks(true);
-		muteSlider.setPaintTicks(true);
-		muteSlider.setPaintLabels(true);
-		muteSlider.setMinimum(0);
-		muteSlider.setMaximum(100);
-		//muteSlider.setMajorTickSpacing(1);
-		
 		timeBar	= new JProgressBar();
 		timeBar.setMinimum(0);
 		timeBar.setMaximum(0);
 		
-//		muteBar = new JProgressBar();
-//		muteBar.setMinimum(0);
-//		muteBar.setMaximum(100);
-
-//		muteBar.addMouseListener( new MouseListener() {
-//			
-//			@Override
-//			public void mouseReleased(MouseEvent me) {
-//				calculateProgessBarPos( me.getPoint() );
-//			}
-//			
-//			@Override
-//			public void mousePressed(MouseEvent me) {
-//				calculateProgessBarPos( me.getPoint() );
-//			}
-//			
-//			@Override
-//			public void mouseExited(MouseEvent arg0) { }
-//			
-//			@Override
-//			public void mouseEntered(MouseEvent arg0) { }
-//			
-//			@Override
-//			public void mouseClicked(MouseEvent me) {
-//				calculateProgessBarPos( me.getPoint() );
-//			}
-//		});
+		muteSlider = new JSlider();
+		muteSlider.setPaintTicks(true);
+		muteSlider.setPaintLabels(true);
+		muteSlider.setMinimum(0);
+		muteSlider.setMaximum(100);
+		
+		beatSlider = new JSlider();
+		beatSlider.setPaintTicks(true);
+		beatSlider.setPaintLabels(true);
+		beatSlider.setMinimum(0);
+		beatSlider.setMaximum(100);
 	}
 
 	@Override
@@ -138,24 +108,18 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 				stopBtn.addActionListener( (ActionListener)el );
 				break;
 			case TIME_BAR:
-				//timeSlider.addChangeListener( (ChangeListener)el );
 				timeBar.addChangeListener( (ChangeListener)el );
 				break;
 			case MUTE_SLIDER:
-				//muteBar.addChangeListener( (ChangeListener)el );
 				muteSlider.addChangeListener( (ChangeListener)el );
 				break;
 		}
 	}
 	
 	public void setDuration(int d) {
-//		timeSlider.setMaximum(d);
-//		timeSlider.setValue(0);
-//		timeSlider.setMajorTickSpacing( timeSlider.getMaximum() );
 		// TODO Label anzeige wird nicht aktualisiert
 		timeBar.setMaximum(d);
 		timeBar.setValue(0);
-		//timeSlider.setMajorTickSpacing( timeSlider.getMaximum() );
 	}
 
 //	private void calculateProgessBarPos(Point p) {
