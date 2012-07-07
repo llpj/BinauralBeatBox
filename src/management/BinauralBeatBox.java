@@ -26,6 +26,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.ibm.keymanager.audit.s;
+
 import container.BinauralBeat;
 import container.Category;
 import container.Segment;
@@ -184,7 +186,7 @@ public class BinauralBeatBox {
 
 		pnl.addListenerToElement(PlayerPanel.PLAY_BUTTON, new ActionListener() {
 
-			//TODO: Abfangen, dass bei nicht ausgew�hlter Session play button ohn efunktion bleibt
+			//TODO: Abfangen, dass bei nicht ausgew�hlter Session play button ohn efunktion bleibt
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 
@@ -266,18 +268,25 @@ public class BinauralBeatBox {
 			}
 		});
 
-		pnl.addListenerToElement(PlayerPanel.TIME_SLIDER, new ChangeListener() {
+		pnl.addListenerToElement(PlayerPanel.TIME_BAR, new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
-				JSlider s = (JSlider) ce.getSource();
+				JProgressBar s = (JProgressBar) ce.getSource();
 				System.out.println(s.getValue());
 			}
 		});
-		pnl.addListenerToElement(PlayerPanel.MUTE_BAR, new ChangeListener() {
+		pnl.addListenerToElement(PlayerPanel.MUTE_SLIDER, new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
-				JProgressBar muteBar = (JProgressBar) ce.getSource();	// TODO MuteBar default Wert ändern
-				sw.changeVolumn(muteBar.getValue());
+				JSlider muteBar = (JSlider) ce.getSource();	// TODO MuteBar default Wert ändern
+				// FIXME NullPointerException
+				// 1. Es wurde noch KEINE Session gewaehlt
+				// 2. Lautstärke wurde angepasst
+				// Lösung: Wir brauchen etwas einheitliches, um zu erkennen, ob eine Session zurzeit abgespielt wird oder nicht
+				// Absprache mit Animation nötig!
+				// Quick Fix:
+				if(sw != null)
+					sw.changeVolumn(muteBar.getValue());
 				System.out.println(muteBar.getValue());
 			}
 		});

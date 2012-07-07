@@ -33,17 +33,21 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 	/*
 	 * stellt die Zeitleiste dar
 	 */
-	private JSlider			timeSlider;
+//	private JSlider			timeSlider;
+	private JSlider			muteSlider;
 	/*
 	 * Gesamtlautstärke der Sessionwiedergabe
 	 */
-	private JProgressBar	muteBar;
+//	private JProgressBar	muteBar;
+	private JProgressBar	timeBar;
 	
 	public static final int PLAY_BUTTON 	= 0;
 	public static final int STOP_BUTTON 	= 1;
 //	public static final int BALANCE_BUTTON	= 2;
-	public static final int TIME_SLIDER		= 3;
-	public static final int MUTE_BAR		= 4;
+//	public static final int TIME_SLIDER		= 3;
+	public static final int TIME_BAR		= 3;
+//	public static final int MUTE_BAR		= 4;
+	public static final int MUTE_SLIDER		= 4;
 	
 
 	public PlayerPanel() {
@@ -51,8 +55,10 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 		
 		add(playBtn);
 		add(stopBtn);
-		add(timeSlider);
-		add(muteBar);
+//		add(timeSlider);
+		add(timeBar);
+//		add(muteBar);
+		add(muteSlider);
 		add(balanceBtn);
 	}
 	
@@ -73,41 +79,53 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 		
 		balanceBtn = new JButton("b");
 		
-		timeSlider = new JSlider();
-		timeSlider.setSnapToTicks(false);
-		timeSlider.setPaintTicks(true);
-		timeSlider.setPaintLabels(true);
-		timeSlider.setMinimum(0);
-		timeSlider.setMaximum(0);
-		timeSlider.setMajorTickSpacing(1);
+//		timeSlider = new JSlider();
+//		timeSlider.setSnapToTicks(false);
+//		timeSlider.setPaintTicks(true);
+//		timeSlider.setPaintLabels(true);
+//		timeSlider.setMinimum(0);
+//		timeSlider.setMaximum(0);
+//		timeSlider.setMajorTickSpacing(1);
 		
-		muteBar = new JProgressBar();
-		muteBar.setMinimum(0);
-		muteBar.setMaximum(100);
+		muteSlider = new JSlider();
+		//muteSlider.setSnapToTicks(true);
+		muteSlider.setPaintTicks(true);
+		muteSlider.setPaintLabels(true);
+		muteSlider.setMinimum(0);
+		muteSlider.setMaximum(100);
+		//muteSlider.setMajorTickSpacing(1);
+		
+		timeBar	= new JProgressBar();
+		timeBar.setMinimum(0);
+		timeBar.setMaximum(0);
+		
+//		muteBar = new JProgressBar();
+//		muteBar.setMinimum(0);
+//		muteBar.setMaximum(100);
 
-		muteBar.addMouseListener( new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent me) {
-				calculateProgessBarPos( me.getPoint() );
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent me) {
-				calculateProgessBarPos( me.getPoint() );
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent arg0) { }
-			
-			@Override
-			public void mouseEntered(MouseEvent arg0) { }
-			
-			@Override
-			public void mouseClicked(MouseEvent me) {
-				calculateProgessBarPos( me.getPoint() );
-			}
-		});
+//		muteBar.addMouseListener( new MouseListener() {
+//			
+//			@Override
+//			public void mouseReleased(MouseEvent me) {
+//				calculateProgessBarPos( me.getPoint() );
+//			}
+//			
+//			@Override
+//			public void mousePressed(MouseEvent me) {
+//				calculateProgessBarPos( me.getPoint() );
+//			}
+//			
+//			@Override
+//			public void mouseExited(MouseEvent arg0) { }
+//			
+//			@Override
+//			public void mouseEntered(MouseEvent arg0) { }
+//			
+//			@Override
+//			public void mouseClicked(MouseEvent me) {
+//				calculateProgessBarPos( me.getPoint() );
+//			}
+//		});
 	}
 
 	@Override
@@ -119,24 +137,29 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 			case STOP_BUTTON:
 				stopBtn.addActionListener( (ActionListener)el );
 				break;
-			case TIME_SLIDER:
-				timeSlider.addChangeListener( (ChangeListener)el );
+			case TIME_BAR:
+				//timeSlider.addChangeListener( (ChangeListener)el );
+				timeBar.addChangeListener( (ChangeListener)el );
 				break;
-			case MUTE_BAR:
-				muteBar.addChangeListener( (ChangeListener)el );
+			case MUTE_SLIDER:
+				//muteBar.addChangeListener( (ChangeListener)el );
+				muteSlider.addChangeListener( (ChangeListener)el );
 				break;
 		}
 	}
 	
 	public void setDuration(int d) {
-		timeSlider.setMaximum(d);
-		timeSlider.setValue(0);
-		timeSlider.setMajorTickSpacing( timeSlider.getMaximum() );
+//		timeSlider.setMaximum(d);
+//		timeSlider.setValue(0);
+//		timeSlider.setMajorTickSpacing( timeSlider.getMaximum() );
 		// TODO Label anzeige wird nicht aktualisiert
+		timeBar.setMaximum(d);
+		timeBar.setValue(0);
+		//timeSlider.setMajorTickSpacing( timeSlider.getMaximum() );
 	}
 
-	private void calculateProgessBarPos(Point p) {
-		float u = (float) muteBar.getSize().width / muteBar.getMaximum();
-		muteBar.setValue((int)( (float)p.x / u));
-	}
+//	private void calculateProgessBarPos(Point p) {
+//		float u = (float) muteBar.getSize().width / muteBar.getMaximum();
+//		muteBar.setValue((int)( (float)p.x / u));
+//	}
 }

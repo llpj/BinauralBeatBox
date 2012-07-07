@@ -10,11 +10,8 @@ import java.util.Map;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
 
 import container.Session;
 
