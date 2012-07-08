@@ -234,13 +234,13 @@ public class SessionWiedergabe implements Runnable{
 	 */
 	public int[] getCurFreq() {
 		
-		FreqLeft = (int) session.getFreqAt(posX, true);
-	    FreqRight = (int) session.getFreqAt(posX, false);
+		FreqLeft = (int) session.getFreqAt(posX, true) / 10;
+	    FreqRight = (int) session.getFreqAt(posX, false) / 10;
 	    
 	    if (FreqLeft <= FreqRight) {
-	    	FreqBeat =  FreqRight - FreqLeft;
+	    	FreqBeat =  (int) session.getFreqAt(posX, false) - (int) session.getFreqAt(posX, true);
 	    } else {
-	    	FreqBeat =  FreqLeft - FreqRight;
+	    	FreqBeat =  (int) session.getFreqAt(posX, true) - (int) session.getFreqAt(posX, false);
 	    }
     
 	    int [] freq  = { FreqLeft, FreqBeat, FreqRight };
