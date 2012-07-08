@@ -162,14 +162,14 @@ public class BinauralBeatBox {
 						}
 					} else if (animationCounter == 1) {
 						// animationFrakFarbverlauf: false = nur farbverlauf
-						animation = new FrakFarbverlauf(Mood.THETA, mf
+						animation = new FrakFarbverlauf(sw.getCurMood(), mf
 								.getVirtualizationPnl(), false);
 						if (resize % 2 == 0) {
 							animation.init();
 						}
 					} else {
 						// animationFrakFarbverlauf: true = frak,
-						animation = new FrakFarbverlauf(Mood.THETA, mf
+						animation = new FrakFarbverlauf(sw.getCurMood(), mf
 								.getVirtualizationPnl(), true);
 						if (resize % 2 == 0) {
 							animation.init();
@@ -215,14 +215,14 @@ public class BinauralBeatBox {
 							} else if (animationCounter == 1) {
 								// animationFrakFarbverlauf: false = nur
 								// farbverlauf
-								animation = new FrakFarbverlauf(Mood.THETA, mf
+								animation = new FrakFarbverlauf(sw.getCurMood(), mf
 										.getVirtualizationPnl(), false);
 								if (resize % 2 == 0) {
 									animation.init();
 								}
 							} else {
 								// animationFrakFarbverlauf: true = frak,
-								animation = new FrakFarbverlauf(Mood.THETA, mf
+								animation = new FrakFarbverlauf(sw.getCurMood(), mf
 										.getVirtualizationPnl(), true);
 								if (resize % 2 == 0) {
 									animation.init();

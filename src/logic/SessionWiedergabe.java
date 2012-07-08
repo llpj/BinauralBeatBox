@@ -41,8 +41,7 @@ public class SessionWiedergabe implements Runnable{
 	int FreqLeft, FreqRight, FreqBeat = 0;
 	double volumn;
 	float dB;
-	//int[]						freq = {0,0,0}; // enthällt die aktuelle Frequenz 
-
+	Mood curMood;
 	
 	private Thread	t;
 	private boolean pause;
@@ -158,7 +157,7 @@ public class SessionWiedergabe implements Runnable{
 			clip.close();
 			clipDuration = 0; // Session auf den Anfang setzen
 		} else {
-			System.out.println("Stop Fehler: Hintergrunfmusik wurde nicht abgespielt.");
+			System.out.println("Stop Fehler: Hintergrundmusik wurde nicht abgespielt.");
 		}
 		t.interrupt();
 	}
@@ -193,6 +192,7 @@ public class SessionWiedergabe implements Runnable{
 			}
 			beatLine.write(data, 0, numBytesRead);
 		}
+		stopSession();
 	}
 	
 	private int getStereoTon(byte[] data, int buffer) {
@@ -226,7 +226,7 @@ public class SessionWiedergabe implements Runnable{
 	}
 	
 	/**
-	 * public int[] getCurFreq
+	 * public getCurFreq
 	 * 
 	 * gibt die Aktuelle Frequenz in einem int Array zurück
 	 * 
@@ -246,6 +246,19 @@ public class SessionWiedergabe implements Runnable{
 	    int [] freq  = { FreqLeft, FreqBeat, FreqRight };
 		System.out.println("Frequenz: " + freq[0] + "   " + freq[1] + "   " + freq[2]);
 	    return freq;
+	}
+	
+	/**
+	 * public getCurMood
+	 * 
+	 * gibt den aktuelle Mood von der Session wieder
+	 * 
+	 * @return Mood
+	 */
+	public Mood getCurMood() {
+		curMood = session.getSegments().get(0).getBeat().getMood();
+		System.out.println("Current Mood: " + curMood);
+		return curMood;
 	}
 	
 	
