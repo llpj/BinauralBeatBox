@@ -14,6 +14,8 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import container.Session;
+import interfaces.Mood;
+
 
 /**
  * @author Boris Beck and Felix Pistorius
@@ -36,8 +38,10 @@ public class SessionWiedergabe implements Runnable{
 	private long 				clipDuration = 0;
 	private File				fileBg;
 	float 						balc1, balc2;
+	int FreqLeft, FreqRight, FreqBeat = 0;
 	double volumn;
 	float dB;
+	//int[]						freq = {0,0,0}; // enthällt die aktuelle Frequenz 
 
 	
 	private Thread	t;
@@ -166,11 +170,11 @@ public class SessionWiedergabe implements Runnable{
 			beatLine.open( beatFormat, 2*BUFFER );
 		}
 		catch (LineUnavailableException e) { e.printStackTrace(); }
-		
+	
 		beatLine.start();
+
 		
-		while(posX < session.getDuration() ) {
-			
+		while(posX < session.getDuration() ) {						
 			synchronized (this) {
 				while(pause) {
 					try {
@@ -178,8 +182,7 @@ public class SessionWiedergabe implements Runnable{
 						// TODO fixen, dass wenn Pause gedrückt ist, dann stop, kein Interrupted Exception kommt.
 					} catch (InterruptedException e) { e.printStackTrace(); }
 				}
-			}
-			
+			}			
 			
 			byte[] data = new byte[BUFFER];
 			int numBytesRead = getStereoTon(data, BUFFER);
@@ -222,6 +225,29 @@ public class SessionWiedergabe implements Runnable{
 		return data;
 	}
 	
+	/**
+	 * public int[] getCurFreq
+	 * 
+	 * gibt die Aktuelle Frequenz in einem int Array zurück
+	 * 
+	 * @return int[]
+	 */
+	public int[] getCurFreq() {
+		
+		FreqLeft = (int) session.getFreqAt(posX, true);
+	    FreqRight = (int) session.getFreqAt(posX, false);
+	    
+	    if (FreqLeft <= FreqRight) {
+	    	FreqBeat =  FreqRight - FreqLeft;
+	    } else {
+	    	FreqBeat =  FreqLeft - FreqRight;
+	    }
+    
+	    int [] freq  = { FreqLeft, FreqBeat, FreqRight };
+		System.out.println("Frequenz: " + freq[0] + "   " + freq[1] + "   " + freq[2]);
+	    return freq;
+	}
+	
 	
 	/**
 	 * 
@@ -237,6 +263,7 @@ public class SessionWiedergabe implements Runnable{
 		dB = (float) (Math.log(volumn) / Math.log(10.0) * 20.0);
 		FloatControl gainControl1 = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 		FloatControl gainControl2 = (FloatControl) beatLine.getControl(FloatControl.Type.MASTER_GAIN);
+		
 		gainControl1.setValue(dB); // veringert / erhoeht die Lautsärke um x // Decibel
 		gainControl2.setValue(dB); // veringert / erhoeht die Lautsärke um x // Decibel
 	}

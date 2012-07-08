@@ -26,7 +26,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.ibm.keymanager.audit.s;
+// import com.ibm.keymanager.audit.s;
 
 import container.BinauralBeat;
 import container.Category;
@@ -154,8 +154,8 @@ public class BinauralBeatBox {
 					// Auswahl der Animation
 					// TODO freq und Mood uebergabe aus activeSession
 					if (animationCounter == 0) {
-						int[] freq = { -30, 0, 30 };
-						animation = new AnimationFreq(freq, mf
+						// int[] freq = { -30, 0, 30 };
+						animation = new AnimationFreq(sw.getCurFreq(), mf
 								.getVirtualizationPnl());
 						if (resize % 2 == 0) {
 							animation.init();
@@ -206,8 +206,8 @@ public class BinauralBeatBox {
 							// Auswahl der Animation
 							// TODO freq und Mood �bergabe aus activeSession
 							if (animationCounter == 0) {
-								int[] freq = { -30, 0, 30 };
-								animation = new AnimationFreq(freq, mf
+								//int[] freq = { -30, 0, 30 };
+								animation = new AnimationFreq(sw.getCurFreq(), mf
 										.getVirtualizationPnl());
 								if (resize % 2 == 0) {
 									animation.init();
