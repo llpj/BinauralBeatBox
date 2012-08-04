@@ -99,12 +99,10 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 
 		
 		Integer moodNameID = getMoodNameID( Integer.parseInt(startLeftFreq.getValue().toString()), Integer.parseInt(startRightFreq.getValue().toString()));
-		System.out.println("mood id: "+ moodNameID);
 		if(moodNameID != null)
 			startMood.setSelectedIndex( moodNameID );
 
 		moodNameID = getMoodNameID( Integer.parseInt(targetLeftFreq.getValue().toString()), Integer.parseInt(targetRightFreq.getValue().toString()));
-		System.out.println("mood id: "+ moodNameID);
 		if(moodNameID != null)
 			targetMood.setSelectedIndex( moodNameID );
 		
