@@ -4,6 +4,8 @@ import gui.ActionListenerAddable;
 import gui.GuiFunctionLib;
 import gui.ToggleButton;
 
+import interfaces.Mood;
+
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -93,6 +95,18 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 		
 		GuiFunctionLib.addGridBagContainer(this, gbl, moveUpBtn,						4, 0, 1, 1, 0, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, moveDownBtn,						4, 1, 1, 1, 0, 0);
+		
+
+		
+		Integer moodNameID = getMoodNameID( Integer.parseInt(startLeftFreq.getValue().toString()), Integer.parseInt(startRightFreq.getValue().toString()));
+		System.out.println("mood id: "+ moodNameID);
+		if(moodNameID != null)
+			startMood.setSelectedIndex( moodNameID );
+
+		moodNameID = getMoodNameID( Integer.parseInt(targetLeftFreq.getValue().toString()), Integer.parseInt(targetRightFreq.getValue().toString()));
+		System.out.println("mood id: "+ moodNameID);
+		if(moodNameID != null)
+			targetMood.setSelectedIndex( moodNameID );
 		
 		updateUI();
 	}
@@ -196,6 +210,40 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 			return 30;
 		
 		return 0;
+	}
+	
+	private Integer getMoodNameID(Integer freqLeft, Integer freqRight) {
+		Integer freq = 0;
+//		Test Ausgabe
+//		System.out.println("left: "+freqLeft);
+//		System.out.println("right: "+freqRight);
+		
+		if(freqLeft == null || freqRight == null)
+			return null;
+		
+		freq = Math.round( Math.max(freqLeft, freqRight) - Math.abs( (freqLeft-freqRight)/2 ));
+//		Test Ausgabe
+//		System.out.println("delta freq: "+freq);
+		
+		if (freq > 0 && freq < 4) {
+//			return "DELTA";
+			return 0;
+		} else if (freq >= 4 && freq < 8) {
+//			return "THETA";
+			return 1;
+		} else if (freq >= 8 && freq <= 13) {
+//			return "ALPHA";
+			return 2;
+		} else if (freq > 13 && freq <= 30) {
+//			return "BETA";
+			return 3;
+		} else if (freq > 30) {
+//			return "GAMMA";
+			return 4;
+		}
+		
+//		return "UNKNOWN";
+		return null;
 	}
 	
 	/**
