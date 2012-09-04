@@ -24,6 +24,8 @@ public abstract class Animation implements Runnable{
 	//Animationsattribute
 	protected boolean pause;
 	protected int tempo;
+	//Animationsauswahl --> Default == true
+	private boolean isAniFreq;
 
 	
 	//Konstruktor
@@ -75,4 +77,12 @@ public abstract class Animation implements Runnable{
 	public abstract void pause (boolean state); //"pause" an Stelle von "break", da Java bereits break benutzt
 	public abstract boolean finish (boolean state);
 	// Die Methode setHandle wurde durch direkte Zuweisung bei Objekt Instanzierung ersetzt
+
+	public void setAniFreq(boolean isAniFreq) {
+		this.isAniFreq = isAniFreq;
+	}
+
+	public boolean isAniFreq() {
+		return isAniFreq;
+	}
 }
