@@ -23,7 +23,8 @@ public class AnimationFreq extends Animation {
 	BufferedImage img;
 	//x-Achsen Verschiebung der Sinuskurven
 	double xPos;
-	
+	//Sin-Kurven Darstellungsparameter
+	final static float dash[] = {15.0f};
 	//Konstruktor
 	public AnimationFreq (int [] freq, JPanel pnl)
 	{
@@ -72,7 +73,10 @@ public class AnimationFreq extends Animation {
 				}
 				animationPnlBuffer.setColor(c[j]);
 				//TODO THREAD error beheben --> kommt nur manchmal
-				animationPnlBuffer.setStroke(new BasicStroke(5));
+				animationPnlBuffer.setStroke(new BasicStroke(3.0f,
+                        BasicStroke.CAP_BUTT,
+                        BasicStroke.JOIN_ROUND,
+                        5.0f, dash, 5.0f));
 				animationPnlBuffer.drawPolyline(x, y, x.length);
 			}
 			animationPnlBuffer.translate((int)x[x.length-1],0);
@@ -129,7 +133,6 @@ public class AnimationFreq extends Animation {
 			sin(true);
 			animationPnl.drawImage(img, null, 0, 0);
 			sin(false);
-
 			try 
 			{
 				Thread.sleep (tempo);	
