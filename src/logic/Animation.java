@@ -1,6 +1,6 @@
 /**
  * @author Fabian Schaefer
- *
+ *	Oberklasse der Animationen
  */
 
 package logic;

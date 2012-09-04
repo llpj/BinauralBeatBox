@@ -1,6 +1,6 @@
 /**
  * @author Fabian Schaefer
- * Animation zur Darstellung eines Farbverlaufs und diverser Fraktal 
+ * Animation zur Darstellung eines Farbverlaufs und der fraktalen Animation eines Apfelmännchens 
  */
 
 package logic;
@@ -11,21 +11,20 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.RenderingHints;
 import java.awt.Transparency;
-import java.awt.color.ColorSpace;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-//TODO Fraktale Animation
 
 public class FrakFarbverlauf extends Animation {
 
 	private float bodySize; //random
 	private int bodyCount; //random
+	//Das Attribut Color wird entgegen der Angabe im Architekturdokument mit 4 Farben initialisiert. 
+	//Eine Start und End Farbe wird durch die Methode GradientPaint überflüssig
 	private Color [] colors = new Color [4]; 
 	// isFarbverlauf wird nun durch den Unterschied von true und false mit abgebildet
     private boolean isFraktal;        
@@ -160,44 +159,15 @@ public class FrakFarbverlauf extends Animation {
         
         if(isFraktal == false)
 		{
+        	//Farbverlauf Animation
         	animationPnlBuffer.setPaint(createGradient (colors[posColor], colors[posColor+1]));
 			animationPnlBuffer.fillRect(0, 0, width, height);
 			animationPnlBuffer.drawRect(0, 0, width, height);
 		}
 		else
 		{
-//			int i = 0;
-//			while( i < bodyCount)
-//			{
-				apfelMan(animationPnlBuffer);
-//				switch(bodyCount)
-//				{
-//					case 2:
-//						animationPnlBuffer.translate(100,-100);
-//						animationPnlBuffer.setRenderingHint( RenderingHints.KEY_ANTIALIASING,
-//			                     RenderingHints.VALUE_ANTIALIAS_ON );
-//						break;
-//					case 3:
-//						animationPnlBuffer.translate(100,-50);
-//						animationPnlBuffer.setRenderingHint( RenderingHints.KEY_ANTIALIASING,
-//			                     RenderingHints.VALUE_ANTIALIAS_ON );
-//						break;
-//					case 4:
-//						animationPnlBuffer.translate(100,0);
-//						animationPnlBuffer.setRenderingHint( RenderingHints.KEY_ANTIALIASING,
-//			                     RenderingHints.VALUE_ANTIALIAS_ON );
-//						break;
-//					default:
-//						animationPnlBuffer.translate(100,+50);
-//						animationPnlBuffer.setRenderingHint( RenderingHints.KEY_ANTIALIASING,
-//			                     RenderingHints.VALUE_ANTIALIAS_ON );
-//						break;
-//				}
-					
-				
-//				i++;
-//			}
-			
+			//Fraktale Animation
+			apfelMan(animationPnlBuffer);
 		}  
     }
     
@@ -212,12 +182,55 @@ public class FrakFarbverlauf extends Animation {
     
     protected void setColor ()
     {
-    	// TODO definiere color anhand von mood
+    	switch(mood)
+		{
+			case ALPHA: //Entspannung, Zustand kurz vor und nach dem Schlaf: Erhöhte Erinnerungs- und Lernfähigkeit
+				colors[0] = Color.blue.brighter();
+				colors[1] = Color.green.darker();
+				colors[2] = Color.orange.brighter();
+				colors[3] = Color.white;
+			case BETA:  //Hellwach, geistige Aktivität, Konzentration: Gute Aufnahmefähigkeit und Aufmerksamkeit
+				colors[0] = Color.yellow.darker();
+				colors[1] = Color.orange.brighter();
+				colors[2] = Color.red.brighter();
+				colors[3] = Color.white;
+			case GAMMA: //Geistige Höchstleistung, Problemlösung, Angst: Transformation und neurale Reorganisation
+				colors[0] = Color.red.darker();
+				colors[1] = Color.yellow.darker();
+				colors[2] = Color.orange.brighter();
+				colors[3] = Color.pink.darker();
+			case DELTA: //Traumloser Schlaf
+				colors[0] = Color.green.brighter();
+				colors[1] = Color.blue.brighter();
+				colors[2] = Color.white.brighter();
+				colors[3] = Color.white.brighter();
+			case THETA: //Leichter Schlaf, REM-Phase, Träume
+				colors[0] = Color.green.brighter();
+				colors[1] = Color.blue.brighter();
+				colors[2] = Color.cyan.brighter();
+				colors[3] = Color.magenta.brighter();
+		}
     }
     
     protected void setTempo ()
     {
-    	// TODO kalkuliere tempo anhand von freq
+    	//Kann bei Bedarf noch variable durch Überabe des Freq-Parameter eingestellt werden
+    	//Allerdings wird diese Konstante Einstellung empfohlen bzgl. flüssige Darstellung
+    	if(checkResize%2 == 0)
+		{
+			if(isFraktal)
+			{
+				tempo = 0;
+			}
+			else
+			{
+				tempo = 10;
+			}
+		}
+		else
+		{
+			tempo = 40;
+		}
     }
     
   
@@ -249,6 +262,7 @@ public class FrakFarbverlauf extends Animation {
 				}
 				if (isFraktal)
 				{
+					//Konfigurationen für Animationsdarstellung (fraktal)
 					if(counter <= 0 && !marker2)
 					{
 						marker = true;
@@ -256,10 +270,6 @@ public class FrakFarbverlauf extends Animation {
 					else if (marker2 && counter <= 5)
 					{
 						marker = true;
-//						num1 =-3; //(float) (Math.random()*-3+1);
-//						num2 =0;//(float) (Math.random()*1-3);
-//						num3 = -2;//(float) (Math.random()*1-2);
-//						num4 = 0;//(float) (Math.random()*1-1);
 						bodyCount = (int) (Math.random()*1+4);
 					}	
 					else if(counter >= 15)
@@ -287,9 +297,10 @@ public class FrakFarbverlauf extends Animation {
 					}
 					
 				}
-				System.out.println(bodySize);
+				//System.out.println(bodySize);
 				createBody();
 				gradPos += h;
+				//Definition des Richtungs- und Farbwechsels (Frabverlauf)
 				if(gradPos > 750)
 				{
 					h = -3.1f;
@@ -317,34 +328,7 @@ public class FrakFarbverlauf extends Animation {
 	@Override
 	public void init() {//TODO Session session
 		// TODO Auto-generated method stub
-		switch(mood)
-		{
-			case ALPHA: //Entspannung, Zustand kurz vor und nach dem Schlaf: Erhöhte Erinnerungs- und Lernfähigkeit
-				colors[0] = Color.blue.brighter();
-				colors[1] = Color.green.darker();
-				colors[2] = Color.orange.brighter();
-				colors[3] = Color.white;
-			case BETA:  //Hellwach, geistige Aktivität, Konzentration: Gute Aufnahmefähigkeit und Aufmerksamkeit
-				colors[0] = Color.yellow.darker();
-				colors[1] = Color.orange.brighter();
-				colors[2] = Color.red.brighter();
-				colors[3] = Color.white;
-			case GAMMA: //Geistige Höchstleistung, Problemlösung, Angst: Transformation und neurale Reorganisation
-				colors[0] = Color.red.darker();
-				colors[1] = Color.yellow.darker();
-				colors[2] = Color.orange.brighter();
-				colors[3] = Color.pink.darker();
-			case DELTA: //Traumloser Schlaf
-				colors[0] = Color.green.brighter();
-				colors[1] = Color.blue.brighter();
-				colors[2] = Color.white.brighter();
-				colors[3] = Color.white.brighter();
-			case THETA: //Leichter Schlaf, REM-Phase, Träume
-				colors[0] = Color.green.brighter();
-				colors[1] = Color.blue.brighter();
-				colors[2] = Color.cyan.brighter();
-				colors[3] = Color.magenta.brighter();
-		}
+		setColor();
 		bodySize = 1;
 		tempo = super.getFreq()[1];
 		width = pnl.getSize().width; // muss über Dimension gemacht werden, da Punkte und Pixel nicht vergleichbar wären
@@ -358,28 +342,9 @@ public class FrakFarbverlauf extends Animation {
 			num2 = 0;
 			num3 = -2;
 			num4 = 0;
-//			num1 = (double) (Math.random()*-3+1);
-//			num2 =(double) (Math.random()*-3+2);
-//			num3 = (double) (Math.random()*-2+1);
-//			num4 =(double) (Math.random()*-1+2);
 			bodyCount = (int) (Math.random()*1+4);
 		}
-		
-		if(checkResize%2 == 0)
-		{
-			if(isFraktal)
-			{
-				tempo = 0;
-			}
-			else
-			{
-				tempo = 10;
-			}
-		}
-		else
-		{
-			tempo = 40;
-		}
+		setTempo();
 		super.start();
 	}
 

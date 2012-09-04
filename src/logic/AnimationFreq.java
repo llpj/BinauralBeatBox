@@ -41,6 +41,7 @@ public class AnimationFreq extends Animation {
 		Color[] c = new Color[3];
 		if(set == false)
 		{
+			//Farbreset
 			c[0] = Color.GRAY;
 			c[1] = Color.GRAY;
 			c[2] = Color.GRAY;
