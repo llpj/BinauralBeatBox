@@ -43,6 +43,7 @@ public class FrakFarbverlauf extends Animation {
     public FrakFarbverlauf (Mood mood, JPanel pnl, boolean isFraktal)
     {
     	super(pnl);
+    	super.setAniFreq(false);
     	this.setMood(mood);
     	this.setFraktal(isFraktal);
     	//Initialisierung - checkSize und posColor müssen im Konstruktor initialisiert sein !!! (wegen resizing)
@@ -371,6 +372,7 @@ public class FrakFarbverlauf extends Animation {
 			animationPnl.setColor(Color.GRAY);
 			animationPnl.fill(rectangle);
 			animation.stop();
+			super.setAniFreq(true);
 			return true;
 		}
 		

@@ -29,6 +29,7 @@ public class AnimationFreq extends Animation {
 	{
 		super(pnl);
 		super.setFreq(freq);
+		super.setAniFreq(false);
 		y = new int[360]; 
 		x = new int[360];
 		//Initialisierung - checkSize muss im Konstruktor initialisiert sein !!! (wegen resizing)
