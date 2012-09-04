@@ -15,6 +15,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import container.Session;
 import interfaces.Mood;
+import management.BinauralBeatBox;
 
 
 /**
@@ -181,7 +182,9 @@ public class SessionWiedergabe implements Runnable{
 						// TODO fixen, dass wenn Pause gedrückt ist, dann stop, kein Interrupted Exception kommt.
 					} catch (InterruptedException e) { e.printStackTrace(); }
 				}
-			}			
+			}
+			BinauralBeatBox.animationUpdateFreq(getCurFreq());
+			BinauralBeatBox.animationUpdateMood(getCurMood());
 			
 			byte[] data = new byte[BUFFER];
 			int numBytesRead = getStereoTon(data, BUFFER);

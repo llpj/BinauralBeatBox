@@ -44,7 +44,7 @@ import gui.playerGui.SessionListPanel;
 public class BinauralBeatBox {
 
 	private MainFrame mf;
-	private Animation animation;
+	private static Animation animation;
 
 	private FileManager fileManager;
 	private SessionWiedergabe sw;
@@ -180,12 +180,25 @@ public class BinauralBeatBox {
 		});
 
 	}
+	
+	public static void animationUpdateFreq(int[] curFreq) {
+			animation.setFreq(curFreq);
+			animation.init();
+			animation.finish(true);
+
+	}
+	
+	public static void animationUpdateMood(Mood curMood) {
+		animation.finish(true);
+		((FrakFarbverlauf) animation).setMood(curMood);
+		animation.init();
+	}
 
 	private void initListenerForPlayerPanel() {
 		PlayerPanel pnl = mf.getPlayerPanel();
 
-		pnl.addListenerToElement(PlayerPanel.PLAY_BUTTON, new ActionListener() {
-
+		pnl.addListenerToElement(PlayerPanel.PLAY_BUTTON, new ActionListener() {			
+			
 			//TODO: Abfangen, dass bei nicht ausgew�hlter Session play button ohn efunktion bleibt
 			@Override
 			public void actionPerformed(ActionEvent ae) {
