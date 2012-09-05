@@ -185,10 +185,10 @@ public class SessionWiedergabe implements Runnable{
 				}
 			}
 			
-			if (checkFrequence()) {
-				BinauralBeatBox.animationUpdateFreq(getCurFreq());
-				//BinauralBeatBox.animationUpdateMood(getCurMood());
-			}
+//			if (checkFrequence()) {
+//				BinauralBeatBox.animationUpdateFreq(getCurFreq());
+//				//BinauralBeatBox.animationUpdateMood(getCurMood());
+//			}
 			
 			byte[] data = new byte[BUFFER];
 			int numBytesRead = getStereoTon(data, BUFFER);
