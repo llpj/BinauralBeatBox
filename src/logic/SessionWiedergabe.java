@@ -38,7 +38,8 @@ public class SessionWiedergabe implements Runnable{
 	private Clip				clip;
 	private long 				clipDuration = 0;
 	private File				fileBg;
-	private int[]				tmpFreq = {0,0,0};
+	public int[]				tmpFreq = {0,0,0};
+	public int[]				curFreq = {0,0,0};
 	float 						balc1, balc2;
 	int FreqLeft, FreqRight, FreqBeat = 0;
 	double volumn;
@@ -185,10 +186,10 @@ public class SessionWiedergabe implements Runnable{
 				}
 			}
 			
-//			if (checkFrequence()) {
-//				BinauralBeatBox.animationUpdateFreq(getCurFreq());
-//				//BinauralBeatBox.animationUpdateMood(getCurMood());
-//			}
+			if (checkFrequence()==true) {
+				System.out.println("FREQUENZAENDERUNG");
+				BinauralBeatBox.animationUpdateFreq(getCurFreq(), getCurMood());
+			}
 			
 			byte[] data = new byte[BUFFER];
 			int numBytesRead = getStereoTon(data, BUFFER);
@@ -200,6 +201,20 @@ public class SessionWiedergabe implements Runnable{
 			beatLine.write(data, 0, numBytesRead);
 		}
 		stopSession();
+	}
+	
+	// Get Current Time
+	public double getCurrentTime() {
+		return posX;
+	}
+	
+	public void setCurrentTime(double posNew) { //TODO glaube so geht das nicht :(
+		posX=posNew;
+	}
+	
+	// Get complete Session Time
+	public int getCompleteDuration() {
+		return session.getDuration();
 	}
 	
 	private int getStereoTon(byte[] data, int buffer) {
@@ -239,6 +254,7 @@ public class SessionWiedergabe implements Runnable{
 	 * 
 	 * @return int[]
 	 */
+	
 	public int[] getCurFreq() {
 		
 		FreqLeft = (int) session.getFreqAt(posX, true) / 10;
@@ -248,8 +264,7 @@ public class SessionWiedergabe implements Runnable{
 	    	FreqBeat =  (int) session.getFreqAt(posX, false) - (int) session.getFreqAt(posX, true);
 	    } else {
 	    	FreqBeat =  (int) session.getFreqAt(posX, true) - (int) session.getFreqAt(posX, false);
-	    }
-    
+	    }   
 	    int [] freq  = { FreqLeft, FreqBeat, FreqRight };
 		System.out.println("Frequenz: " + freq[0] + "   " + freq[1] + "   " + freq[2]);
 	    return freq;
@@ -263,13 +278,12 @@ public class SessionWiedergabe implements Runnable{
 	 * @return boolean
 	 */
 	public boolean checkFrequence(){	
-		if (tmpFreq==getCurFreq()) {
-			System.out.println("False");
+		curFreq=getCurFreq();
+		if (tmpFreq[0]==curFreq[0] && tmpFreq[1]==curFreq[1] && tmpFreq[2]==curFreq[2]) {
 			return false;
 		}
 		else {
-			tmpFreq=getCurFreq();
-			System.out.println("True");
+			tmpFreq=curFreq;
 			return true;
 		}
 	}

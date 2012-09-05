@@ -181,21 +181,17 @@ public class BinauralBeatBox {
 
 	}
 	
-	public static void animationUpdateFreq(int[] curFreq) {
+	public static void animationUpdateFreq(int[] curFreq, Mood curMood) {
 		if (animation.isAniFreq()==false) {
 			animation.setFreq(curFreq);
 			animation.init();
 		}
-		else animation.finish(true);
-
-	}
-	
-	public static void animationUpdateMood(Mood curMood) {
 		if (animation.isAniFreq()==true) {
 			((FrakFarbverlauf) animation).setMood(curMood);
 			animation.init();
 		}
 	}
+	
 
 	private void initListenerForPlayerPanel() {
 		PlayerPanel pnl = mf.getPlayerPanel();
@@ -210,8 +206,7 @@ public class BinauralBeatBox {
 					if (((ToggleButton) ae.getSource()).isSelected()) {
 						// PLAY
 						if (sw == null) {
-							sw = new SessionWiedergabe(fileManager
-									.getActiveSession());
+							sw = new SessionWiedergabe(fileManager.getActiveSession());
 							sw.playSession();
 						} else {
 							sw.continueSession();
@@ -283,12 +278,27 @@ public class BinauralBeatBox {
 				}
 			}
 		});
-
+		
 		pnl.addListenerToElement(PlayerPanel.TIME_BAR, new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
 				JProgressBar s = (JProgressBar) ce.getSource();
-				System.out.println(s.getValue());
+				if (sw!=null) {
+				    s.setStringPainted(true);
+					s.setMaximum(sw.getCompleteDuration());
+					
+					System.out.println("CurTime: " + sw.getCurrentTime());
+					System.out.println("Complete Time: " + sw.getCompleteDuration());
+					
+					  if (sw.getCurrentTime() < sw.getCompleteDuration()) {
+				           s.setValue((int) sw.getCurrentTime());
+				        } else {
+				           s.setValue(sw.getCompleteDuration());
+				        }
+					  s.repaint();
+				}
+					
+				System.out.println("Time Bar: " + s.getValue());
 			}
 		});
 		pnl.addListenerToElement(PlayerPanel.MUTE_SLIDER, new ChangeListener() {
