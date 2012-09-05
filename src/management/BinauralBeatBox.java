@@ -306,6 +306,13 @@ public class BinauralBeatBox {
 				System.out.println(muteBar.getValue());
 			}
 		});
+		
+		pnl.addListenerToElement(PlayerPanel.BEAT_SLIDER, new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent ce) {
+				//TODO Boris
+			}
+		});
 	}
 
 	private void initListenerForSessionListPanel() {
