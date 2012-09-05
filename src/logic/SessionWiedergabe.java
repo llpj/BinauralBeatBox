@@ -38,6 +38,7 @@ public class SessionWiedergabe implements Runnable{
 	private Clip				clip;
 	private long 				clipDuration = 0;
 	private File				fileBg;
+	private int[]				tmpFreq = {0,0,0};
 	float 						balc1, balc2;
 	int FreqLeft, FreqRight, FreqBeat = 0;
 	double volumn;
@@ -183,8 +184,11 @@ public class SessionWiedergabe implements Runnable{
 					} catch (InterruptedException e) { e.printStackTrace(); }
 				}
 			}
-			BinauralBeatBox.animationUpdateFreq(getCurFreq());
-			BinauralBeatBox.animationUpdateMood(getCurMood());
+			
+//			if (checkFrequence()) {
+//				BinauralBeatBox.animationUpdateFreq(getCurFreq());
+//				//BinauralBeatBox.animationUpdateMood(getCurMood());
+//			}
 			
 			byte[] data = new byte[BUFFER];
 			int numBytesRead = getStereoTon(data, BUFFER);
@@ -249,6 +253,25 @@ public class SessionWiedergabe implements Runnable{
 	    int [] freq  = { FreqLeft, FreqBeat, FreqRight };
 		System.out.println("Frequenz: " + freq[0] + "   " + freq[1] + "   " + freq[2]);
 	    return freq;
+	}
+	
+	/**
+	 * Checkt die Frequent auf Aenderungen
+	 * false:	keine Aenderung
+	 * true:	Frequenzaenderung
+	 * 
+	 * @return boolean
+	 */
+	public boolean checkFrequence(){	
+		if (tmpFreq==getCurFreq()) {
+			System.out.println("False");
+			return false;
+		}
+		else {
+			tmpFreq=getCurFreq();
+			System.out.println("True");
+			return true;
+		}
 	}
 	
 	/**

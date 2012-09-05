@@ -182,16 +182,19 @@ public class BinauralBeatBox {
 	}
 	
 	public static void animationUpdateFreq(int[] curFreq) {
+		if (animation.isAniFreq()==false) {
 			animation.setFreq(curFreq);
 			animation.init();
-			animation.finish(true);
+		}
+		else animation.finish(true);
 
 	}
 	
 	public static void animationUpdateMood(Mood curMood) {
-		animation.finish(true);
-		((FrakFarbverlauf) animation).setMood(curMood);
-		animation.init();
+		if (animation.isAniFreq()==true) {
+			((FrakFarbverlauf) animation).setMood(curMood);
+			animation.init();
+		}
 	}
 
 	private void initListenerForPlayerPanel() {
