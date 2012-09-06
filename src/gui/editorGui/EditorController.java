@@ -58,6 +58,7 @@ public class EditorController {
 		
 
 		if(s != null) {
+			System.out.println("Session wird an SessionEditorPanel uebergeben");
 			editorPnl	= new SessionEditorPanel(s);
 		} else {
 			editorPnl	= new SessionEditorPanel();

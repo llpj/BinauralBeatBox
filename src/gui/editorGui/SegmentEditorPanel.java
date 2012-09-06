@@ -177,6 +177,7 @@ public class SegmentEditorPanel extends JPanel {
 	private void setDefaultValues(Session session) {
 		SegmentPanel p;
 		int i = 0;
+		segmentList.clear();
 		for (Segment seg : session.getSegments()) {
 			if (i < segmentList.size()) {
 				p = segmentList.get(i);

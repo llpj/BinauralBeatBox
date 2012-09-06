@@ -6,25 +6,19 @@
       <sessions>
         <container.Session>
           <Hintergrundklang>./bin/resources/wav/White_Noise.wav</Hintergrundklang>
-          <segments/>
-          <duration>0</duration>
-          <name>Thu Sep 06 22:57:37 CEST 2012</name>
-        </container.Session>
-        <container.Session>
-          <Hintergrundklang>./bin/resources/wav/White_Noise.wav</Hintergrundklang>
           <segments>
             <container.Segment>
-              <duration>0</duration>
+              <duration>10</duration>
               <beat>
-                <freq1__start>1</freq1__start>
-                <freq2__start>3</freq2__start>
-                <freq1__target>1</freq1__target>
-                <freq2__target>3</freq2__target>
+                <freq1__start>4</freq1__start>
+                <freq2__start>6</freq2__start>
+                <freq1__target>4</freq1__target>
+                <freq2__target>6</freq2__target>
               </beat>
             </container.Segment>
           </segments>
           <duration>0</duration>
-          <name>Thu Sep 06 23:29:22 CEST 2012</name>
+          <name>Thu Sep 06 23:47:31 CEST 2012</name>
         </container.Session>
       </sessions>
     </container.Category>

@@ -52,11 +52,11 @@ public class SessionEditorPanel extends JPanel implements ActionListenerAddable 
 		cancelBtn = new JButton("Abbrechen");
 
 		if(s != null) {
-			settingPnl = new GlobalSettingPanel();
-			segmentPnl = new SegmentEditorPanel();
-		} else {
 			settingPnl = new GlobalSettingPanel(s);
 			segmentPnl = new SegmentEditorPanel(s);
+		} else {
+			settingPnl = new GlobalSettingPanel();
+			segmentPnl = new SegmentEditorPanel();
 		}
 
 		tabPane = new JTabbedPane();

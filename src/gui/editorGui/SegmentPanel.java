@@ -279,8 +279,13 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 	private void setDefaultValues(Segment s) {
 //		startMood;
 //		targetModd;
-		sm.setValue( new Date(s.getDuration()) );
-		System.out.println( new Date(s.getDuration()) );
+		Date d = new Date();
+		int min = s.getDuration() % 60;
+		int sec = s.getDuration() - min*60;
+		d.setMinutes( s.getDuration() % 60 );
+		d.setSeconds( sec );
+		sm.setValue( d );
+		System.out.println( s.getDuration() );
 //		sm.setValue( s.getDuration()*1000 );
 //		durationSpin.setValue(  );		
 
@@ -301,7 +306,7 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 	 */
 	public Segment getValues() throws IllegalArgumentException {
 		Date d = (Date)sm.getValue();
-		int duration = d.getSeconds() * d.getMinutes()*60;
+		int duration = d.getSeconds() + d.getMinutes()*60;
 		System.out.println(duration);
 		
 		int freq1_start	= getIntValueOfSpinModel(snmSL);
@@ -354,11 +359,11 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 			public void stateChanged(ChangeEvent ce) {
 				Date d = (Date)sm.getValue();
 				
-				if( d.getSeconds() == 0 && 
-					d.getMinutes() == 0) {
-					sm.setValue(1000);
-					durationSpin.updateUI();
-				}
+//				if( d.getSeconds() == 0 && 
+//					d.getMinutes() == 0) {
+//					sm.setValue(1000);
+//					durationSpin.updateUI();
+//				}
 			}
 		});
 		
