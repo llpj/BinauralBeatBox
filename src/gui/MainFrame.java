@@ -66,6 +66,9 @@ public class MainFrame extends JFrame {
 		pack();
 	}
 	
+	/**
+	 * Layout für die Anzeige ohne Animationsflaeche 
+	 */
 	private void miniPlayerLayout() {
 		this.getContentPane().removeAll();
 		GridBagLayout gbl = new GridBagLayout();
@@ -82,6 +85,7 @@ public class MainFrame extends JFrame {
 	private void changeLayout() {
 		if(openBtn.isSelected()) {
 			playerLayout();
+			//groesse festlegen, damit animationsflaeche gross genug ist
 			setSize( new Dimension(getSize().width,500) );
 		} else {
 			miniPlayerLayout();
