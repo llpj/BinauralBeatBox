@@ -135,6 +135,9 @@ public class BinauralBeatBox {
 
 			@Override
 			public void mouseClicked(MouseEvent me) {
+				/**
+				 * Der Animationswechsel soll nur ermöglicht sein, wenn der Sound nicht pausiert
+				 */
 				if (!isPause) {
 					animation.finish(true);
 					// uebermalt alte animation falls mal pause gedrueckt wurde
@@ -162,7 +165,7 @@ public class BinauralBeatBox {
 							animation.init();
 						}
 					} else {
-						// animationFrakFarbverlauf: true = frak,
+						// animationFrakFarbverlauf: true = frak
 						animation = new FrakFarbverlauf(sw.getCurMood(), mf
 								.getVirtualizationPnl(), true);
 						if (resize % 2 == 0) {
@@ -175,6 +178,9 @@ public class BinauralBeatBox {
 	}
 	public void defaultPaint()
 	{
+		/**
+		 * Methode für das Übermalen des Animationsfensters
+		 */
 		Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl()
 		.getGraphics();
 		Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf
@@ -254,6 +260,7 @@ public class BinauralBeatBox {
 						} 
 						else 
 						{
+							//PAUSE wurde beendet
 							animation.pause(false);
 							isPause = false;
 						}

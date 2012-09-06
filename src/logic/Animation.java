@@ -26,8 +26,17 @@ public abstract class Animation implements Runnable{
 	protected int tempo;
 	//Animationsauswahl --> Default == true
 	private boolean isAniFreq;
+	protected boolean isFinished;
 
 	
+	public boolean isFinished() {
+		return isFinished;
+	}
+
+	public void setFinished(boolean isFinished) {
+		this.isFinished = isFinished;
+	}
+
 	//Konstruktor
 	public Animation(JPanel pnl) {
 		this.pnl = pnl;
@@ -63,6 +72,38 @@ public abstract class Animation implements Runnable{
 	{
 		return pause;
 	}
+	public JPanel getPnl() {
+		return pnl;
+	}
+
+	public void setPnl(JPanel pnl) {
+		this.pnl = pnl;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getTempo() {
+		return tempo;
+	}
+
+	public void setTempo(int tempo) {
+		this.tempo = tempo;
+	}
+
 	public int [] getFreq ()
 	{
 		return freq;
