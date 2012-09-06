@@ -1,5 +1,6 @@
 package gui;
 
+import gui.editorGui.EditorController;
 import gui.editorGui.SessionEditorPanel;
 import gui.playerGui.PlayerPanel;
 import gui.playerGui.SessionListPanel;
@@ -12,6 +13,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.tree.DefaultTreeCellEditor.EditorContainer;
 
 public class MainFrame extends JFrame {
 	
@@ -22,11 +24,13 @@ public class MainFrame extends JFrame {
 	
 	
 	private PlayerPanel			playerPnl;
+	private PlayerPanel			editorPlayer;	//soll nur im Editor verwendet werden, 
+												//und wird immer beim Wechsel zur Editor-Ansicht neu erstellt
 	private JPanel				virtualizationPnl;
 	private SessionListPanel	listPnl;
 	private SessionEditorPanel	editorPnl;
 	private ToggleButton		openBtn;	//Anzeige von Animationsflaeche an/aus
-
+	
 	public MainFrame() {
 		playerPnl			= new PlayerPanel();
 		listPnl				= new SessionListPanel();
@@ -99,22 +103,9 @@ public class MainFrame extends JFrame {
 		getContentPane().removeAll();
 		GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
-
-		editorPnl			= new SessionEditorPanel();
-		ActionListener al = new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						playerLayout();
-					}
-				};
-
-		editorPnl.addListenerToElement(SessionEditorPanel.SAVE_BUTTON, al);
-		editorPnl.addListenerToElement(SessionEditorPanel.EXPORT_BUTTON, al);
-		editorPnl.addListenerToElement(SessionEditorPanel.CANCEL_BUTTON, al);
-		
 		
 		GuiFunctionLib.addGridBagContainer(this, gbl, editorPnl,	0, 0, 1, 1, 1, 1);
-		GuiFunctionLib.addGridBagContainer(this, gbl, playerPnl,	0, 1, 1, 1, 1, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, editorPlayer,	0, 1, 1, 1, 1, 0);
 		
 		repaint();
 		pack();
@@ -147,8 +138,17 @@ public class MainFrame extends JFrame {
 	/**
 	 * Wechselt zum Editor Layout
 	 */
-	public void setEditorLayout() {
+	public void setEditorLayout(PlayerPanel playerPnl, SessionEditorPanel editorPnl) {
+		this.editorPnl		= editorPnl;
+		this.editorPlayer	= playerPnl;
 		editorLayout();
+	}
+	
+	/**
+	 * Wechsel zum Player Layout
+	 */
+	public void setPlayerLayout() {
+		playerLayout();
 	}
 	
 	/**

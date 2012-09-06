@@ -56,8 +56,8 @@ public class SessionEditorPanel extends JPanel implements ActionListenerAddable 
 		// 															x, y, w, h, wx,wy
 		GuiFunctionLib.addGridBagContainer(this, gbl, tabPane,		0, 0, 3, 1, 1, 1);
 		GuiFunctionLib.addGridBagContainer(this, gbl, saveBtn,		0, 1, 1, 1, 1, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, exportBtn,	1, 1, 1, 1, 1,0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, cancelBtn,	2, 1, 1, 1, 1,0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, exportBtn,	1, 1, 1, 1, 1, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, cancelBtn,	2, 1, 1, 1, 1, 0);
 	}
 
 	/**
