@@ -25,16 +25,25 @@ public class MainFrame extends JFrame {
 	private JPanel				virtualizationPnl;
 	private SessionListPanel	listPnl;
 	private SessionEditorPanel	editorPnl;
+	private ToggleButton		openBtn;	//Anzeige von Animationsflaeche an/aus
 
 	public MainFrame() {
 		playerPnl			= new PlayerPanel();
 		listPnl				= new SessionListPanel();
 		virtualizationPnl	= new JPanel();
 		virtualizationPnl.setBackground(Color.GRAY);
+		openBtn				= new ToggleButton("^", "v", true);
+		
+		openBtn.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changeLayout();
+			}
+		});
 
 		playerLayout();
 
-		setMinimumSize( new Dimension(getSize().width,500) );
+		setSize( new Dimension(getSize().width,500) );
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		setVisible(true);
@@ -49,11 +58,34 @@ public class MainFrame extends JFrame {
 		setLayout(gbl);
 		
 		GuiFunctionLib.addGridBagContainer(this, gbl, virtualizationPnl,0, 0, 1, 1, 1, 1);
+		GuiFunctionLib.addGridBagContainer(this, gbl, openBtn,			0, 1, 3, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, playerPnl,		0, 2, 1, 1, 1, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, listPnl,			0, 3, 1, 1, 1, 0);
+		
+		repaint();
+		pack();
+	}
+	
+	private void miniPlayerLayout() {
+		this.getContentPane().removeAll();
+		GridBagLayout gbl = new GridBagLayout();
+		setLayout(gbl);
+		
+		GuiFunctionLib.addGridBagContainer(this, gbl, openBtn,			0, 0, 3, 1, 0, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, playerPnl,		0, 1, 1, 1, 1, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, listPnl,			0, 2, 1, 1, 1, 0);
 		
 		repaint();
 		pack();
+	}
+	
+	private void changeLayout() {
+		if(openBtn.isSelected()) {
+			playerLayout();
+			setSize( new Dimension(getSize().width,500) );
+		} else {
+			miniPlayerLayout();
+		}
 	}
 	
 	/**

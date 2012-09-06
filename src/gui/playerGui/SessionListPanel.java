@@ -45,7 +45,7 @@ public class SessionListPanel extends JPanel implements ActionListenerAddable {
 
 	public SessionListPanel() {
 		initMenuPnl();
-		openBtn				= new ToggleButton("^", "v", true);
+		openBtn				= new ToggleButton("v", "^", true);
 		
 		categoryList		= new JList();
 		sessionList			= new JList();
