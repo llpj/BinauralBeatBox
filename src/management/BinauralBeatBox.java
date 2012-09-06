@@ -321,6 +321,19 @@ public class BinauralBeatBox {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
 				//TODO Boris
+
+				/**
+				 * Die Angaben würde ich alle in Sekunden machen.
+				 * Schritte:
+				 * 1. Gesamtlänge der Session mit SetMaximumOfTimeBar(sessionlänge) festlegen
+				 * 2. Aktuellen Stand/Position der Session mit setValueOfTimeBar aktualisieren
+				 * Bin mir grad gar nich sicher, ob das so gut gehen wird :/
+				 * Könnte sein, dass die TimeBar noch mal in nen Thread müsste, da die GUI wahrscheinlich nicht so flüssi aktualisiert wird....
+				 * Egal probier es erst mal so und dann sehen wir weiter ;)
+				 */
+				//mf.getPlayerPanel().setMaximumofTimeBar(sec)
+				//mf.getPlayerPanel().setValueOfTimBar(sec)
+				//mf.getPlayerPanel().getValueOfTimBar()
 			}
 		});
 	}
@@ -393,7 +406,7 @@ public class BinauralBeatBox {
 							// TODO eventuelle aktuelle Session stoppen
 							// TODO Infos in GUI darstellen (duration in
 							// timeSlider)
-							mf.getPlayerPanel().setDuration(s.getDuration());
+							mf.getPlayerPanel().setMaximumofTimeBar(s.getDuration());
 							fileManager.setActiveSession(s);
 						}
 					}

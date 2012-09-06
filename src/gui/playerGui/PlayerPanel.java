@@ -117,10 +117,17 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 		}
 	}
 	
-	public void setDuration(int d) {
-		// TODO Label anzeige wird nicht aktualisiert
-		timeBar.setMaximum(d);
+	public void setMaximumofTimeBar(int sec) {
+		timeBar.setMaximum(sec);
 		timeBar.setValue(0);
+	}
+	
+	public void setValueOfTimBar(int sec) {
+		timeBar.setValue(sec);
+	}
+	
+	public int getValueOfTimBar() {
+		return timeBar.getValue();
 	}
 
 //	private void calculateProgessBarPos(Point p) {
