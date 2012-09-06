@@ -122,4 +122,13 @@ public class SessionEditorPanel extends JPanel implements ActionListenerAddable 
 	public GlobalSettingPanel getGlobalSettingPanel() {
 		return settingPnl;
 	}
+	
+	/**
+	 * saveBtn und exportBtn aktivieren/deaktivieren
+	 * @param enable boolean
+	 */
+	public void setConfirmBtnDisable(boolean enable) {
+		saveBtn.setEnabled(enable);
+		exportBtn.setEnabled(enable);
+	}
 }

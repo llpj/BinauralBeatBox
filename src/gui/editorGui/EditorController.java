@@ -34,33 +34,16 @@ public class EditorController {
 	private FileManager			fileManager;
 	private MainFrame			mainFrame;
 
+	private ActionListener		saveBtnAl;
+	private ActionListener		exportBtnAl;
+	private ActionListener		cancelBtnAl;
 	
-	private ActionListener		saveBtnAl = new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			addNewSession();
-			mainFrame.setPlayerLayout();
-			fileManager.writeCategories(fileManager.getCategories());
-		}
-	};
 	
-	private ActionListener		exportBtnAl = new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			addNewSession();
-			mainFrame.setPlayerLayout();
-			fileManager.writeCategories(fileManager.getCategories());
-			fileManager.exportAsWav();
-		}
-	};
-	
-	private ActionListener		cancelBtnAl = new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			mainFrame.setPlayerLayout();
-		}
-	};
-	
+	/************************************************
+	 * 												*
+	 * 				CONSTRUCTORS					*
+	 * 												*
+	 ************************************************/
 	public EditorController(FileManager fm, MainFrame mf) {
 		this(fm,mf,null);
 	}
@@ -77,6 +60,7 @@ public class EditorController {
 			editorPnl.setDefaultValues(s);
 		
 		//ActionListener setzen
+		initActionListener();
 		editorPnl.addListenerToElement(SessionEditorPanel.SAVE_BUTTON, saveBtnAl);
 		editorPnl.addListenerToElement(SessionEditorPanel.EXPORT_BUTTON, exportBtnAl);
 		editorPnl.addListenerToElement(SessionEditorPanel.CANCEL_BUTTON, cancelBtnAl);
@@ -89,14 +73,22 @@ public class EditorController {
 		editorPnl.getGlobalSettingPanel().setListModel(fileManager.getListOfWav(), GlobalSettingPanel.SOUND_LIST);
 	}
 
+	
+	/************************************************
+	 * 												*
+	 * 					FUNCTIONS					*
+	 * 												*
+	 ************************************************/
 	private void addNewSession() {
 		String catName = editorPnl.getCategory();
 		Session s = editorPnl.getValues();
+		
 		if (fileManager.getCategories().containsKey(catName)) {
 			fileManager.getCategories().get(catName).addSession(s);
 		} else {
 			fileManager.addCategory(new Category(catName, s));
 		}
+		
 		fileManager.setActiveSession(s);
 		setCategoryListModel();
 	}
@@ -107,8 +99,35 @@ public class EditorController {
 		for (Category c : fileManager.getCategories().values()) {
 			catModel.addElement(c);
 		}
-
-		mainFrame.getSessionListPnl().setListModel(catModel,
-				SessionListPanel.CATEGORY_LIST);
-		}
+		
+		mainFrame.getSessionListPnl().setListModel(catModel, SessionListPanel.CATEGORY_LIST);
+	}
+	
+	private void initActionListener() {
+		saveBtnAl = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addNewSession();
+				mainFrame.setPlayerLayout();
+				fileManager.writeCategories(fileManager.getCategories());
+			}
+		};
+		
+		exportBtnAl = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addNewSession();
+				mainFrame.setPlayerLayout();
+				fileManager.writeCategories(fileManager.getCategories());
+				fileManager.exportAsWav();
+			}
+		};
+		
+		cancelBtnAl = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainFrame.setPlayerLayout();
+			}
+		};
+	}
 }
