@@ -50,6 +50,7 @@ public class FrakFarbverlauf extends Animation {
     	checkResize = 0;
     	counter = 0;
     	posColor = (int) (Math.random()*3);
+    	isFinished = false;
     	init();
     }
     
@@ -345,7 +346,6 @@ public class FrakFarbverlauf extends Animation {
 			num4 = 0;
 			bodyCount = (int) (Math.random()*1+4);
 		}
-		setTempo();
 		super.start();
 	}
 
@@ -363,6 +363,7 @@ public class FrakFarbverlauf extends Animation {
 	public boolean finish (boolean state) {
 		if(state == false)
 		{
+			isFinished = false;
 			return false;
 		}
 		else 	
@@ -373,6 +374,7 @@ public class FrakFarbverlauf extends Animation {
 			animationPnl.fill(rectangle);
 			animation.stop();
 			super.setAniFreq(true);
+			isFinished = true;
 			return true;
 		}
 		

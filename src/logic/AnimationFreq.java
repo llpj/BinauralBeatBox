@@ -31,6 +31,7 @@ public class AnimationFreq extends Animation {
 		super(pnl);
 		super.setFreq(freq);
 		super.setAniFreq(false);
+		isFinished = false;
 		y = new int[360]; 
 		x = new int[360];
 		//Initialisierung - checkSize muss im Konstruktor initialisiert sein !!! (wegen resizing)
@@ -102,10 +103,12 @@ public class AnimationFreq extends Animation {
 		//Anpassung des Animationstempos bei Resizing
 		if(checkResize%2 == 0)
 		{
+			//groﬂes Fenster
 			tempo = 0;
 		}
 		else
 		{
+			//kleines Fenster
 			tempo = 30;
 		}
 		super.start();
@@ -158,6 +161,7 @@ public class AnimationFreq extends Animation {
 	public boolean finish (boolean state) {
 		if(state == false)
 		{
+			isFinished = false;
 			return false;
 		}
 		else 	
@@ -167,6 +171,7 @@ public class AnimationFreq extends Animation {
 			animationPnl.setColor(Color.GRAY);
 			animationPnl.fill(rectangle);
 			animation.stop();
+			isFinished = true;
 			return true;
 		}
 		
