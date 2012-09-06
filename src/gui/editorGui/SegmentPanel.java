@@ -193,11 +193,11 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 		leftFreqPnl.setBorder( new TitledBorder("Linke Frequenz:") );
 		leftFreqPnl.setLayout( new GridLayout(0, 1) );
 		
-		snmSL = new SpinnerNumberModel(2, 1, 20000, 1);
+		snmSL = new SpinnerNumberModel(1, 1, 20000, 1);
 		startLeftFreq	= new JSpinner(snmSL);
 		leftFreqPnl.add(startLeftFreq);
 		
-		snmTL = new SpinnerNumberModel(2, 1, 20000, 1);
+		snmTL = new SpinnerNumberModel(1, 1, 20000, 1);
 		targetLeftFreq	= new JSpinner(snmTL);
 		leftFreqPnl.add(targetLeftFreq);
 
@@ -207,11 +207,11 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 		rightFreqPnl.setBorder( new TitledBorder("Rechte Frequenz:") );
 		rightFreqPnl.setLayout( new GridLayout(0, 1) );
 		
-		snmSR = new SpinnerNumberModel(2, 1, 20000, 1);
+		snmSR = new SpinnerNumberModel(3, 1, 20000, 1);
 		startRightFreq	= new JSpinner(snmSR);
 		rightFreqPnl.add(startRightFreq);
 
-		snmTR = new SpinnerNumberModel(2, 1, 20000, 1);
+		snmTR = new SpinnerNumberModel(3, 1, 20000, 1);
 		targetRightFreq	= new JSpinner(snmTR);
 		rightFreqPnl.add(targetRightFreq);
 	}
@@ -285,7 +285,7 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 	 * Erstellt ein Segment auf Basis der eingegebenen Werten
 	 * @return Segment mit den eingegebenen Werten
 	 */
-	public Segment getValues() {
+	public Segment getValues() throws IllegalArgumentException {
 		Date d = (Date)sm.getValue();
 		int duration = d.getSeconds() * d.getMinutes()*60;
 		System.out.println(duration);
@@ -358,44 +358,13 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 				int freq2_target	= getIntValueOfSpinModel(snmTR);
 				
 				try {
-//					System.out.println("--------------------");
 					new BinauralBeat(freq1_start, freq1_target, freq2_start, freq2_target);
 				} catch (IllegalArgumentException e) {
 					MainFrame.showMessage( e.getMessage() );
-					System.out.println( e.getMessage() );
 				}
 			}
 		};
-		
-		
-//		snmSL.addChangeListener( new ChangeListener() {
-//			@Override
-//			public void stateChanged(ChangeEvent e) {
-//				System.out.println("Start Left");
-//			}
-//		});
-//		
-//		snmSR.addChangeListener( new ChangeListener() {
-//			@Override
-//			public void stateChanged(ChangeEvent e) {
-//				System.out.println("Start Right");
-//			}
-//		});
-//		
-//		snmTL.addChangeListener( new ChangeListener() {
-//			@Override
-//			public void stateChanged(ChangeEvent e) {
-//				System.out.println("Target Left");
-//			}
-//		});
-//		
-//		snmTR.addChangeListener( new ChangeListener() {
-//			@Override
-//			public void stateChanged(ChangeEvent e) {
-//				System.out.println("Target Right");
-//			}
-//		});
-		
+
 		snmSL.addChangeListener( clBeatFreq );
 		snmSR.addChangeListener( clBeatFreq );
 		
@@ -404,7 +373,6 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 	}
 	
 	private int getIntValueOfSpinModel(SpinnerNumberModel snm) {
-//		System.out.println( ((Integer)snm.getValue()) );
 		return ((Integer)snm.getValue()).intValue();
 	}
 }

@@ -2,6 +2,7 @@ package gui.editorGui;
 
 import gui.ActionListenerAddable;
 import gui.GuiFunctionLib;
+import gui.MainFrame;
 
 import java.awt.Color;
 import java.awt.GridBagLayout;
@@ -111,8 +112,13 @@ public class SessionEditorPanel extends JPanel implements ActionListenerAddable 
 	 */
 	public Session getValues() {
 		Session s = new Session();
-		s = settingPnl.getValues(s);
-		s = segmentPnl.getValues(s);
+		try {
+			s = settingPnl.getValues(s);
+			s = segmentPnl.getValues(s);
+		} catch (IllegalArgumentException e) {
+			MainFrame.showMessage( e.getMessage() );
+		}
+		
 		return s;
 	}
 

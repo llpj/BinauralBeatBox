@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.io.File;
+import java.util.Date;
 import java.util.Map;
 
 import javax.swing.JComboBox;
@@ -99,6 +100,8 @@ public class GlobalSettingPanel extends JPanel {
 	 * @return Session, mit Werten hinzugefuegten Werten
 	 */
 	public Session getValues(Session s) {
+		if(sessionNameEdt.getText().equals(""))
+			sessionNameEdt.setText( (new Date()).toString() );
 		s.setName(sessionNameEdt.getText());
 		s.setHintergrundklang( soundMap.get( soundList.getSelectedItem() ).toString() );
 		return s;

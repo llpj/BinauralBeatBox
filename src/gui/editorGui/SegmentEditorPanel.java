@@ -192,7 +192,7 @@ public class SegmentEditorPanel extends JPanel {
 	 *            Session der Segmente hinzugefuegt werden sollen
 	 * @return Session mit uebergebenen Segmenten
 	 */
-	public Session getValues(Session s) {
+	public Session getValues(Session s) throws IllegalArgumentException {
 		s.removeAllSegments();
 
 		for (SegmentPanel segPnl : segmentList) {

@@ -83,6 +83,8 @@ public class EditorController {
 		String catName = editorPnl.getCategory();
 		Session s = editorPnl.getValues();
 		
+		System.out.println("addNewSession");
+		
 		if (fileManager.getCategories().containsKey(catName)) {
 			fileManager.getCategories().get(catName).addSession(s);
 		} else {
