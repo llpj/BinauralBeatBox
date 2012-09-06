@@ -187,10 +187,12 @@ public class BinauralBeatBox {
 	public static void animationUpdateFreq(int[] curFreq, Mood curMood) {
 		if (animation.isAniFreq()==false) {
 			animation.setFreq(curFreq);
+			//defaultPaint();
 			animation.init();
 		}
 		if (animation.isAniFreq()==true) {
 			((FrakFarbverlauf) animation).setMood(curMood);
+			//defaultPaint();
 			animation.init();
 		}
 	}
