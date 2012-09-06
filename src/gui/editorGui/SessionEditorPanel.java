@@ -3,11 +3,13 @@ package gui.editorGui;
 import gui.ActionListenerAddable;
 import gui.GuiFunctionLib;
 
+import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.util.EventListener;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 

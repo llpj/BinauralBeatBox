@@ -2,23 +2,30 @@ package gui.editorGui;
 
 import gui.ActionListenerAddable;
 import gui.GuiFunctionLib;
+import gui.MainFrame;
 import gui.ToggleButton;
 
 import interfaces.Mood;
 
+import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.EventListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import container.BinauralBeat;
 import container.Segment;
@@ -36,9 +43,10 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 	private static final long serialVersionUID = 9208218652817209244L;
 	
 	//basic Elemente (casual mode)
-	private JComboBox		startMood;
-	private JComboBox		targetMood;
-	private JSpinner		durationSpin;
+	private JComboBox			startMood;
+	private JComboBox			targetMood;
+	private JSpinner			durationSpin;
+	private SpinnerDateModel	sm;
 	
 	private JButton			removeBtn;
 	private	ToggleButton	editBtn;
@@ -47,13 +55,17 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 	private JButton			moveDownBtn;
 	
 	//zusätzliche profi mode Elemente für linke und rechte Frequenz
-	private JPanel			leftFreqPnl;
-	private JSpinner		startLeftFreq;
-	private JSpinner		targetLeftFreq;
+	private JPanel				leftFreqPnl;
+	private JSpinner			startLeftFreq;
+	private SpinnerNumberModel 	snmSL;
+	private JSpinner			targetLeftFreq;
+	private SpinnerNumberModel 	snmTL;
 	
-	private JPanel			rightFreqPnl;
-	private JSpinner		startRightFreq;
-	private JSpinner		targetRightFreq;
+	private JPanel				rightFreqPnl;
+	private JSpinner			startRightFreq;
+	private SpinnerNumberModel 	snmSR;
+	private JSpinner			targetRightFreq;
+	private SpinnerNumberModel 	snmTR;
 	
 	public static final int MOVE_UP_BUTTON		= 0;
 	public static final int MOVE_DOWN_BUTTON	= 1;
@@ -68,6 +80,7 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 
 		initBasicElements();
 		initProfiModeElements();
+		initActionListener();
 
 		casualModeLayout();
 	}
@@ -117,20 +130,20 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 		
 		GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
-//																						x, y, w, h, wx,wy
-		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Ziel Frequenz:"),		0, 1, 1, 1, 0, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Start Frquenz:"),		0, 2, 1, 1, 0, 0);
+//																								x, y, w, h, wx,wy
+		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Start Frquenz:"),				0, 1, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Ziel Frequenz:"),				0, 2, 1, 1, 0, 0);
 
-		GuiFunctionLib.addGridBagContainer(this, gbl, leftFreqPnl,						1, 0, 1, 3, 1, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Länge des Segments"),	1, 3, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, leftFreqPnl,								1, 0, 1, 3, 1, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, new JLabel("Länge des Segments (mm:ss)"),	1, 3, 1, 1, 0, 0);
 		
-		GuiFunctionLib.addGridBagContainer(this, gbl, rightFreqPnl,						2, 0, 1, 3, 1, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, durationSpin,						2, 3, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, rightFreqPnl,								2, 0, 1, 3, 1, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, durationSpin,								2, 3, 1, 1, 0, 0);
 		
-		GuiFunctionLib.addGridBagContainer(this, gbl, moveUpBtn,						3, 0, 1, 1, 0, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, removeBtn,						3, 1, 1, 1, 0, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, editBtn,							3, 2, 1, 1, 0, 0);
-		GuiFunctionLib.addGridBagContainer(this, gbl, moveDownBtn,						3, 3, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, moveUpBtn,								3, 0, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, removeBtn,								3, 1, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, editBtn,									3, 2, 1, 1, 0, 0);
+		GuiFunctionLib.addGridBagContainer(this, gbl, moveDownBtn,								3, 3, 1, 1, 0, 0);
 		
 		startLeftFreq.setValue( getMoodFreq( startMood.getSelectedItem().toString() ) );
 		targetLeftFreq.setValue( getMoodFreq( targetMood.getSelectedItem().toString() ) );
@@ -149,7 +162,11 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 		
 		startMood		= new JComboBox(moods);
 		targetMood		= new JComboBox(moods);
-		durationSpin	= new JSpinner();
+		
+		sm = new SpinnerDateModel(new Date(10000), null, null, Calendar.HOUR_OF_DAY);
+		durationSpin = new JSpinner(sm);
+		JSpinner.DateEditor de = new JSpinner.DateEditor(durationSpin, "mm:ss");
+		durationSpin.setEditor(de);
 		
 		removeBtn		= new JButton("-");
 		editBtn			= new ToggleButton("P","C");
@@ -174,24 +191,28 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 	private void initProfiModeElements() {
 		leftFreqPnl		= new JPanel();
 		leftFreqPnl.setBorder( new TitledBorder("Linke Frequenz:") );
-		leftFreqPnl.setLayout( new GridLayout(2, 1) );
+		leftFreqPnl.setLayout( new GridLayout(0, 1) );
 		
-		startLeftFreq	= new JSpinner();
+		snmSL = new SpinnerNumberModel(2, 1, 20000, 1);
+		startLeftFreq	= new JSpinner(snmSL);
 		leftFreqPnl.add(startLeftFreq);
 		
-		targetLeftFreq	= new JSpinner();
+		snmTL = new SpinnerNumberModel(2, 1, 20000, 1);
+		targetLeftFreq	= new JSpinner(snmTL);
 		leftFreqPnl.add(targetLeftFreq);
 
 
-
+		
 		rightFreqPnl	= new JPanel();
 		rightFreqPnl.setBorder( new TitledBorder("Rechte Frequenz:") );
-		rightFreqPnl.setLayout( new GridLayout(2, 1) );
+		rightFreqPnl.setLayout( new GridLayout(0, 1) );
 		
-		startRightFreq	= new JSpinner();
+		snmSR = new SpinnerNumberModel(2, 1, 20000, 1);
+		startRightFreq	= new JSpinner(snmSR);
 		rightFreqPnl.add(startRightFreq);
 
-		targetRightFreq	= new JSpinner();
+		snmTR = new SpinnerNumberModel(2, 1, 20000, 1);
+		targetRightFreq	= new JSpinner(snmTR);
 		rightFreqPnl.add(targetRightFreq);
 	}
 	
@@ -308,5 +329,80 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 			removeBtn.addActionListener((ActionListener) el);
 			break;
 		}
+	}
+
+
+	private void initActionListener() {
+		sm.addChangeListener( new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent ce) {
+				Date d = (Date)sm.getValue();
+				
+				if( d.getSeconds() == 0 && 
+					d.getMinutes() == 0) {
+					sm.setValue(1000);
+					durationSpin.updateUI();
+				}
+			}
+		});
+		
+		ChangeListener clBeatFreq = new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent ce) {
+				
+				int freq1_start		= getIntValueOfSpinModel(snmSL);
+				int freq1_target	= getIntValueOfSpinModel(snmTL);
+				int freq2_start		= getIntValueOfSpinModel(snmSR);
+				int freq2_target	= getIntValueOfSpinModel(snmTR);
+				
+				try {
+//					System.out.println("--------------------");
+					new BinauralBeat(freq1_start, freq1_target, freq2_start, freq2_target);
+				} catch (IllegalArgumentException e) {
+					MainFrame.showMessage( e.getMessage() );
+					System.out.println( e.getMessage() );
+				}
+			}
+		};
+		
+		
+//		snmSL.addChangeListener( new ChangeListener() {
+//			@Override
+//			public void stateChanged(ChangeEvent e) {
+//				System.out.println("Start Left");
+//			}
+//		});
+//		
+//		snmSR.addChangeListener( new ChangeListener() {
+//			@Override
+//			public void stateChanged(ChangeEvent e) {
+//				System.out.println("Start Right");
+//			}
+//		});
+//		
+//		snmTL.addChangeListener( new ChangeListener() {
+//			@Override
+//			public void stateChanged(ChangeEvent e) {
+//				System.out.println("Target Left");
+//			}
+//		});
+//		
+//		snmTR.addChangeListener( new ChangeListener() {
+//			@Override
+//			public void stateChanged(ChangeEvent e) {
+//				System.out.println("Target Right");
+//			}
+//		});
+		
+		snmSL.addChangeListener( clBeatFreq );
+		snmSR.addChangeListener( clBeatFreq );
+		
+		snmTL.addChangeListener( clBeatFreq );
+		snmTR.addChangeListener( clBeatFreq );
+	}
+	
+	private int getIntValueOfSpinModel(SpinnerNumberModel snm) {
+//		System.out.println( ((Integer)snm.getValue()) );
+		return ((Integer)snm.getValue()).intValue();
 	}
 }

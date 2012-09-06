@@ -5,13 +5,16 @@ import gui.editorGui.SessionEditorPanel;
 import gui.playerGui.PlayerPanel;
 import gui.playerGui.SessionListPanel;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.tree.DefaultTreeCellEditor.EditorContainer;
 
@@ -31,7 +34,10 @@ public class MainFrame extends JFrame {
 	private SessionEditorPanel	editorPnl;
 	private ToggleButton		openBtn;	//Anzeige von Animationsflaeche an/aus
 	
+	private static MainFrame staticThis	= null;
+	
 	public MainFrame() {
+		staticThis = this;
 		playerPnl			= new PlayerPanel();
 		listPnl				= new SessionListPanel();
 		virtualizationPnl	= new JPanel();
@@ -157,5 +163,32 @@ public class MainFrame extends JFrame {
 	 */
 	public SessionEditorPanel getSessionEditorPnl() {
 		return editorPnl;
+	}
+	
+	public static void showMessage(String text) {
+		JPanel	pnl = new JPanel();
+		JLabel	lbl = new JLabel(text);
+		JButton	btn	= new JButton("Ok");
+	
+		pnl.add(lbl);
+		pnl.add(btn);
+		pnl.setBackground( Color.YELLOW );
+		
+		if( staticThis != null ) {
+			final JPanel glass = (JPanel)staticThis.getGlassPane();
+			glass.removeAll();
+			glass.updateUI();
+			glass.setVisible(true);
+			glass.setLayout( new BorderLayout() );
+			glass.add(pnl, BorderLayout.SOUTH);
+			
+			btn.addActionListener( new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					glass.removeAll();
+					glass.updateUI();
+				}
+			});
+		}
 	}
 }

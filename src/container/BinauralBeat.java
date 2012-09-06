@@ -55,7 +55,7 @@ public class BinauralBeat {
 				|| freq1_target - freq2_target > 30
 				|| freq2_target - freq1_target > 30) {
 			throw new IllegalArgumentException(
-					"Der Unterschied zwischen den Frequenzen darf nicht groesser sein als 30Hz");
+					"Der Unterschied zwischen den Frequenzen Links und Rechts darf nicht groesser sein als 30Hz");
 		}
 		this.freq1_start = freq1_start;
 		this.freq1_target = freq1_target;
