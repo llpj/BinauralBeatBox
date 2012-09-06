@@ -178,7 +178,6 @@ public class BinauralBeatBox {
 				}
 			}
 		});
-
 	}
 	
 	public static void animationUpdateFreq(int[] curFreq, Mood curMood) {
@@ -191,7 +190,6 @@ public class BinauralBeatBox {
 			animation.init();
 		}
 	}
-	
 
 	private void initListenerForPlayerPanel() {
 		PlayerPanel pnl = mf.getPlayerPanel();
@@ -300,6 +298,22 @@ public class BinauralBeatBox {
 					
 				System.out.println("Time Bar: " + s.getValue());
 			}
+			
+			/**
+			 * Die Angaben würde ich alle in Sekunden machen. 
+			 * (Falls du Mikrosekunden oder was auch immer hast, kannst du das erst mal probieren. 
+			 * Aber ich glaube wir bekommen mit der GUI Ausgabe Probleme.)
+			 * Schritte:
+			 * 1. Gesamtlänge der Session mit SetMaximumOfTimeBar(sessionlänge) festlegen
+			 * 2. Aktuellen Stand/Position der Session mit setValueOfTimeBar aktualisieren
+			 * Bin mir grad gar nich sicher, ob das so gut gehen wird :/
+			 * Könnte sein, dass die TimeBar noch mal in nen Thread müsste, da die GUI wahrscheinlich nicht so flüssi aktualisiert wird....
+			 * Egal probier es erst mal so und dann sehen wir weiter ;)
+			 */
+			//mf.getPlayerPanel().setMaximumofTimeBar(sec)
+			//mf.getPlayerPanel().setValueOfTimBar(sec)
+			//mf.getPlayerPanel().getValueOfTimBar()
+			
 		});
 		pnl.addListenerToElement(PlayerPanel.MUTE_SLIDER, new ChangeListener() {
 			@Override
@@ -318,23 +332,22 @@ public class BinauralBeatBox {
 		});
 		
 		pnl.addListenerToElement(PlayerPanel.BEAT_SLIDER, new ChangeListener() {
+			int tmpBalance = 0;
 			@Override
 			public void stateChanged(ChangeEvent ce) {
-				//TODO Boris
-
-				/**
-				 * Die Angaben würde ich alle in Sekunden machen.
-				 * Schritte:
-				 * 1. Gesamtlänge der Session mit SetMaximumOfTimeBar(sessionlänge) festlegen
-				 * 2. Aktuellen Stand/Position der Session mit setValueOfTimeBar aktualisieren
-				 * Bin mir grad gar nich sicher, ob das so gut gehen wird :/
-				 * Könnte sein, dass die TimeBar noch mal in nen Thread müsste, da die GUI wahrscheinlich nicht so flüssi aktualisiert wird....
-				 * Egal probier es erst mal so und dann sehen wir weiter ;)
-				 */
-				//mf.getPlayerPanel().setMaximumofTimeBar(sec)
-				//mf.getPlayerPanel().setValueOfTimBar(sec)
-				//mf.getPlayerPanel().getValueOfTimBar()
+				JSlider balanceBar = (JSlider) ce.getSource();
+				
+				if (balanceBar.getValue()<50) {
+					tmpBalance=50-balanceBar.getValue();
+					sw.changeBalance(tmpBalance, false);
+					System.out.println("Links: "+tmpBalance);
+				}
+				else {
+					sw.changeBalance(tmpBalance, true);
+					System.out.println("Rechts: "+ tmpBalance);
+				}
 			}
+			
 		});
 	}
 
