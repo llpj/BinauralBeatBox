@@ -178,7 +178,6 @@ public class BinauralBeatBox {
 				}
 			}
 		});
-
 	}
 	
 	public static void animationUpdateFreq(int[] curFreq, Mood curMood) {
@@ -191,7 +190,6 @@ public class BinauralBeatBox {
 			animation.init();
 		}
 	}
-	
 
 	private void initListenerForPlayerPanel() {
 		PlayerPanel pnl = mf.getPlayerPanel();
@@ -318,10 +316,24 @@ public class BinauralBeatBox {
 		});
 		
 		pnl.addListenerToElement(PlayerPanel.BEAT_SLIDER, new ChangeListener() {
+			int tmpBalance = 0;
 			@Override
 			public void stateChanged(ChangeEvent ce) {
+				JSlider balanceBar = (JSlider) ce.getSource();
 				//TODO Boris
+				
+				if (balanceBar.getValue()<50) {
+					tmpBalance=50-balanceBar.getValue();
+					sw.changeBalance(tmpBalance, false);
+					System.out.println("Links: "+tmpBalance);
+				}
+				else {
+					sw.changeBalance(tmpBalance, true);
+					System.out.println("Rechts: "+ tmpBalance);
+				}
+				
 			}
+			
 		});
 	}
 
