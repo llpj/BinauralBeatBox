@@ -36,6 +36,7 @@ import container.Session;
 import logic.*;
 import gui.MainFrame;
 import gui.ToggleButton;
+import gui.editorGui.EditorController;
 import gui.editorGui.GlobalSettingPanel;
 import gui.editorGui.SessionEditorPanel;
 import gui.playerGui.PlayerPanel;
@@ -375,8 +376,8 @@ public class BinauralBeatBox {
 				new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						// mf.setEditorLayout();
-						changeToSessionEditor();
+//						changeToSessionEditor();
+						new EditorController(fileManager, mf);
 					}
 				});
 
@@ -385,10 +386,9 @@ public class BinauralBeatBox {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						if (fileManager.getActiveSession() != null) {
-							// mf.setEditorLayout();
-							changeToSessionEditor();
-							mf.getSessionEditorPnl().setDefaultValues(
-									fileManager.getActiveSession());
+//							changeToSessionEditor();
+							new EditorController(fileManager, mf, fileManager.getActiveSession());
+//							mf.getSessionEditorPnl().setDefaultValues(fileManager.getActiveSession());
 						}
 					}
 				});
@@ -407,7 +407,7 @@ public class BinauralBeatBox {
 							fileManager.writeCategories(fileManager
 									.getCategories());
 						}
-						setCategoryListModel(0);
+						setCategoryListModel();
 						setSessionListModel(currentCategory);
 					}
 				});
@@ -442,7 +442,7 @@ public class BinauralBeatBox {
 					}
 				});
 
-		setCategoryListModel(0);
+		setCategoryListModel();
 	}
 
 	/**
@@ -454,9 +454,7 @@ public class BinauralBeatBox {
 	 *            Werte: {0,1} mit 0 wird die Categorylist vom SesisonListPanel
 	 *            gefüllt, mit 1 die Categoryliste vom GlobalSettubgPanel
 	 */
-	private void setCategoryListModel(int list) {
-		switch (list) {
-		case 0:
+	private void setCategoryListModel() {
 			DefaultListModel catModel = new DefaultListModel();
 
 			for (Category c : fileManager.getCategories().values()) {
@@ -465,14 +463,6 @@ public class BinauralBeatBox {
 
 			mf.getSessionListPnl().setListModel(catModel,
 					SessionListPanel.CATEGORY_LIST);
-			break;
-		case 1:
-			mf.getSessionEditorPnl()
-					.getGlobalSettingPanel()
-					.setListModel(fileManager.getCategories(),
-							GlobalSettingPanel.CATEGORY_LIST);
-			break;
-		}
 	}
 
 	/**
@@ -501,45 +491,51 @@ public class BinauralBeatBox {
 	 * notwendigen Daten (Liste der Kategorien und Hintergrundgeraeusche an den
 	 * Editor.
 	 */
-	private void changeToSessionEditor() {
-		mf.setEditorLayout();
-		SessionEditorPanel editPnl = mf.getSessionEditorPnl();
+//	private void changeToSessionEditor() {
+////	private void changeToSessionEditor(Session session) {
+////		EditorController editorControll = new EditorController(fileManager, mf);		
+//		
+////		mf.setEditorLayout(editorControll);
+//		SessionEditorPanel editPnl = mf.getSessionEditorPnl();
+//
+////		editPnl.addListenerToElement(SessionEditorPanel.SAVE_BUTTON,
+////				new ActionListener() {
+////					@Override
+////					public void actionPerformed(ActionEvent arg0) {
+//////						addNewSession();
+//////						fileManager.writeCategories(fileManager.getCategories());
+////					}
+////				});
+//
+////		editPnl.addListenerToElement(SessionEditorPanel.EXPORT_BUTTON,
+////				new ActionListener() {
+////					@Override
+////					public void actionPerformed(ActionEvent arg0) {
+//////						addNewSession();
+////						fileManager.exportAsWav();
+////					}
+////				});
+//
+////		mf.getSessionEditorPnl()
+////		.getGlobalSettingPanel()
+////		.setListModel(fileManager.getCategories(),
+////				GlobalSettingPanel.CATEGORY_LIST);
+////		mf.getSessionEditorPnl()
+////				.getGlobalSettingPanel()
+////				.setListModel(fileManager.getListOfWav(),
+////						GlobalSettingPanel.SOUND_LIST);
+//	}
 
-		editPnl.addListenerToElement(SessionEditorPanel.SAVE_BUTTON,
-				new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						addNewSession();
-						fileManager.writeCategories(fileManager.getCategories());
-					}
-				});
-
-		editPnl.addListenerToElement(SessionEditorPanel.EXPORT_BUTTON,
-				new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						addNewSession();
-						fileManager.exportAsWav();
-					}
-				});
-
-		setCategoryListModel(1);
-		mf.getSessionEditorPnl()
-				.getGlobalSettingPanel()
-				.setListModel(fileManager.getListOfWav(),
-						GlobalSettingPanel.SOUND_LIST);
-	}
-
-	private void addNewSession() {
-		String catName = mf.getSessionEditorPnl().getCategory();
-		Session s = mf.getSessionEditorPnl().getValues();
-		if (fileManager.getCategories().containsKey(catName)) {
-			fileManager.getCategories().get(catName).addSession(s);
-		} else {
-			fileManager.addCategory(new Category(catName, s));
-		}
-		fileManager.setActiveSession(s);
-		setCategoryListModel(0);
-	}
+//	private void addNewSession() {
+////		String catName = mf.getSessionEditorPnl().getCategory();
+////		Session s = mf.getSessionEditorPnl().getValues();
+////		if (fileManager.getCategories().containsKey(catName)) {
+////			fileManager.getCategories().get(catName).addSession(s);
+////		} else {
+////			fileManager.addCategory(new Category(catName, s));
+////		}
+////		fileManager.setActiveSession(s);
+//		setCategoryListModel();
+//	}
 
 }
