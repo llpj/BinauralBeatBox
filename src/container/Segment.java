@@ -79,9 +79,13 @@ public class Segment {
 	 * @param beat
 	 *            Ein fertiger binauraler Beat
 	 */
-	public Segment(int duration, BinauralBeat beat) {
+	public Segment(int duration, BinauralBeat beat) throws IllegalArgumentException {
 		this.duration = duration;
 		this.beat = beat;
+		
+		if(duration<0) {
+			throw new IllegalArgumentException("Leider koennen wir die Zeit nicht zurückspulen");
+		}
 	}
 
 	// Getter & Setter

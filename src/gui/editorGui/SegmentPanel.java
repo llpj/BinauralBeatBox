@@ -286,13 +286,15 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 	 * @return Segment mit den eingegebenen Werten
 	 */
 	public Segment getValues() {
-		int duration	= Integer.parseInt( durationSpin.getValue().toString() );
+		Date d = (Date)sm.getValue();
+		int duration = d.getSeconds() * d.getMinutes()*60;
 		System.out.println(duration);
-		int freq1_start	= Integer.parseInt( startLeftFreq.getValue().toString() );
-		int freq1_target= Integer.parseInt( targetLeftFreq.getValue().toString() );
 		
-		int freq2_start	= Integer.parseInt( startRightFreq.getValue().toString() );
-		int freq2_target= Integer.parseInt( targetRightFreq.getValue().toString() );
+		int freq1_start	= getIntValueOfSpinModel(snmSL);
+		int freq1_target= getIntValueOfSpinModel(snmTL);
+		
+		int freq2_start	= getIntValueOfSpinModel(snmSR);
+		int freq2_target= getIntValueOfSpinModel(snmTR);
 		
 		BinauralBeat bb = new BinauralBeat(freq1_start, freq1_target, freq2_start, freq2_target);
 		
