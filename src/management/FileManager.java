@@ -17,6 +17,13 @@ import java.io.IOException;
  */
 import java.util.HashMap;
 
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.TargetDataLine;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -44,6 +51,16 @@ public class FileManager {
 	private HashMap<String, Category> categories;
 	private Session activeSession;
 
+	/*
+	 * Legt das von uns verwendete Audioformat fest
+	 */
+	private AudioFormat audioFormat;
+
+	/*
+	 * Wird benoetigt, um Daten vom Sound-Output zu sammeln
+	 */
+	private TargetDataLine targetDataLine;
+
 	// Konstruktor
 	public FileManager() {
 		categories = new HashMap<String, Category>();
@@ -66,6 +83,27 @@ public class FileManager {
 		return activeSession;
 	}
 
+	/**
+	 * Hilfsmethode, in der das AudioFormat festgelegt wird. Notiz: nicht alle
+	 * Audioformate werden auf allen Systemen unterstuetzt. Koennte zu
+	 * Systemkompatibilitaetsproblemen fuehren.
+	 * 
+	 * @return Das von uns verwendete Audioformat mit 44.1kHz@16bit
+	 */
+	public AudioFormat getAudioFormat() {
+		float sampleRate = 44100.0F;
+		int sampleSizeInBits = 16;
+		int channels = 2;
+		boolean signed = true;
+		boolean bigEndian = false;
+		return new AudioFormat(sampleRate, sampleSizeInBits, channels, signed,
+				bigEndian);
+	}
+
+	public void setAudioFormat(AudioFormat audioFormat) {
+		this.audioFormat = audioFormat;
+	}
+
 	// Weitere Methoden
 	public void addCategory(Category category) {
 		categories.put(category.toString(), category);
@@ -74,22 +112,22 @@ public class FileManager {
 	public void removeCategory(int index) {
 		this.categories.remove(index);
 	}
-	
+
 	public HashMap<String, File> getListOfWav() {
 		File dir = new File("./bin/resources/wav/");
 		HashMap<String, File> result = new HashMap<String, File>();
 
-		if( dir.exists() ) {
+		if (dir.exists()) {
 			File[] fileList = dir.listFiles();
-	
-			for(File f : fileList) {
-				if ( f.getName().endsWith(".wav") )
+
+			for (File f : fileList) {
+				if (f.getName().endsWith(".wav"))
 					result.put(f.getName(), f);
 			}
 		} else {
 			// TODO Error handling
 		}
-		
+
 		return result;
 	}
 
@@ -236,18 +274,20 @@ public class FileManager {
 	 * 
 	 * @throws IOException
 	 */
-//	public Category readCategories() throws IOException {
-//		String categoriesString = readFileAsString("./src/resources/categories.xml");
-//		XStream xstream = new XStream(new DomDriver());
-//		Category categories = new Category("Empty");
-//		categories = (Category) xstream.fromXML(categoriesString);
-//		return categories;
-//	}
+	// public Category readCategories() throws IOException {
+	// String categoriesString =
+	// readFileAsString("./src/resources/categories.xml");
+	// XStream xstream = new XStream(new DomDriver());
+	// Category categories = new Category("Empty");
+	// categories = (Category) xstream.fromXML(categoriesString);
+	// return categories;
+	// }
 	public HashMap<String, Category> readCategories() throws IOException {
 		String categoriesString = readFileAsString("./src/resources/categories.xml");
 		XStream xstream = new XStream(new DomDriver());
 		HashMap<String, Category> categories = new HashMap<String, Category>();
-		categories = (HashMap<String, Category>) xstream.fromXML(categoriesString);
+		categories = (HashMap<String, Category>) xstream
+				.fromXML(categoriesString);
 		return categories;
 	}
 
@@ -274,4 +314,61 @@ public class FileManager {
 		}
 		return new String(buffer);
 	}
+
+	/**
+	 * Nimmt den abgespielten Audiostream und schreibt diesen in eine Wav-Datei.
+	 * Auf dem aktuellen Entwicklungsstand nimmt es nur Mikrofonsound auf. Eine
+	 * OS-uebergreifende Aufnahme eines Audiomixers wie dem Microsoft Wave Mixer
+	 * ist nicht moeglich, da sich die Mixer von OS zu OS unterscheiden. Ein
+	 * Beispielprogramm zur Aufnahme von einem Mixer findet sich auf
+	 * "http://goo.gl/NSNWT".
+	 */
+	public void captureAudioToWav() {
+		try {
+			audioFormat = getAudioFormat();
+			// dataLineInfo beschreibt die data line, von der der Sound
+			// aufgenommen wird
+			DataLine.Info dataLineInfo = new DataLine.Info(
+					TargetDataLine.class, audioFormat);
+			// targetDataLine handlet das Sammeln von Daten vom Soundoutput
+			targetDataLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
+			new CaptureThread().start();
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+
+	}
+
+	/**
+	 * Dieser Thread wuerde laufen, waehrend die Session abgespielt wird und den abgespielten Sound aufnehmen. Aktuell wird nur Mikrofonsound aufgenommen.
+	 * 
+	 * @author Magnus Bruehl
+	 */
+	class CaptureThread extends Thread {
+		public void run() {
+			AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
+			File audioFile = new File("capturedAudio.wav");
+
+			try {
+				// Oeffnet die Line mit dem spezifizierten Format, was die Line
+				// dazu bewegt, jegliche benoetigte Systemresourcen zu oeffnen
+				// und operativ zu werden
+				targetDataLine.open(audioFormat);
+				targetDataLine.start();
+
+				// Die beiden folgenden Befehle muessten dann am Ende der
+				// Session getriggert werden. Ich fuehre sie hier auf, weil
+				// sonst die DataLine bei einem Test nicht geschlossen werden
+				// wuerde.
+				targetDataLine.stop();
+				targetDataLine.close();
+
+				AudioSystem.write(new AudioInputStream(targetDataLine),
+						fileType, audioFile);
+			} catch (Exception e) {
+				System.err.println(e);
+			}
+		}
+	}
+
 }
