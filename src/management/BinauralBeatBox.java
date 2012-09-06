@@ -135,16 +135,10 @@ public class BinauralBeatBox {
 
 			@Override
 			public void mouseClicked(MouseEvent me) {
-				animation.finish(true);
-				// uebermalt alte animation falls mal pause gedrueckt wurde
-				Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl()
-						.getGraphics();
-				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf
-						.getVirtualizationPnl().getSize().width, mf
-						.getVirtualizationPnl().getSize().height);
-				rec.setColor(Color.GRAY);
-				rec.fill(rectangle);
 				if (!isPause) {
+					animation.finish(true);
+					// uebermalt alte animation falls mal pause gedrueckt wurde
+					defaultPaint();
 					// Setzen des Animationscounters
 					if (animationCounter > 1) {
 						animationCounter = 0;
@@ -178,6 +172,16 @@ public class BinauralBeatBox {
 				}
 			}
 		});
+	}
+	public void defaultPaint()
+	{
+		Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl()
+		.getGraphics();
+		Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf
+		.getVirtualizationPnl().getSize().width, mf
+		.getVirtualizationPnl().getSize().height);
+		rec.setColor(Color.GRAY);
+		rec.fill(rectangle);
 	}
 	
 	public static void animationUpdateFreq(int[] curFreq, Mood curMood) {
@@ -214,31 +218,42 @@ public class BinauralBeatBox {
 						if (!isPause) {
 							// Auswahl der Animation
 							// TODO freq und Mood �bergabe aus activeSession
-							if (animationCounter == 0) {
+							if (animationCounter == 0) 
+							{
 								//int[] freq = { -30, 0, 30 };
 								animation = new AnimationFreq(sw.getCurFreq(), mf
 										.getVirtualizationPnl());
-								if (resize % 2 == 0) {
+								if (resize % 2 == 0) 
+								{
 									animation.init();
 								}
-							} else if (animationCounter == 1) {
+							} 
+							else if (animationCounter == 1) 
+							{
 								// animationFrakFarbverlauf: false = nur
 								// farbverlauf
 								animation = new FrakFarbverlauf(sw.getCurMood(), mf
 										.getVirtualizationPnl(), false);
-								if (resize % 2 == 0) {
+								if (resize % 2 == 0) 
+								{
 									animation.init();
 								}
-							} else {
+							} 
+							else 
+							{
 								// animationFrakFarbverlauf: true = frak,
 								animation = new FrakFarbverlauf(sw.getCurMood(), mf
 										.getVirtualizationPnl(), true);
-								if (resize % 2 == 0) {
+								if (resize % 2 == 0) 
+								{
 									animation.init();
 								}
 							}
-						} else {
+						} 
+						else 
+						{
 							animation.pause(false);
+							isPause = false;
 						}
 						
 						
@@ -261,15 +276,8 @@ public class BinauralBeatBox {
 					if (sw != null) {
 						animation.finish(true);
 						// uebermalt alte animation falls mal pause gedrueckt wurde
-						Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl()
-								.getGraphics();
-						Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf
-								.getVirtualizationPnl().getSize().width, mf
-								.getVirtualizationPnl().getSize().height);
-						rec.setColor(Color.GRAY);
-						rec.fill(rectangle);
+						defaultPaint();
 						isPause = false;
-						
 						sw.stopSession();
 						sw = null;
 					}
