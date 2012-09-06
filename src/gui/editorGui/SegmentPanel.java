@@ -76,12 +76,19 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 	 * @param title Title des Rahmens vom Panel
 	 */
 	public SegmentPanel(String title) {
+		this(title, null);
+	}
+	
+	public SegmentPanel(String title, Segment s) {
 		setBorder(  new TitledBorder(title) );
 
 		initBasicElements();
 		initProfiModeElements();
 		initActionListener();
 
+		if(s != null)
+			setDefaultValues(s);
+		
 		casualModeLayout();
 	}
 
@@ -269,16 +276,23 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 	 * Uebernimmt Werte einer Session als default Werte
 	 * @param s	Session deren Werte als defualt uebernommen werden
 	 */
-	public void setDefaultValues(Segment s) {
+	private void setDefaultValues(Segment s) {
 //		startMood;
 //		targetModd;
-		durationSpin.setValue( s.getDuration() );		
+		sm.setValue( new Date(s.getDuration()) );
+		System.out.println( new Date(s.getDuration()) );
+//		sm.setValue( s.getDuration()*1000 );
+//		durationSpin.setValue(  );		
 
-		startLeftFreq.setValue( s.getBeat().getFreq1_start() );
-		targetLeftFreq.setValue( s.getBeat().getFreq1_target() );
+//		startLeftFreq.setValue( s.getBeat().getFreq1_start() );
+		snmSL.setValue( new Integer(s.getBeat().getFreq1_start()) );
+//		targetLeftFreq.setValue( s.getBeat().getFreq1_target() );
+		snmTL.setValue( new Integer(s.getBeat().getFreq1_target()) );
 
-		startRightFreq.setValue( s.getBeat().getFreq2_start() );
-		targetRightFreq.setValue( s.getBeat().getFreq2_target() );
+//		startRightFreq.setValue( s.getBeat().getFreq2_start() );
+		snmSR.setValue( new Integer(s.getBeat().getFreq2_start()) );
+//		targetRightFreq.setValue( s.getBeat().getFreq2_target() );
+		snmTR.setValue( new Integer(s.getBeat().getFreq2_target()) );
 	}
 	
 	/**

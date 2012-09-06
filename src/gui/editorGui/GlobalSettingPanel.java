@@ -40,6 +40,10 @@ public class GlobalSettingPanel extends JPanel {
 	 * Initialisiert das Panel, erstellt das Layout (wird nicht gewechselt)
 	 */
 	public GlobalSettingPanel() {
+		this(null);
+	}
+	
+	public GlobalSettingPanel(Session s) {
 		setLayout(new GridLayout(4, 2, 5, 10));
 
 		sessionNameEdt = new JTextField();
@@ -68,6 +72,9 @@ public class GlobalSettingPanel extends JPanel {
 
 		setLayout(new BorderLayout());
 		add(p, BorderLayout.NORTH);
+		
+		if(s != null)
+			setDefaultValues(s);
 	}
 
 	/**
@@ -77,7 +84,7 @@ public class GlobalSettingPanel extends JPanel {
 	 * @param s
 	 *            Session, deren Werte als default angezeigt werden sollen
 	 */
-	public void setDefaultValues(Session s) {
+	private void setDefaultValues(Session s) {
 		sessionNameEdt.setText(s.getName());
 	}
 

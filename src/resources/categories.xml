@@ -6,6 +6,12 @@
       <sessions>
         <container.Session>
           <Hintergrundklang>./bin/resources/wav/White_Noise.wav</Hintergrundklang>
+          <segments/>
+          <duration>0</duration>
+          <name>Thu Sep 06 22:57:37 CEST 2012</name>
+        </container.Session>
+        <container.Session>
+          <Hintergrundklang>./bin/resources/wav/White_Noise.wav</Hintergrundklang>
           <segments>
             <container.Segment>
               <duration>0</duration>
@@ -18,7 +24,7 @@
             </container.Segment>
           </segments>
           <duration>0</duration>
-          <name>Thu Sep 06 21:48:41 CEST 2012</name>
+          <name>Thu Sep 06 23:29:22 CEST 2012</name>
         </container.Session>
       </sessions>
     </container.Category>

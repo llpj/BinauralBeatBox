@@ -43,12 +43,21 @@ public class SessionEditorPanel extends JPanel implements ActionListenerAddable 
 	public static final int CANCEL_BUTTON = 2;
 
 	public SessionEditorPanel() {
+		this(null);
+	}
+	
+	public SessionEditorPanel(Session s) {
 		saveBtn = new JButton("Speichern");
 		exportBtn = new JButton("Exportieren");
 		cancelBtn = new JButton("Abbrechen");
 
-		settingPnl = new GlobalSettingPanel();
-		segmentPnl = new SegmentEditorPanel();
+		if(s != null) {
+			settingPnl = new GlobalSettingPanel();
+			segmentPnl = new SegmentEditorPanel();
+		} else {
+			settingPnl = new GlobalSettingPanel(s);
+			segmentPnl = new SegmentEditorPanel(s);
+		}
 
 		tabPane = new JTabbedPane();
 		tabPane.addTab("Globale Einstellungen", settingPnl);
@@ -87,14 +96,14 @@ public class SessionEditorPanel extends JPanel implements ActionListenerAddable 
 		}
 	}
 
-	/**
-	 * 
-	 * @param s
-	 */
-	public void setDefaultValues(Session s) {
-		settingPnl.setDefaultValues(s);
-		segmentPnl.setDefaultValues(s);
-	}
+//	/**
+//	 * 
+//	 * @param s
+//	 */
+//	private void setDefaultValues(Session s) {
+//		settingPnl.setDefaultValues(s);
+//		segmentPnl.setDefaultValues(s);
+//	}
 
 	/**
 	 * Gibt die angegebene Kategorie zurueck

@@ -35,6 +35,10 @@ public class SegmentEditorPanel extends JPanel {
 	private JScrollPane scrollPane;
 
 	public SegmentEditorPanel() {
+		this(null);
+	}
+	
+	public SegmentEditorPanel(Session session) {
 		segmentPane = new JPanel();
 
 		scrollPane = new JScrollPane(segmentPane);
@@ -53,6 +57,9 @@ public class SegmentEditorPanel extends JPanel {
 
 		SegmentPanel p = new SegmentPanel("Segment 1");
 		addALsToSegmentPnl(p);
+		
+		if(session != null)
+			setDefaultValues(session); 
 	}
 
 	/**
@@ -64,7 +71,7 @@ public class SegmentEditorPanel extends JPanel {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				SegmentPanel p = new SegmentPanel("Segment"+ (segmentList.size() + 1));
+				SegmentPanel p = new SegmentPanel("Segment"+ (segmentList.size() + 1),null);
 				addALsToSegmentPnl(p);
 			}
 		};
@@ -167,17 +174,16 @@ public class SegmentEditorPanel extends JPanel {
 	 * @param session
 	 *            Session mit anzuzeigenen defualt Werten
 	 */
-	public void setDefaultValues(Session session) {
+	private void setDefaultValues(Session session) {
 		SegmentPanel p;
 		int i = 0;
 		for (Segment seg : session.getSegments()) {
 			if (i < segmentList.size()) {
 				p = segmentList.get(i);
 			} else {
-				p = new SegmentPanel("Segment" + (segmentList.size() + 1));
+				p = new SegmentPanel("Segment" + (segmentList.size() + 1), seg);
 				segmentList.add(p);
 			}
-			p.setDefaultValues(seg);
 			i++;
 		}
 

@@ -38,6 +38,8 @@ public class EditorController {
 	private ActionListener		exportBtnAl;
 	private ActionListener		cancelBtnAl;
 	
+	private Session				tempSession;
+	
 	
 	/************************************************
 	 * 												*
@@ -53,11 +55,13 @@ public class EditorController {
 		mainFrame	= mf;
 		
 		playerPnl	= new PlayerPanel();
-		editorPnl	= new SessionEditorPanel();
 		
-		//Einstellungen von uebergenener Session uebernehmen
-		if(s != null)
-			editorPnl.setDefaultValues(s);
+
+		if(s != null) {
+			editorPnl	= new SessionEditorPanel(s);
+		} else {
+			editorPnl	= new SessionEditorPanel();
+		}
 		
 		//ActionListener setzen
 		initActionListener();
@@ -93,6 +97,10 @@ public class EditorController {
 		
 		fileManager.setActiveSession(s);
 		setCategoryListModel();
+	}
+	
+	private Session getTempSession() {
+		return null;
 	}
 	
 	private void setCategoryListModel() {
