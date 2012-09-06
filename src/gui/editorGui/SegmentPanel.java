@@ -12,6 +12,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EventListener;
@@ -151,12 +153,6 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 		GuiFunctionLib.addGridBagContainer(this, gbl, removeBtn,								3, 1, 1, 1, 0, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, editBtn,									3, 2, 1, 1, 0, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, moveDownBtn,								3, 3, 1, 1, 0, 0);
-		
-		startLeftFreq.setValue( getMoodFreq( startMood.getSelectedItem().toString() ) );
-		targetLeftFreq.setValue( getMoodFreq( targetMood.getSelectedItem().toString() ) );
-		
-		startRightFreq.setValue( (Integer)startLeftFreq.getValue() + 2 );
-		targetRightFreq.setValue( (Integer)targetLeftFreq.getValue() + 2 );
 		
 		updateUI();
 	}
@@ -310,10 +306,14 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 		System.out.println(duration);
 		
 		int freq1_start	= getIntValueOfSpinModel(snmSL);
+		System.out.println(freq1_start);
 		int freq1_target= getIntValueOfSpinModel(snmTL);
+		System.out.println(freq1_target);
 		
 		int freq2_start	= getIntValueOfSpinModel(snmSR);
+		System.out.println(freq2_start);
 		int freq2_target= getIntValueOfSpinModel(snmTR);
+		System.out.println(freq2_target);
 		
 		BinauralBeat bb = new BinauralBeat(freq1_start, freq1_target, freq2_start, freq2_target);
 		
@@ -389,9 +389,33 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 		
 		snmTL.addChangeListener( clBeatFreq );
 		snmTR.addChangeListener( clBeatFreq );
+		
+		
+		
+		
+		startMood.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent ie) {
+				if(ie.getStateChange() == ItemEvent.SELECTED) {
+					startLeftFreq.setValue( getMoodFreq( ie.getItem().toString() ) );
+					startRightFreq.setValue( (Integer)startLeftFreq.getValue() + 2 );
+				}
+			}
+		});
+		
+		targetMood.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent ie) {
+				if(ie.getStateChange() == ItemEvent.SELECTED) {
+					targetLeftFreq.setValue( getMoodFreq( ie.getItem().toString() ) );
+					targetRightFreq.setValue( (Integer)targetLeftFreq.getValue() + 2 );
+				}
+			}
+		});
 	}
 	
 	private int getIntValueOfSpinModel(SpinnerNumberModel snm) {
 		return ((Integer)snm.getValue()).intValue();
 	}
+	
 }
