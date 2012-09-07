@@ -146,13 +146,20 @@ public class SessionWiedergabe implements Runnable{
 		if (clip.isRunning()) {
 			beatLine.stop();
 			clip.stop();
-		} else {
-			System.out.println("Pause Fehler: Hintergrundmusik wurde nicht abgespielt.");
 		}
 	}
 	
-	public void stopSession() {
+	public void stopSession(boolean click) {
 		System.out.println("Stopbuttontest");
+		
+		if (click) {
+			playerPnl.setValueOfTimBar(0);
+			System.out.println("Click");
+		} else {
+			playerPnl.setValueOfTimBar(session.getDuration());
+		}
+		
+		
 		if (beatLine.isOpen()) {
 			beatLine.stop();
 			beatLine.close();
@@ -161,8 +168,6 @@ public class SessionWiedergabe implements Runnable{
 			clip.stop();
 			clip.close();
 			clipDuration = 0; // Session auf den Anfang setzen
-		} else {
-			System.out.println("Stop Fehler: Hintergrundmusik wurde nicht abgespielt.");
 		}
 		t.interrupt();
 	}
@@ -176,7 +181,7 @@ public class SessionWiedergabe implements Runnable{
 		catch (LineUnavailableException e) { e.printStackTrace(); }
 	
 		beatLine.start();
-
+		playerPnl.setMaximumofTimeBar(session.getDuration());
 		
 		while(posX < session.getDuration() ) {						
 			synchronized (this) {
@@ -184,9 +189,11 @@ public class SessionWiedergabe implements Runnable{
 					try {
 						wait(1);
 						// TODO fixen, dass wenn Pause gedrückt ist, dann stop, kein Interrupted Exception kommt.
-					} catch (InterruptedException e) { e.printStackTrace(); }
+					} catch (InterruptedException e) { }
 				}
 			}
+			
+			playerPnl.setValueOfTimBar((int) posX);
 			
 			if (checkFrequence()==true) {
 				System.out.println("FREQUENZAENDERUNG");
@@ -197,12 +204,14 @@ public class SessionWiedergabe implements Runnable{
 			int numBytesRead = getStereoTon(data, BUFFER);
 			
 			if(numBytesRead == 0) {
-				stopSession();
+				stopSession(false);
 				break;
 			}
 			beatLine.write(data, 0, numBytesRead);
+			
 		}
-		stopSession();
+		stopSession(false);
+		
 	}
 	
 	// Get Current Time
@@ -268,7 +277,7 @@ public class SessionWiedergabe implements Runnable{
 	    	FreqBeat =  (int) session.getFreqAt(posX, true) - (int) session.getFreqAt(posX, false);
 	    }   
 	    int [] freq  = { FreqLeft, FreqBeat, FreqRight };
-		System.out.println("Frequenz: " + freq[0] + "   " + freq[1] + "   " + freq[2]);
+		//System.out.println("Frequenz: " + freq[0] + "   " + freq[1] + "   " + freq[2]);
 	    return freq;
 	}
 	
@@ -323,25 +332,26 @@ public class SessionWiedergabe implements Runnable{
 		gainControl2.setValue(dB); // veringert / erhoeht die Lautsärke um x // Decibel
 	}
 	
-	public void changeBalance(float balance, boolean clipBeatLine) { //clipBeatLine bedeutet, wenn true dann setzen lautsärke von Clip um - balance/2 und beatLine um + balance/2, (und andersrum)
-		System.out.println("Balance Test");
+	public void changeBalance(float balance, boolean clipBeatLine) { //clipBeatLine bedeutet, wenn true dann veringere lautsärke von Clip  (und andersrum)
 		volumn = balance / 100; 
 		dB = (float) (Math.log(volumn) / Math.log(10.0) * 20.0);
-		
-		float hier = balance /2;		
-		FloatControl gainControl1 = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		FloatControl gainControl2 = (FloatControl) beatLine.getControl(FloatControl.Type.MASTER_GAIN);
-				
-		if (clipBeatLine) {
-			balc1 = balc1 - hier;
-			balc2 = balc2 + hier;
-		} else {
-			balc1 = balc1 + hier;
-			balc2 = balc2 - hier;
-		}
 
-		gainControl1.setValue(balc1);
-		gainControl2.setValue(balc2);
+		FloatControl gainControl1 = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		//FloatControl gainControl2 = (FloatControl) beatLine.getControl(FloatControl.Type.MASTER_GAIN);
+		System.out.println("dB :" + -dB);		
+		
+//		if (clipBeatLine) {
+//			gainControl2.setValue(-dB);
+//			gainControl1.setValue(dB);
+//		} else {	
+//			gainControl2.setValue(dB);
+//			gainControl1.setValue(-dB);
+//		}
+		gainControl1.setValue(dB);
+		
+		
+
+		
 	}
 	
 	public void setPlayerPanel(PlayerPanel pp) {

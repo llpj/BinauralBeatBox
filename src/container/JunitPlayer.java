@@ -44,7 +44,7 @@ public class JunitPlayer {
 		// TODO Junit
 		
 		// stop
-		sw.stopSession();
+		sw.stopSession(true);
 		// TODO Junit
 		
 		
@@ -68,7 +68,7 @@ public class JunitPlayer {
 		// TODO Junit
 		
 		// stop
-		sw.stopSession();
+		sw.stopSession(true);
 		// TODO Junit
 		
 		fail("Not yet implemented");

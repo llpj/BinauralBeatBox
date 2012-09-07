@@ -48,7 +48,8 @@ public class BinauralBeatBox {
 	private static Animation animation;
 
 	private FileManager fileManager;
-	private SessionWiedergabe sw;
+	private static SessionWiedergabe sw;
+	private int tmpBalance = 0;
 
 	// ueberprueft ob pause gedrueckt wurde
 	private boolean isPause;
@@ -209,16 +210,16 @@ public class BinauralBeatBox {
 
 		pnl.addListenerToElement(PlayerPanel.PLAY_BUTTON, new ActionListener() {			
 			
-			//TODO: Abfangen, dass bei nicht ausgew�hlter Session play button ohn efunktion bleibt
+			//TODO: Abfangen, dass bei nicht ausgew�hlter Session play button ohne funktion bleibt
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				
 				if (fileManager.getActiveSession() != null) {
 					if (((ToggleButton) ae.getSource()).isSelected()) {
-						sw.setPlayerPanel( mf.getPlayerPanel() );
 						// PLAY
 						if (sw == null) {
 							sw = new SessionWiedergabe(fileManager.getActiveSession());
+							sw.setPlayerPanel( mf.getPlayerPanel() );
 							sw.playSession();
 						} else {
 							sw.continueSession();
@@ -289,7 +290,7 @@ public class BinauralBeatBox {
 						// uebermalt alte animation falls mal pause gedrueckt wurde
 						defaultPaint();
 						isPause = false;
-						sw.stopSession();
+						sw.stopSession(true);
 						sw = null;
 					}
 				}
@@ -302,20 +303,7 @@ public class BinauralBeatBox {
 				JProgressBar s = (JProgressBar) ce.getSource();
 				if (sw!=null) {
 				    s.setStringPainted(true);
-					s.setMaximum(sw.getCompleteDuration());
-					
-					System.out.println("CurTime: " + sw.getCurrentTime());
-					System.out.println("Complete Time: " + sw.getCompleteDuration());
-					
-					  if (sw.getCurrentTime() < sw.getCompleteDuration()) {
-				           s.setValue((int) sw.getCurrentTime());
-				        } else {
-				           s.setValue(sw.getCompleteDuration());
-				        }
-					  s.repaint();
 				}
-					
-				System.out.println("Time Bar: " + s.getValue());
 			}
 			
 			/**
@@ -338,9 +326,6 @@ public class BinauralBeatBox {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
 				JSlider muteBar = (JSlider) ce.getSource();	// TODO MuteBar default Wert ändern
-				// FIXME NullPointerException
-				// 1. Es wurde noch KEINE Session gewaehlt
-				// 2. Lautstärke wurde angepasst
 				// Lösung: Wir brauchen etwas einheitliches, um zu erkennen, ob eine Session zurzeit abgespielt wird oder nicht
 				// Absprache mit Animation nötig!
 				// Quick Fix:
@@ -351,20 +336,21 @@ public class BinauralBeatBox {
 		});
 		
 		pnl.addListenerToElement(PlayerPanel.BEAT_SLIDER, new ChangeListener() {
-			int tmpBalance = 0;
 			@Override
 			public void stateChanged(ChangeEvent ce) {
 				JSlider balanceBar = (JSlider) ce.getSource();
 				
-				if (balanceBar.getValue()<50) {
-					tmpBalance=50-balanceBar.getValue();
-					sw.changeBalance(tmpBalance, false);
-					System.out.println("Links: "+tmpBalance);
+				if (sw != null) {
+					if (tmpBalance>=balanceBar.getValue()) {
+						sw.changeBalance(balanceBar.getValue(), false);
+						System.out.println("Links: "+tmpBalance);
+					}
+					else {
+						sw.changeBalance(balanceBar.getValue(), true);
+						System.out.println("Rechts: "+ tmpBalance);
+					}
 				}
-				else {
-					sw.changeBalance(tmpBalance, true);
-					System.out.println("Rechts: "+ tmpBalance);
-				}
+				tmpBalance = balanceBar.getValue();
 			}
 			
 		});
