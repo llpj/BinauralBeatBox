@@ -2,15 +2,12 @@ package gui.editorGui;
 
 import gui.ActionListenerAddable;
 import gui.GuiFunctionLib;
-import gui.MainFrame;
 
-import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.util.EventListener;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -121,12 +118,9 @@ public class SessionEditorPanel extends JPanel implements ActionListenerAddable 
 	 */
 	public Session getValues() throws IllegalArgumentException {
 		Session s = new Session();
-//		try {
-			s = settingPnl.getValues(s);
-			s = segmentPnl.getValues(s);
-//		} catch (IllegalArgumentException e) {
-//			MainFrame.showMessage( e.getMessage() );
-//		}
+
+		s = settingPnl.getValues(s);
+		s = segmentPnl.getValues(s);
 		
 		return s;
 	}

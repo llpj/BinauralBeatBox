@@ -38,8 +38,6 @@ public class EditorController {
 	private ActionListener		exportBtnAl;
 	private ActionListener		cancelBtnAl;
 	
-	private Session				tempSession;
-	
 	
 	/************************************************
 	 * 												*

@@ -26,8 +26,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-// import com.ibm.keymanager.audit.s;
-
 import container.BinauralBeat;
 import container.Category;
 import container.Segment;
@@ -37,8 +35,6 @@ import logic.*;
 import gui.MainFrame;
 import gui.ToggleButton;
 import gui.editorGui.EditorController;
-import gui.editorGui.GlobalSettingPanel;
-import gui.editorGui.SessionEditorPanel;
 import gui.playerGui.PlayerPanel;
 import gui.playerGui.SessionListPanel;
 
@@ -106,39 +102,26 @@ public class BinauralBeatBox {
 			}
 
 			@Override
-			public void componentHidden(ComponentEvent arg0) {
-			}
-
+			public void componentHidden(ComponentEvent arg0) { }
 			@Override
-			public void componentMoved(ComponentEvent arg0) {
-			}
-
+			public void componentMoved(ComponentEvent arg0) { }
 			@Override
-			public void componentShown(ComponentEvent arg0) {
-			}
+			public void componentShown(ComponentEvent arg0) { }
 		});
 
 		mf.getVirtualizationPnl().addMouseListener(new MouseListener() {
 			@Override
-			public void mouseReleased(MouseEvent arg0) {
-			}
-
+			public void mouseReleased(MouseEvent arg0) { }
 			@Override
-			public void mousePressed(MouseEvent arg0) {
-			}
-
+			public void mousePressed(MouseEvent arg0) { }
 			@Override
-			public void mouseExited(MouseEvent arg0) {
-			}
-
+			public void mouseExited(MouseEvent arg0) { }
 			@Override
-			public void mouseEntered(MouseEvent arg0) {
-			}
-
+			public void mouseEntered(MouseEvent arg0) { }
 			@Override
 			public void mouseClicked(MouseEvent me) {
 				/**
-				 * Der Animationswechsel soll nur erm�glicht sein, wenn der Sound nicht pausiert
+				 * Der Animationswechsel soll nur erm�glicht sein, wenn der Sound nicht pausiert
 				 */
 				if (!isPause) {
 					animation.finish(true);
@@ -181,7 +164,7 @@ public class BinauralBeatBox {
 	public void defaultPaint()
 	{
 		/**
-		 * Methode f�r das �bermalen des Animationsfensters
+		 * Methode f�r das �bermalen des Animationsfensters
 		 */
 		Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl()
 		.getGraphics();
@@ -305,22 +288,6 @@ public class BinauralBeatBox {
 				    s.setStringPainted(true);
 				}
 			}
-			
-			/**
-			 * Die Angaben würde ich alle in Sekunden machen. 
-			 * (Falls du Mikrosekunden oder was auch immer hast, kannst du das erst mal probieren. 
-			 * Aber ich glaube wir bekommen mit der GUI Ausgabe Probleme.)
-			 * Schritte:
-			 * 1. Gesamtlänge der Session mit SetMaximumOfTimeBar(sessionlänge) festlegen
-			 * 2. Aktuellen Stand/Position der Session mit setValueOfTimeBar aktualisieren
-			 * Bin mir grad gar nich sicher, ob das so gut gehen wird :/
-			 * Könnte sein, dass die TimeBar noch mal in nen Thread müsste, da die GUI wahrscheinlich nicht so flüssi aktualisiert wird....
-			 * Egal probier es erst mal so und dann sehen wir weiter ;)
-			 */
-			//mf.getPlayerPanel().setMaximumofTimeBar(sec)
-			//mf.getPlayerPanel().setValueOfTimBar(sec)
-			//mf.getPlayerPanel().getValueOfTimBar()
-			
 		});
 		pnl.addListenerToElement(PlayerPanel.MUTE_SLIDER, new ChangeListener() {
 			@Override
@@ -363,7 +330,6 @@ public class BinauralBeatBox {
 				new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-//						changeToSessionEditor();
 						new EditorController(fileManager, mf);
 					}
 				});
@@ -373,9 +339,7 @@ public class BinauralBeatBox {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						if (fileManager.getActiveSession() != null) {
-//							changeToSessionEditor();
 							new EditorController(fileManager, mf, fileManager.getActiveSession());
-//							mf.getSessionEditorPnl().setDefaultValues(fileManager.getActiveSession());
 						}
 					}
 				});
@@ -471,58 +435,4 @@ public class BinauralBeatBox {
 		mf.getSessionListPnl().setListModel(sessionModel,
 				SessionListPanel.SESSION_LIST);
 	}
-
-	/**
-	 * Sorgt fuer den Wechsel in das Editor Layout, erstellt & setzt alle
-	 * notwendigen Listener fuer das Editor Layout und uebergibt alle
-	 * notwendigen Daten (Liste der Kategorien und Hintergrundgeraeusche an den
-	 * Editor.
-	 */
-//	private void changeToSessionEditor() {
-////	private void changeToSessionEditor(Session session) {
-////		EditorController editorControll = new EditorController(fileManager, mf);		
-//		
-////		mf.setEditorLayout(editorControll);
-//		SessionEditorPanel editPnl = mf.getSessionEditorPnl();
-//
-////		editPnl.addListenerToElement(SessionEditorPanel.SAVE_BUTTON,
-////				new ActionListener() {
-////					@Override
-////					public void actionPerformed(ActionEvent arg0) {
-//////						addNewSession();
-//////						fileManager.writeCategories(fileManager.getCategories());
-////					}
-////				});
-//
-////		editPnl.addListenerToElement(SessionEditorPanel.EXPORT_BUTTON,
-////				new ActionListener() {
-////					@Override
-////					public void actionPerformed(ActionEvent arg0) {
-//////						addNewSession();
-////						fileManager.exportAsWav();
-////					}
-////				});
-//
-////		mf.getSessionEditorPnl()
-////		.getGlobalSettingPanel()
-////		.setListModel(fileManager.getCategories(),
-////				GlobalSettingPanel.CATEGORY_LIST);
-////		mf.getSessionEditorPnl()
-////				.getGlobalSettingPanel()
-////				.setListModel(fileManager.getListOfWav(),
-////						GlobalSettingPanel.SOUND_LIST);
-//	}
-
-//	private void addNewSession() {
-////		String catName = mf.getSessionEditorPnl().getCategory();
-////		Session s = mf.getSessionEditorPnl().getValues();
-////		if (fileManager.getCategories().containsKey(catName)) {
-////			fileManager.getCategories().get(catName).addSession(s);
-////		} else {
-////			fileManager.addCategory(new Category(catName, s));
-////		}
-////		fileManager.setActiveSession(s);
-//		setCategoryListModel();
-//	}
-	
 }

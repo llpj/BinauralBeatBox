@@ -2,7 +2,6 @@ package gui.editorGui;
 
 import gui.GuiFunctionLib;
 
-import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;

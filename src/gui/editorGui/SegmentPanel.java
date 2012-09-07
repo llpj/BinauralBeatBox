@@ -5,9 +5,6 @@ import gui.GuiFunctionLib;
 import gui.MainFrame;
 import gui.ToggleButton;
 
-import interfaces.Mood;
-
-import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
