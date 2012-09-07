@@ -376,6 +376,8 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 				int freq2_start		= getIntValueOfSpinModel(snmSR);
 				int freq2_target	= getIntValueOfSpinModel(snmTR);
 				
+				MainFrame.cleanMessage();
+
 				try {
 					new BinauralBeat(freq1_start, freq1_target, freq2_start, freq2_target);
 				} catch (IllegalArgumentException e) {

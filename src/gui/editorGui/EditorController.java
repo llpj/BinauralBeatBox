@@ -84,12 +84,9 @@ public class EditorController {
 	 * 					FUNCTIONS					*
 	 * 												*
 	 ************************************************/
-	private void addNewSession() {
+	private void addNewSession(Session s) {
 		String catName = editorPnl.getCategory();
-		Session s = editorPnl.getValues();
-		
-		System.out.println("addNewSession");
-		
+			
 		if (fileManager.getCategories().containsKey(catName)) {
 			fileManager.getCategories().get(catName).addSession(s);
 		} else {
@@ -97,10 +94,17 @@ public class EditorController {
 		}
 		
 		fileManager.setActiveSession(s);
+		MainFrame.cleanMessage();
 		setCategoryListModel();
 	}
 	
 	private Session getTempSession() {
+		try {
+			MainFrame.cleanMessage();
+			return editorPnl.getValues();
+		} catch (IllegalArgumentException e) {
+			MainFrame.showMessage( e.getMessage() );
+		}
 		return null;
 	}
 	
@@ -118,19 +122,27 @@ public class EditorController {
 		saveBtnAl = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addNewSession();
-				mainFrame.setPlayerLayout();
-				fileManager.writeCategories(fileManager.getCategories());
+				Session s = getTempSession();
+				
+				if(s != null) {
+					addNewSession(s);
+					mainFrame.setPlayerLayout();
+					fileManager.writeCategories(fileManager.getCategories());
+				}
 			}
 		};
 		
 		exportBtnAl = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addNewSession();
-				mainFrame.setPlayerLayout();
-				fileManager.writeCategories(fileManager.getCategories());
-				fileManager.exportAsWav();
+				Session s = getTempSession();
+				
+				if(s != null) {
+					addNewSession(s);
+					mainFrame.setPlayerLayout();
+					fileManager.writeCategories(fileManager.getCategories());
+					fileManager.exportAsWav();
+				}
 			}
 		};
 		

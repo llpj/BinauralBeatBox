@@ -119,14 +119,14 @@ public class SessionEditorPanel extends JPanel implements ActionListenerAddable 
 	 * 
 	 * @return Session
 	 */
-	public Session getValues() {
+	public Session getValues() throws IllegalArgumentException {
 		Session s = new Session();
-		try {
+//		try {
 			s = settingPnl.getValues(s);
 			s = segmentPnl.getValues(s);
-		} catch (IllegalArgumentException e) {
-			MainFrame.showMessage( e.getMessage() );
-		}
+//		} catch (IllegalArgumentException e) {
+//			MainFrame.showMessage( e.getMessage() );
+//		}
 		
 		return s;
 	}

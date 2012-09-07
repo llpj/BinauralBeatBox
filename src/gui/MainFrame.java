@@ -165,6 +165,14 @@ public class MainFrame extends JFrame {
 		return editorPnl;
 	}
 	
+	public static void cleanMessage() {
+		if( staticThis != null ) {
+			JPanel glass = (JPanel)staticThis.getGlassPane();
+			glass.removeAll();
+			glass.updateUI();
+		}
+	}
+	
 	public static void showMessage(String text) {
 		JPanel	pnl = new JPanel();
 		JLabel	lbl = new JLabel(text);
