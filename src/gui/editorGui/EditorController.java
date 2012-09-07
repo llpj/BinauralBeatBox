@@ -4,11 +4,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JProgressBar;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import container.Category;
 import container.Session;
+import logic.AnimationFreq;
+import logic.FrakFarbverlauf;
+import logic.SessionWiedergabe;
 import management.FileManager;
 import gui.MainFrame;
+import gui.ToggleButton;
 import gui.playerGui.PlayerPanel;
 import gui.playerGui.SessionListPanel;
 
@@ -37,6 +45,10 @@ public class EditorController {
 	private ActionListener		saveBtnAl;
 	private ActionListener		exportBtnAl;
 	private ActionListener		cancelBtnAl;
+	
+	
+	private int tmpBalance = 0;
+	private static SessionWiedergabe sw;
 	
 	
 	/************************************************
@@ -74,6 +86,8 @@ public class EditorController {
 		//Auswahllisten mit Kategorien und Musikdateien fuellen
 		editorPnl.getGlobalSettingPanel().setListModel(fileManager.getCategories(),	GlobalSettingPanel.CATEGORY_LIST);
 		editorPnl.getGlobalSettingPanel().setListModel(fileManager.getListOfWav(), GlobalSettingPanel.SOUND_LIST);
+		
+		initEditorPlayer();
 	}
 
 	
@@ -150,5 +164,90 @@ public class EditorController {
 				mainFrame.setPlayerLayout();
 			}
 		};
+	}
+	
+	
+	/************************************************
+	 * 												*
+	 * 				PLAYER FUNCTIONS				*
+	 * 												*
+	 ************************************************/
+	private void initEditorPlayer() {
+		PlayerPanel pnl = mainFrame.getPlayerPanel();
+		final Session tempSession = this.getTempSession();
+
+		pnl.addListenerToElement(PlayerPanel.PLAY_BUTTON, new ActionListener() {			
+			
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				
+				if (tempSession != null) {
+					if (((ToggleButton) ae.getSource()).isSelected()) {
+						// PLAY
+						if (sw == null) {
+							sw = new SessionWiedergabe(tempSession);
+							sw.setPlayerPanel( mainFrame.getPlayerPanel() );
+							sw.playSession();
+						} else {
+							sw.continueSession();
+						}	
+					} else {
+						// PAUSE
+						if (sw != null)
+							sw.pauseSession();
+					}
+				}
+			}
+		});
+
+		pnl.addListenerToElement(PlayerPanel.STOP_BUTTON, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// STOP:
+//				if (asdfileManager.getActiveSession() != null) {
+					if (sw != null) {
+						sw.stopSession(true);
+						sw = null;
+					}
+//				}
+			}
+		});
+		
+		pnl.addListenerToElement(PlayerPanel.TIME_BAR, new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent ce) {
+				JProgressBar s = (JProgressBar) ce.getSource();
+				if (sw!=null) {
+				    s.setStringPainted(true);
+				}
+			}
+		});
+		pnl.addListenerToElement(PlayerPanel.MUTE_SLIDER, new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent ce) {
+				JSlider muteBar = (JSlider) ce.getSource();
+				if(sw != null)
+					sw.changeVolumn(muteBar.getValue());
+//				System.out.println(muteBar.getValue());
+			}
+		});
+		
+		pnl.addListenerToElement(PlayerPanel.BEAT_SLIDER, new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent ce) {
+				JSlider balanceBar = (JSlider) ce.getSource();
+				
+				if (sw != null) {
+					if (tmpBalance>=balanceBar.getValue()) {
+						sw.changeBalance(balanceBar.getValue(), false);
+					}
+					else {
+						sw.changeBalance(balanceBar.getValue(), true);
+					}
+				}
+				tmpBalance = balanceBar.getValue();
+			}
+			
+		});
 	}
 }
