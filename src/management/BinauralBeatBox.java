@@ -26,9 +26,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import container.BinauralBeat;
 import container.Category;
-import container.Segment;
 import container.Session;
 
 import logic.*;
@@ -77,10 +75,10 @@ public class BinauralBeatBox {
 		initListenerForPlayerPanel();
 		initListenerForSessionListPanel();
 
-		Session session = new Session();
-		session.addSegment(new Segment(10, new BinauralBeat(500, 530)));
-		session.addSegment(new Segment(40, new BinauralBeat(800, 830)));
-		session.addSegment(new Segment(10, new BinauralBeat(500, 530)));
+//		Session session = new Session();
+//		session.addSegment(new Segment(10, new BinauralBeat(500, 530)));
+//		session.addSegment(new Segment(40, new BinauralBeat(800, 830)));
+//		session.addSegment(new Segment(10, new BinauralBeat(500, 530)));
 
 		animationCounter = 0;
 		isPause = false;
@@ -100,7 +98,6 @@ public class BinauralBeatBox {
 					animation.init();
 				}
 			}
-
 			@Override
 			public void componentHidden(ComponentEvent arg0) { }
 			@Override
