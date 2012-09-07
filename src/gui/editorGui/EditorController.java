@@ -11,8 +11,6 @@ import javax.swing.event.ChangeListener;
 
 import container.Category;
 import container.Session;
-import logic.AnimationFreq;
-import logic.FrakFarbverlauf;
 import logic.SessionWiedergabe;
 import management.FileManager;
 import gui.MainFrame;
