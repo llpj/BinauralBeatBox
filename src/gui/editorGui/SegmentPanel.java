@@ -359,11 +359,11 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 			public void stateChanged(ChangeEvent ce) {
 				Date d = (Date)sm.getValue();
 				
-//				if( d.getSeconds() == 0 && 
-//					d.getMinutes() == 0) {
-//					sm.setValue(1000);
-//					durationSpin.updateUI();
-//				}
+				if( d.getSeconds() == 0 && d.getMinutes() == 0) {
+					d.setSeconds(1);
+					sm.setValue(d);
+					durationSpin.updateUI();
+				}
 			}
 		});
 		
