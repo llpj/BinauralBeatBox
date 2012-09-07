@@ -14,6 +14,7 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import container.Session;
+import gui.playerGui.PlayerPanel;
 import interfaces.Mood;
 import management.BinauralBeatBox;
 
@@ -28,6 +29,7 @@ import management.BinauralBeatBox;
 public class SessionWiedergabe implements Runnable{
 
 	private Session				session;
+	private PlayerPanel 		playerPnl;
 	private AudioFormat			beatFormat;
 	private double				posX;			//Zaehlvariable fuer die Berechnung des Tons
 	private double				stepWidth;
@@ -340,6 +342,10 @@ public class SessionWiedergabe implements Runnable{
 
 		gainControl1.setValue(balc1);
 		gainControl2.setValue(balc2);
+	}
+	
+	public void setPlayerPanel(PlayerPanel pp) {
+		playerPnl = pp;
 	}
 
 }

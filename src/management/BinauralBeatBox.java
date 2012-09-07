@@ -212,9 +212,10 @@ public class BinauralBeatBox {
 			//TODO: Abfangen, dass bei nicht ausgew�hlter Session play button ohn efunktion bleibt
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-
+				
 				if (fileManager.getActiveSession() != null) {
 					if (((ToggleButton) ae.getSource()).isSelected()) {
+						sw.setPlayerPanel( mf.getPlayerPanel() );
 						// PLAY
 						if (sw == null) {
 							sw = new SessionWiedergabe(fileManager.getActiveSession());
@@ -537,5 +538,5 @@ public class BinauralBeatBox {
 ////		fileManager.setActiveSession(s);
 //		setCategoryListModel();
 //	}
-
+	
 }
