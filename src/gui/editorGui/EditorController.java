@@ -2,12 +2,15 @@ package gui.editorGui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileFilter;
 
 import container.Category;
 import container.Session;
@@ -127,7 +130,12 @@ public class EditorController {
 		
 		mainFrame.getSessionListPnl().setListModel(catModel, SessionListPanel.CATEGORY_LIST);
 	}
-	
+
+	/************************************************
+	 * 												*
+	 *				ACTION LISTINERS				*
+	 * 												*
+	 ************************************************/
 	private void initActionListener() {
 		saveBtnAl = new ActionListener() {
 			@Override
@@ -151,7 +159,30 @@ public class EditorController {
 					addNewSession(s);
 					mainFrame.setPlayerLayout();
 					fileManager.writeCategories(fileManager.getCategories());
-					fileManager.exportAsWav();
+
+					JFileChooser chooser = new JFileChooser();
+					
+					chooser.setFileFilter(new FileFilter() {
+						@Override
+		                public boolean accept(File f) {
+		                    return f.getName().toLowerCase().endsWith(".wav") || f.isDirectory();
+		                }
+		                public String getDescription() {
+		                    return "Audiodatei (*.wav)";
+		                }
+		            });
+
+				    int returnVal = chooser.showSaveDialog(null);
+
+				    if(returnVal == JFileChooser.APPROVE_OPTION) {
+				    	String fileStr = chooser.getSelectedFile().toString();
+				    	
+				    	if(!fileStr.toLowerCase().endsWith(".wav")) {
+				    		fileStr = fileStr + ".wav";
+				    	}
+//				    	System.out.println( new File(fileStr) );
+				    	fileManager.exportAsWav( new File(fileStr) );
+				    }
 				}
 			}
 		};
@@ -171,20 +202,20 @@ public class EditorController {
 	 * 												*
 	 ************************************************/
 	private void initEditorPlayer() {
-		PlayerPanel pnl = mainFrame.getPlayerPanel();
-		final Session tempSession = this.getTempSession();
-
-		pnl.addListenerToElement(PlayerPanel.PLAY_BUTTON, new ActionListener() {			
+		playerPnl.addListenerToElement(PlayerPanel.PLAY_BUTTON, new ActionListener() {			
 			
 			@Override
 			public void actionPerformed(ActionEvent ae) {
+				Session tempSession = getTempSession();
+				
+				System.out.println(tempSession);
 				
 				if (tempSession != null) {
 					if (((ToggleButton) ae.getSource()).isSelected()) {
 						// PLAY
 						if (sw == null) {
 							sw = new SessionWiedergabe(tempSession);
-							sw.setPlayerPanel( mainFrame.getPlayerPanel() );
+							sw.setPlayerPanel( playerPnl );
 							sw.playSession();
 						} else {
 							sw.continueSession();
@@ -198,7 +229,7 @@ public class EditorController {
 			}
 		});
 
-		pnl.addListenerToElement(PlayerPanel.STOP_BUTTON, new ActionListener() {
+		playerPnl.addListenerToElement(PlayerPanel.STOP_BUTTON, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// STOP:
@@ -211,7 +242,7 @@ public class EditorController {
 			}
 		});
 		
-		pnl.addListenerToElement(PlayerPanel.TIME_BAR, new ChangeListener() {
+		playerPnl.addListenerToElement(PlayerPanel.TIME_BAR, new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
 				JProgressBar s = (JProgressBar) ce.getSource();
@@ -220,7 +251,7 @@ public class EditorController {
 				}
 			}
 		});
-		pnl.addListenerToElement(PlayerPanel.MUTE_SLIDER, new ChangeListener() {
+		playerPnl.addListenerToElement(PlayerPanel.MUTE_SLIDER, new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
 				JSlider muteBar = (JSlider) ce.getSource();
@@ -230,7 +261,7 @@ public class EditorController {
 			}
 		});
 		
-		pnl.addListenerToElement(PlayerPanel.BEAT_SLIDER, new ChangeListener() {
+		playerPnl.addListenerToElement(PlayerPanel.BEAT_SLIDER, new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
 				JSlider balanceBar = (JSlider) ce.getSource();

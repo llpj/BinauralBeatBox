@@ -183,7 +183,7 @@ public class FileManager {
 	 * 44.1KHz, die Bittiefe betraegt 16.
 	 */
 	// TODO: Mix mit Hintergrundklang
-	public void exportAsWav() {
+	public void exportAsWav(File file) {
 		try {
 			int sampleRate = 44100; // Samples pro Sekunde
 			double duration = activeSession.getDuration(); // Sekunden
@@ -195,8 +195,12 @@ public class FileManager {
 			// Erstelle ein wav-file mit dem Namen, der durch den Benutzer
 			// spezifiziert wurde
 			// TODO: Hier den User-spezifizierten Filename angeben
-			WavFile wavFile = WavFile.newWavFile(new File("sineonly.wav"), 2,
-					numFrames, 16, sampleRate);
+			WavFile wavFile;
+			if(file != null) {
+				wavFile = WavFile.newWavFile(file, 2, numFrames, 16, sampleRate);
+			} else {
+				wavFile = WavFile.newWavFile(new File("sineonly.wav"), 2,numFrames, 16, sampleRate);
+			}
 
 			// Erstelle einen grosszuegigen Buffer von 100 frames
 			double[][] buffer = new double[2][100];
