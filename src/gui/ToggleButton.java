@@ -47,4 +47,10 @@ public class ToggleButton extends JToggleButton {
 		}
 	}
 	
+	public void toggle() {
+		if( isSelected() )
+			this.setSelected(false);
+		else
+			this.setSelected(true);
+	}
 }

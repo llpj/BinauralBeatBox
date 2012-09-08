@@ -256,6 +256,9 @@ public class BinauralBeatBox {
 							animation.pause(true);
 							isPause = true;
 					}
+				} else {
+					//wenn keine Session gewahlt: setze Play/Pause Button zurueck auf Play
+					((ToggleButton)ae.getSource()).toggle();
 				}
 			}
 		});
