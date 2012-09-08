@@ -46,7 +46,7 @@ public class BinauralBeatBox {
 	private int tmpBalance = 0;
 
 	// ueberprueft ob pause gedrueckt wurde
-	private boolean isPause;
+	private static boolean isPause;
 	// ist resize%2 == 0, so ist das animationPnl in maximiertem Zustand, wenn
 	// != 0 in minimiertem Zustand
 	private int resize;
@@ -183,6 +183,14 @@ public class BinauralBeatBox {
 			//defaultPaint();
 			animation.init();
 		}
+	}
+	
+	public static void animationFinish(){
+			if (sw != null) {
+				animation.finish(true);
+				sw = null;
+			}
+
 	}
 
 	private void initListenerForPlayerPanel() {
