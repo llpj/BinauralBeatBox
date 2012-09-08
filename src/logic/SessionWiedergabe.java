@@ -175,6 +175,7 @@ public class SessionWiedergabe implements Runnable{
 			clipDuration = 0; // Session auf den Anfang setzen
 		}
 		t.interrupt();
+		playerPnl.setPlayButtonSelected(false);
 	}
 
 	
@@ -221,7 +222,6 @@ public class SessionWiedergabe implements Runnable{
 			BinauralBeatBox.animationFinish();
 		}
 		stopSession(false);
-		
 	}
 	
 	// Get Current Time
