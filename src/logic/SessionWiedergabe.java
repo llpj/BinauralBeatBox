@@ -217,7 +217,7 @@ public class SessionWiedergabe implements Runnable{
 			beatLine.write(data, 0, numBytesRead);
 			
 		}
-		stopSession(false);
+		BinauralBeatBox.animationFinish();
 		
 	}
 	
