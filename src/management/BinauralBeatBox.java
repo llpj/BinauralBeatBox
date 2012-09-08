@@ -41,7 +41,7 @@ public class BinauralBeatBox {
 	private MainFrame mf;
 	private static Animation animation;
 
-	private FileManager fileManager;
+	private static FileManager fileManager;
 	private static SessionWiedergabe sw;
 	private int tmpBalance = 0;
 
@@ -190,7 +190,6 @@ public class BinauralBeatBox {
 				animation.finish(true);
 				sw = null;
 			}
-
 	}
 
 	private void initListenerForPlayerPanel() {
@@ -444,7 +443,14 @@ public class BinauralBeatBox {
 				SessionListPanel.SESSION_LIST);
 	}
 	
-	public static SessionWiedergabe getSw() {
+	public static SessionWiedergabe getSw() {	
+		if (sw == null) {
+			sw = new SessionWiedergabe(fileManager.getActiveSession());
+		}
 		return sw;
+	}
+	
+	public static Object getActiveSession() {
+		return fileManager.getActiveSession();
 	}
 }
