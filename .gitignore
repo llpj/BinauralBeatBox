@@ -2,3 +2,4 @@
 *.wav
 bin/**/*
 xstream-distribution-1.4.2-bin/
+.project
