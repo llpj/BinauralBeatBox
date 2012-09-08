@@ -188,8 +188,6 @@ public class BinauralBeatBox {
 	public static void animationFinish(){
 			if (sw != null) {
 				animation.finish(true);
-				isPause = false;
-				sw.stopSession(false);
 				sw = null;
 			}
 
