@@ -8,6 +8,7 @@ import gui.playerGui.SessionListPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +34,8 @@ public class MainFrame extends JFrame {
 	private SessionListPanel	listPnl;
 	private SessionEditorPanel	editorPnl;
 	private ToggleButton		openBtn;	//Anzeige von Animationsflaeche an/aus
+	
+	private boolean miniPlayerLayout = false;
 	
 	private static MainFrame staticThis	= null;
 	
@@ -63,11 +66,14 @@ public class MainFrame extends JFrame {
 	 * Laedt und initialisiert das Player Layout (Playerleiste, Animationsflaeche, Liste der Kategorien und Sessions)
 	 */
 	private void playerLayout() {
+		miniPlayerLayout = false;
 		this.getContentPane().removeAll();
 		GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
-		
+
+		virtualizationPnl.setSize(400, 500);
 		GuiFunctionLib.addGridBagContainer(this, gbl, virtualizationPnl,0, 0, 1, 1, 1, 1);
+//		GuiFunctionLib.addGridBagContainer(this, gbl, virtualizationPnl,0, 0, 1, 1, 1, 0, GridBagConstraints.BOTH);
 		GuiFunctionLib.addGridBagContainer(this, gbl, openBtn,			0, 1, 3, 1, 0, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, playerPnl,		0, 2, 1, 1, 1, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, listPnl,			0, 3, 1, 1, 1, 0);
@@ -80,6 +86,7 @@ public class MainFrame extends JFrame {
 	 * Layout für die Anzeige ohne Animationsflaeche 
 	 */
 	private void miniPlayerLayout() {
+		miniPlayerLayout = true;
 		this.getContentPane().removeAll();
 		GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
@@ -87,7 +94,7 @@ public class MainFrame extends JFrame {
 		GuiFunctionLib.addGridBagContainer(this, gbl, openBtn,			0, 0, 3, 1, 0, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, playerPnl,		0, 1, 1, 1, 1, 0);
 		GuiFunctionLib.addGridBagContainer(this, gbl, listPnl,			0, 2, 1, 1, 1, 0);
-		
+
 		repaint();
 		pack();
 	}
@@ -163,6 +170,15 @@ public class MainFrame extends JFrame {
 	 */
 	public SessionEditorPanel getSessionEditorPnl() {
 		return editorPnl;
+	}
+	
+	public static void packMain() {
+		if( staticThis != null ) {
+			staticThis.pack();
+		
+			if(!staticThis.miniPlayerLayout)
+				staticThis.setSize( new Dimension(staticThis.getSize().width,500) );
+		}
 	}
 	
 	public static void cleanMessage() {

@@ -2,6 +2,7 @@ package gui.playerGui;
 
 import gui.ActionListenerAddable;
 import gui.GuiFunctionLib;
+import gui.MainFrame;
 import gui.ToggleButton;
 
 import java.awt.BorderLayout;
@@ -91,6 +92,7 @@ public class SessionListPanel extends JPanel implements ActionListenerAddable {
 		GuiFunctionLib.addGridBagContainer(this, gbl, menuPnl,							2, 1, 1, 1, 0, 0);
 		
 		updateUI();
+		MainFrame.packMain();
 	}
 	
 	private void minimize() {
@@ -100,6 +102,7 @@ public class SessionListPanel extends JPanel implements ActionListenerAddable {
 		add(openBtn, BorderLayout.NORTH);
 		
 		updateUI();
+		MainFrame.packMain();
 	}
 
 	@Override

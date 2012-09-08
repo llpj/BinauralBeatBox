@@ -110,7 +110,7 @@ public class AnimationFreq extends Animation {
 		//Anpassung des Animationstempos bei Resizing
 		if(checkResize%2 == 0)
 		{
-			//großes Fenster
+			//groï¿½es Fenster
 			tempo = 0;
 		}
 		else
