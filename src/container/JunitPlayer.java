@@ -11,8 +11,22 @@ import org.junit.Test;
 
 public class JunitPlayer {
 	
+	static SessionWiedergabe jSw = null;
 	
-	private SessionWiedergabe jSw;
+	public static SessionWiedergabe getSw(boolean click) {	
+		
+		// Session erstellen
+		if (click) {
+			if (jSw == null) {
+					Session session = new Session();
+					session.addSegment(new Segment(10, new BinauralBeat(500, 530)));
+					session.addSegment(new Segment(40, new BinauralBeat(800, 830)));
+					session.addSegment(new Segment(10, new BinauralBeat(500, 530)));
+					jSw = new SessionWiedergabe(session);
+				}	
+		}
+		return jSw;
+	}
 
 	@Test
 	public void test() {
@@ -27,15 +41,12 @@ public class JunitPlayer {
 	@Test
 	public void testPlay() {	
 		
-		// get Session
-		jSw = BinauralBeatBox.getSw();
+		// session laden
+		getSw(true);
 		assertNotNull("Session erfolgreich geladen");
-		System.out.println(jSw);
 		
-		// load session
-		
-		// play session
-		//jSw.playSession();
+		//session abspielen
+		jSw.playSession();
 		// TODO Junit
 		
 		// pause 
@@ -59,25 +70,8 @@ public class JunitPlayer {
 	@Test
 	public void testPlayWithoutList() {		
 		// play session
-		jSw = BinauralBeatBox.getSw();
-		
-		jSw.playSession();
-		assertNotNull("Keine Session ausgewaehlt", jSw);
-		
-		// pause 
-		jSw.pauseSession();
-		// TODO Junit
-		
-		// resume
-		jSw.pauseSession();
-		// TODO Junit
-		
-		// stop
-		jSw.stopSession(true);
-		// TODO Junit
-		
-		//fail("Not yet implemented");
-		
+		getSw(false);
+		assertEquals ( "Sessionwiedergabe nicht ausgewaehlt", null , jSw ) ;	
 	}
 	
 	

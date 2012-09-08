@@ -25,7 +25,6 @@ import management.BinauralBeatBox;
  * 
  */
 
-
 public class SessionWiedergabe implements Runnable{
 
 	private Session				session;
@@ -357,15 +356,10 @@ public class SessionWiedergabe implements Runnable{
 //			gainControl2.setValue(dB);
 //			gainControl1.setValue(-dB);
 //		}
-		gainControl1.setValue(dB);
-		
-		
-
-		
+		gainControl1.setValue(dB);	
 	}
 	
 	public void setPlayerPanel(PlayerPanel pp) {
 		playerPnl = pp;
 	}
-
 }

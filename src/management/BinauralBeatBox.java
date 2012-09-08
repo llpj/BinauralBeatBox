@@ -26,7 +26,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import container.BinauralBeat;
 import container.Category;
+import container.Segment;
 import container.Session;
 
 import logic.*;
@@ -453,16 +455,5 @@ public class BinauralBeatBox {
 
 		mf.getSessionListPnl().setListModel(sessionModel,
 				SessionListPanel.SESSION_LIST);
-	}
-	
-	public static SessionWiedergabe getSw() {	
-		if (sw == null) {
-			sw = new SessionWiedergabe(fileManager.getActiveSession());
-		}
-		return sw;
-	}
-	
-	public static Object getActiveSession() {
-		return fileManager.getActiveSession();
 	}
 }
