@@ -435,4 +435,8 @@ public class BinauralBeatBox {
 		mf.getSessionListPnl().setListModel(sessionModel,
 				SessionListPanel.SESSION_LIST);
 	}
+	
+	public static SessionWiedergabe getSw() {
+		return sw;
+	}
 }

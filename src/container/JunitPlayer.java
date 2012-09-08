@@ -1,6 +1,7 @@
 package container;
 
 import static org.junit.Assert.*;
+import junit.framework.JUnit4TestAdapter;
 import logic.SessionWiedergabe;
 import management.BinauralBeatBox;
 import management.FileManager;
@@ -10,7 +11,7 @@ import org.junit.Test;
 public class JunitPlayer {
 	
 	
-	private SessionWiedergabe sw;
+	private SessionWiedergabe jSw;
 	FileManager filemanager = new FileManager();
 	// TODO an filemanager rankommen
 	
@@ -21,30 +22,33 @@ public class JunitPlayer {
 		// fail("Not yet implemented");
 	}
 	
+	public static junit.framework.Test suite() {
+		return new JUnit4TestAdapter(JunitPlayer.class);
+	}
+	
 	@Test
 	public void testPlay() {
 		
 		// check filemanager
-		assertNotNull(filemanager);
+		//assertNotNull(filemanager);
 		
 		// load session
-		sw = new SessionWiedergabe(filemanager.getActiveSession());
-		assertNotNull(sw);
-		
+		jSw = BinauralBeatBox.getSw();
+		assertNotNull("Fehler beim Laden der Session");
 		// play session
-		sw.playSession();
+		jSw.playSession();
 		// TODO Junit
 		
 		// pause 
-		sw.pauseSession();
+		//jSw.pauseSession();
 		// TODO Junit
 		
 		// resume
-		sw.pauseSession();
+		//.pauseSession();
 		// TODO Junit
 		
 		// stop
-		sw.stopSession(true);
+		//jSw.stopSession(true);
 		// TODO Junit
 		
 		
@@ -56,19 +60,19 @@ public class JunitPlayer {
 	@Test
 	public void testPlayWithoutList() {		
 		// play session
-		sw.playSession();
+		jSw.playSession();
 		// TODO Junit
 		
 		// pause 
-		sw.pauseSession();
+		jSw.pauseSession();
 		// TODO Junit
 		
 		// resume
-		sw.pauseSession();
+		jSw.pauseSession();
 		// TODO Junit
 		
 		// stop
-		sw.stopSession(true);
+		jSw.stopSession(true);
 		// TODO Junit
 		
 		fail("Not yet implemented");
@@ -79,11 +83,11 @@ public class JunitPlayer {
 	@Test
 	public void testBalance() {
 		// load session
-		sw = new SessionWiedergabe(filemanager.getActiveSession());
+		jSw = new SessionWiedergabe(filemanager.getActiveSession());
 		// TODO Junit
 		
 		// play session
-		sw.playSession();
+		jSw.playSession();
 		// TODO Junit
 		
 		// change balance between Binaural Beat and Backgroundmusic
