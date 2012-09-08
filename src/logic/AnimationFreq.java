@@ -73,7 +73,6 @@ public class AnimationFreq extends Animation {
 					else y[i]+=q;
 				}
 				animationPnlBuffer.setColor(c[j]);
-				//TODO THREAD error beheben --> kommt nur manchmal
 				try
 				{
 					animationPnlBuffer.setStroke(new BasicStroke(3.0f,
@@ -84,6 +83,7 @@ public class AnimationFreq extends Animation {
 				}
 				catch(Exception e)
 				{
+					//Unable to Stroke Error --> Java Bug
 					e.printStackTrace();
 				}
 			}
