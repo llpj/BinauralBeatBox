@@ -214,7 +214,7 @@ public class EditorController {
 					if (((ToggleButton) ae.getSource()).isSelected()) {
 						// PLAY
 						if (sw == null) {
-							sw = new SessionWiedergabe(tempSession);
+							sw = new SessionWiedergabe(tempSession, false);
 							sw.setPlayerPanel( playerPnl );
 							sw.playSession();
 						} else {
