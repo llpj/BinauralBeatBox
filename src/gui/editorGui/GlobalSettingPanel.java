@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.Map;
 
+import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -94,8 +95,14 @@ public class GlobalSettingPanel extends JPanel {
 	 * @return Kategorie als String
 	 */
 	public String getCategory() {
-		return categoryList.getModel()
-				.getElementAt(categoryList.getSelectedIndex()).toString();
+		ComboBoxModel cbm = categoryList.getModel();
+		String catName = cbm.getSelectedItem().toString();
+		
+		if( catName.isEmpty() ) {
+			catName = "uncategorized";
+		}
+
+		return catName;
 	}
 
 	/**

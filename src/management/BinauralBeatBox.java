@@ -357,13 +357,25 @@ public class BinauralBeatBox {
 					public void actionPerformed(ActionEvent ae) {
 						if (fileManager.getCategories().containsKey(
 								currentCategory.toString())) {
-							fileManager
-									.getCategories()
-									.get(currentCategory.toString())
-									.removeSession(
-											fileManager.getActiveSession());
-							fileManager.writeCategories(fileManager
-									.getCategories());
+							
+							System.out.println(fileManager.getActiveSession());
+							
+							if(fileManager.getActiveSession() != null) {
+								fileManager
+										.getCategories()
+										.get(currentCategory.toString())
+										.removeSession(fileManager.getActiveSession());
+							} else {
+								if ( fileManager.getCategories().get(currentCategory.toString()).getSessions().isEmpty() ) {
+//									System.out.println(fileManager.getCategories().size());
+									fileManager.getCategories().remove( currentCategory.toString() );
+//									System.out.println(fileManager.getCategories().size());
+								}
+							}
+							
+							fileManager.writeCategories(fileManager.getCategories());
+							
+							fileManager.setActiveSession(null);
 						}
 						setCategoryListModel();
 						setSessionListModel(currentCategory);
