@@ -53,13 +53,15 @@ public class BinauralBeatBox {
 	private int resize;
 	private int animationCounter;
 	private Category currentCategory;
+	
+	private static BinauralBeatBox staticThis = null;
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 
-		new BinauralBeatBox();
+		staticThis = new BinauralBeatBox();
 	}
 
 	public BinauralBeatBox() {
@@ -162,8 +164,8 @@ public class BinauralBeatBox {
 					}
 					else
 					{
-						//Falls keine Session ausgewählt wurde...
-						JOptionPane.showMessageDialog(null, "Bitte wählen Sie zuerst eine Session aus (via Category)", null, JOptionPane.OK_OPTION);
+						//Falls keine Session ausgewï¿½hlt wurde...
+						JOptionPane.showMessageDialog(null, "Bitte wï¿½hlen Sie zuerst eine Session aus (via Category)", null, JOptionPane.OK_OPTION);
 					}
 				}
 				else
@@ -176,7 +178,7 @@ public class BinauralBeatBox {
 	public void defaultPaint()
 	{
 		/**
-		 * Methode für das übermalen des Animationsfensters
+		 * Methode fï¿½r das ï¿½bermalen des Animationsfensters
 		 */
 		Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl()
 		.getGraphics();
@@ -190,11 +192,15 @@ public class BinauralBeatBox {
 	public static void animationUpdateFreq(int[] curFreq, Mood curMood) {
 		if (animation.isAniFreq()==false) {
 			animation.setFreq(curFreq);
+//			if(staticThis != null)
+//				staticThis.defaultPaint();
 			//defaultPaint();
 			animation.init();
 		}
 		if (animation.isAniFreq()==true) {
 			((FrakFarbverlauf) animation).setMood(curMood);
+//			if(staticThis != null)
+//				staticThis.defaultPaint();
 			//defaultPaint();
 			animation.init();
 		}
