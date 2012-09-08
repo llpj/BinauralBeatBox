@@ -74,11 +74,18 @@ public class AnimationFreq extends Animation {
 				}
 				animationPnlBuffer.setColor(c[j]);
 				//TODO THREAD error beheben --> kommt nur manchmal
-				animationPnlBuffer.setStroke(new BasicStroke(3.0f,
+				try
+				{
+					animationPnlBuffer.setStroke(new BasicStroke(3.0f,
                         BasicStroke.CAP_BUTT,
                         BasicStroke.JOIN_ROUND,
                         5.0f, dash, 5.0f));
-				animationPnlBuffer.drawPolyline(x, y, x.length);
+					animationPnlBuffer.drawPolyline(x, y, x.length);
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
 			}
 			animationPnlBuffer.translate((int)x[x.length-1],0);
 			nextPos += (int)x[x.length-1];

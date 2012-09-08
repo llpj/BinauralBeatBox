@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
@@ -118,42 +119,56 @@ public class BinauralBeatBox {
 			@Override
 			public void mouseClicked(MouseEvent me) {
 				/**
-				 * Der Animationswechsel soll nur ermï¿½glicht sein, wenn der Sound nicht pausiert
+				 * Der Animationswechsel soll nur ermï¿½glicht sein, wenn der 
+				 * Sound nicht pausiert;
+				 * Wird keine session abgespielt, so kann auch keine animation visualisiert werden
 				 */
 				if (!isPause) {
-					animation.finish(true);
-					// uebermalt alte animation falls mal pause gedrueckt wurde
-					defaultPaint();
-					// Setzen des Animationscounters
-					if (animationCounter > 1) {
-						animationCounter = 0;
-					} else {
-						animationCounter++;
+					if(animation != null)
+					{
+						animation.finish(true);
+						// uebermalt alte animation falls mal pause gedrueckt wurde
+						defaultPaint();
+						// Setzen des Animationscounters
+						if (animationCounter > 1) {
+							animationCounter = 0;
+						} else {
+							animationCounter++;
+						}
+						// Auswahl der Animation
+						// TODO freq und Mood uebergabe aus activeSession
+						if (animationCounter == 0) {
+							// int[] freq = { -30, 0, 30 };
+							animation = new AnimationFreq(sw.getCurFreq(), mf
+									.getVirtualizationPnl());
+							if (resize % 2 == 0) {
+								animation.init();
+							}
+						} else if (animationCounter == 1) {
+							// animationFrakFarbverlauf: false = nur farbverlauf
+							animation = new FrakFarbverlauf(sw.getCurMood(), mf
+									.getVirtualizationPnl(), false);
+							if (resize % 2 == 0) {
+								animation.init();
+							}
+						} else {
+							// animationFrakFarbverlauf: true = frak
+							animation = new FrakFarbverlauf(sw.getCurMood(), mf
+									.getVirtualizationPnl(), true);
+							if (resize % 2 == 0) {
+								animation.init();
+							}
+						}
 					}
-					// Auswahl der Animation
-					// TODO freq und Mood uebergabe aus activeSession
-					if (animationCounter == 0) {
-						// int[] freq = { -30, 0, 30 };
-						animation = new AnimationFreq(sw.getCurFreq(), mf
-								.getVirtualizationPnl());
-						if (resize % 2 == 0) {
-							animation.init();
-						}
-					} else if (animationCounter == 1) {
-						// animationFrakFarbverlauf: false = nur farbverlauf
-						animation = new FrakFarbverlauf(sw.getCurMood(), mf
-								.getVirtualizationPnl(), false);
-						if (resize % 2 == 0) {
-							animation.init();
-						}
-					} else {
-						// animationFrakFarbverlauf: true = frak
-						animation = new FrakFarbverlauf(sw.getCurMood(), mf
-								.getVirtualizationPnl(), true);
-						if (resize % 2 == 0) {
-							animation.init();
-						}
+					else
+					{
+						//Falls keine Session ausgewählt wurde...
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie zuerst eine Session aus (via Category)", null, JOptionPane.OK_OPTION);
 					}
+				}
+				else
+				{
+					//nichts
 				}
 			}
 		});
@@ -161,7 +176,7 @@ public class BinauralBeatBox {
 	public void defaultPaint()
 	{
 		/**
-		 * Methode fï¿½r das ï¿½bermalen des Animationsfensters
+		 * Methode für das übermalen des Animationsfensters
 		 */
 		Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl()
 		.getGraphics();

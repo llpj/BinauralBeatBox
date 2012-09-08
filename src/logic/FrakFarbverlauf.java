@@ -191,26 +191,31 @@ public class FrakFarbverlauf extends Animation {
 				colors[1] = Color.green.darker();
 				colors[2] = Color.orange.brighter();
 				colors[3] = Color.white;
+				break;
 			case BETA:  //Hellwach, geistige Aktivität, Konzentration: Gute Aufnahmefähigkeit und Aufmerksamkeit
 				colors[0] = Color.yellow.darker();
 				colors[1] = Color.orange.brighter();
 				colors[2] = Color.red.brighter();
 				colors[3] = Color.white;
+				break;
 			case GAMMA: //Geistige Höchstleistung, Problemlösung, Angst: Transformation und neurale Reorganisation
 				colors[0] = Color.red.darker();
 				colors[1] = Color.yellow.darker();
 				colors[2] = Color.orange.brighter();
 				colors[3] = Color.pink.darker();
+				break;
 			case DELTA: //Traumloser Schlaf
 				colors[0] = Color.green.brighter();
 				colors[1] = Color.blue.brighter();
 				colors[2] = Color.white.brighter();
 				colors[3] = Color.white.brighter();
+				break;
 			case THETA: //Leichter Schlaf, REM-Phase, Träume
 				colors[0] = Color.green.brighter();
 				colors[1] = Color.blue.brighter();
 				colors[2] = Color.cyan.brighter();
 				colors[3] = Color.magenta.brighter();
+				break;
 		}
     }
     
