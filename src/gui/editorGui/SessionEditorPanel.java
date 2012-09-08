@@ -122,6 +122,8 @@ public class SessionEditorPanel extends JPanel implements ActionListenerAddable 
 		s = settingPnl.getValues(s);
 		s = segmentPnl.getValues(s);
 		
+//		System.out.println( s.getHintergrundklang() );
+		
 		return s;
 	}
 
