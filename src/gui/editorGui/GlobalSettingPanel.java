@@ -95,15 +95,13 @@ public class GlobalSettingPanel extends JPanel {
 	 * @return Kategorie als String
 	 */
 	public String getCategory() {
-		int idx = categoryList.getSelectedIndex();
-		System.out.println("GlobalSettingPanel.getCategory:idx\t"+idx);
-		
 		ComboBoxModel cbm = categoryList.getModel();
-		System.out.println("GlobalSettingPanel.getCategory:cbm\t"+cbm);
+		String catName = cbm.getSelectedItem().toString();
 		
-		String catName = cbm.getElementAt(idx).toString();
-		System.out.println("GlobalSettingPanel.getCategory:catName\t"+catName);
-		
+		if( catName.isEmpty() ) {
+			catName = "uncategorized";
+		}
+
 		return catName;
 	}
 
