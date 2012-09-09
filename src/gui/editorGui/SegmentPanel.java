@@ -248,19 +248,19 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 //		Test Ausgabe
 //		System.out.println("delta freq: "+freq);
 		
-		if (freq > 0 && freq < 4) {
+		if (freqLeft < 4 && freqRight < 4) {
 //			return "DELTA";
 			return 0;
-		} else if (freq >= 4 && freq < 8) {
+		} else if ((freqLeft >= 4 && freqLeft < 8) && (freqRight >= 4 && freqRight < 8)) {
 //			return "THETA";
 			return 1;
-		} else if (freq >= 8 && freq <= 13) {
+		} else if ((freqLeft >= 8 && freqLeft <= 13) && (freqRight >= 8 && freqRight <= 13)){
 //			return "ALPHA";
 			return 2;
-		} else if (freq > 13 && freq <= 30) {
+		} else if ((freqLeft > 13 && freqLeft <= 30) && (freqRight > 13 && freqRight <= 30)) {
 //			return "BETA";
 			return 3;
-		} else if (freq > 30) {
+		} else if ((freqLeft > 30) && (freqRight > 30)) {
 //			return "GAMMA";
 			return 4;
 		}

@@ -1,35 +1,5 @@
 <map>
   <entry>
-    <string>uncategorized</string>
-    <container.Category>
-      <name>uncategorized</name>
-      <sessions>
-        <container.Session>
-          <Hintergrundklang>.\bin\resources\wav\amsel.wav</Hintergrundklang>
-          <segments>
-            <container.Segment>
-              <duration>10</duration>
-              <beat>
-                <freq1__start>1</freq1__start>
-                <freq2__start>3</freq2__start>
-                <freq1__target>1</freq1__target>
-                <freq2__target>3</freq2__target>
-              </beat>
-            </container.Segment>
-          </segments>
-          <duration>10</duration>
-          <name>Sun Sep 09 13:56:40 CEST 2012</name>
-        </container.Session>
-        <container.Session>
-          <Hintergrundklang>.\bin\resources\wav\amsel.wav</Hintergrundklang>
-          <segments/>
-          <duration>0</duration>
-          <name>Sun Sep 09 17:17:39 CEST 2012</name>
-        </container.Session>
-      </sessions>
-    </container.Category>
-  </entry>
-  <entry>
     <string>Test Sessions</string>
     <container.Category>
       <name>Test Sessions</name>
@@ -101,6 +71,118 @@
           </segments>
           <duration>20</duration>
           <name>Sun Sep 09 16:56:03 CEST 2012</name>
+        </container.Session>
+        <container.Session>
+          <Hintergrundklang>.\bin\resources\wav\amsel.wav</Hintergrundklang>
+          <segments>
+            <container.Segment>
+              <duration>60</duration>
+              <beat>
+                <freq1__start>15000</freq1__start>
+                <freq2__start>15020</freq2__start>
+                <freq1__target>16000</freq1__target>
+                <freq2__target>16020</freq2__target>
+              </beat>
+            </container.Segment>
+          </segments>
+          <duration>60</duration>
+          <name>Test</name>
+        </container.Session>
+        <container.Session>
+          <Hintergrundklang>.\bin\resources\wav\amsel.wav</Hintergrundklang>
+          <segments>
+            <container.Segment>
+              <duration>60</duration>
+              <beat>
+                <freq1__start>1</freq1__start>
+                <freq2__start>3</freq2__start>
+                <freq1__target>1</freq1__target>
+                <freq2__target>3</freq2__target>
+              </beat>
+            </container.Segment>
+          </segments>
+          <duration>60</duration>
+          <name>Test</name>
+        </container.Session>
+        <container.Session>
+          <Hintergrundklang>.\bin\resources\wav\amsel.wav</Hintergrundklang>
+          <segments>
+            <container.Segment>
+              <duration>70</duration>
+              <beat>
+                <freq1__start>18000</freq1__start>
+                <freq2__start>18025</freq2__start>
+                <freq1__target>19000</freq1__target>
+                <freq2__target>19025</freq2__target>
+              </beat>
+            </container.Segment>
+          </segments>
+          <duration>70</duration>
+          <name>Sun Sep 09 17:48:59 CEST 2012</name>
+        </container.Session>
+        <container.Session>
+          <Hintergrundklang>.\bin\resources\wav\amsel.wav</Hintergrundklang>
+          <segments>
+            <container.Segment>
+              <duration>10</duration>
+              <beat>
+                <freq1__start>1</freq1__start>
+                <freq2__start>3</freq2__start>
+                <freq1__target>1</freq1__target>
+                <freq2__target>3</freq2__target>
+              </beat>
+            </container.Segment>
+            <container.Segment>
+              <duration>40</duration>
+              <beat>
+                <freq1__start>1</freq1__start>
+                <freq2__start>3</freq2__start>
+                <freq1__target>1</freq1__target>
+                <freq2__target>3</freq2__target>
+              </beat>
+            </container.Segment>
+            <container.Segment>
+              <duration>30</duration>
+              <beat>
+                <freq1__start>1</freq1__start>
+                <freq2__start>3</freq2__start>
+                <freq1__target>1</freq1__target>
+                <freq2__target>3</freq2__target>
+              </beat>
+            </container.Segment>
+          </segments>
+          <duration>80</duration>
+          <name>Session 1</name>
+        </container.Session>
+      </sessions>
+    </container.Category>
+  </entry>
+  <entry>
+    <string>uncategorized</string>
+    <container.Category>
+      <name>uncategorized</name>
+      <sessions>
+        <container.Session>
+          <Hintergrundklang>.\bin\resources\wav\amsel.wav</Hintergrundklang>
+          <segments>
+            <container.Segment>
+              <duration>10</duration>
+              <beat>
+                <freq1__start>1</freq1__start>
+                <freq2__start>3</freq2__start>
+                <freq1__target>1</freq1__target>
+                <freq2__target>3</freq2__target>
+              </beat>
+            </container.Segment>
+          </segments>
+          <duration>10</duration>
+          <name>Sun Sep 09 13:56:40 CEST 2012</name>
+        </container.Session>
+        <container.Session>
+          <Hintergrundklang>.\bin\resources\wav\amsel.wav</Hintergrundklang>
+          <segments/>
+          <duration>0</duration>
+          <name>Sun Sep 09 17:17:39 CEST 2012</name>
         </container.Session>
       </sessions>
     </container.Category>
