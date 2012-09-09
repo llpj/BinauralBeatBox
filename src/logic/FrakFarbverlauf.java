@@ -377,7 +377,9 @@ public class FrakFarbverlauf extends Animation {
 			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, width, height);
 			animationPnl.setColor(Color.GRAY);
 			animationPnl.fill(rectangle);
-			animation.stop();
+			
+			if(animation != null)
+				animation.stop();
 			super.setAniFreq(true);
 			isFinished = true;
 			return true;
