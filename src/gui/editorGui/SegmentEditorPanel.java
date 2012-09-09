@@ -187,7 +187,8 @@ public class SegmentEditorPanel extends JPanel {
 				p = segmentList.get(i);
 			} else {
 				p = new SegmentPanel("Segment" + (segmentList.size() + 1), seg);
-				segmentList.add(p);
+//				segmentList.add(p);
+				addALsToSegmentPnl(p);
 			}
 			i++;
 		}

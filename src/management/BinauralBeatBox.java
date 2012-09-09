@@ -229,14 +229,16 @@ public class BinauralBeatBox {
 	private void stopPlayer() {
 		if (fileManager.getActiveSession() != null) {
 			if (sw != null) {
+				sw.stopSession(true);
+				sw = null;
+			}
+			
+			if(animation != null)
 				animation.finish(true);
 				animation = null;
 				// uebermalt alte animation 
 				defaultPaint();
 				isPause = false;
-				sw.stopSession(true);
-				sw = null;
-			}
 		}
 	}
 
