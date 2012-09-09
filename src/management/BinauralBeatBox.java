@@ -216,6 +216,19 @@ public class BinauralBeatBox {
 			System.out.println("Animation:\t"+animation);
 			sw = null;
 	}
+	
+	private void stopPlayer() {
+		if (fileManager.getActiveSession() != null) {
+			if (sw != null) {
+				animation.finish(true);
+				// uebermalt alte animation falls mal pause gedrueckt wurde
+				defaultPaint();
+				isPause = false;
+				sw.stopSession(true);
+				sw = null;
+			}
+		}
+	}
 
 	private void initListenerForPlayerPanel() {
 		PlayerPanel pnl = mf.getPlayerPanel();
@@ -299,16 +312,7 @@ public class BinauralBeatBox {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// STOP:
-				if (fileManager.getActiveSession() != null) {
-					if (sw != null) {
-						animation.finish(true);
-						// uebermalt alte animation falls mal pause gedrueckt wurde
-						defaultPaint();
-						isPause = false;
-						sw.stopSession(true);
-						sw = null;
-					}
-				}
+				stopPlayer();
 			}
 		});
 		
@@ -362,6 +366,7 @@ public class BinauralBeatBox {
 				new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
+						stopPlayer();
 						new EditorController(fileManager, mf);
 					}
 				});
@@ -371,6 +376,7 @@ public class BinauralBeatBox {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						if (fileManager.getActiveSession() != null) {
+							stopPlayer();
 							new EditorController(fileManager, mf, fileManager.getActiveSession());
 						}
 					}
