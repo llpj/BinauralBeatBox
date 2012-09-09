@@ -110,6 +110,8 @@ public class MainFrame extends JFrame {
 			setSize( new Dimension(getSize().width,500) );
 		} else {
 			logic.SessionWiedergabe.setAnimation(false);
+//			virtualizationPnl.setSize(0,0);
+			BinauralBeatBox.onlyAnimationFinish();
 //			virtualizationPnl = null;
 			miniPlayerLayout();
 		}

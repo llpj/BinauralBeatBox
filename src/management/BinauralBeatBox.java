@@ -232,6 +232,13 @@ public class BinauralBeatBox {
 			sw = null;
 	}
 	
+	public static void onlyAnimationFinish(){
+		if (animation != null) {
+			animation.finish(true);
+		}
+		animation = null;
+}
+	
 	private void stopPlayer() {
 		System.out.println("BinBeatBox.stopPlayer()");
 		if (fileManager.getActiveSession() != null) {
@@ -318,7 +325,8 @@ public class BinauralBeatBox {
 						// PAUSE
 						if (sw != null)
 							sw.pauseSession();
-							animation.pause(true);
+							if(animation != null)
+								animation.pause(true);
 							isPause = true;
 					}
 				} else {
