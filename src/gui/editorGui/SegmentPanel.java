@@ -161,7 +161,7 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 	 * Initialisierung von allen Elementen des Causual Mode
 	 */
 	private void initBasicElements() {
-		String[] moods = {"DELTA", "THETA", "ALPHA", "BETA", "GAMMA"};
+		String[] moods = {"DELTA", "THETA", "ALPHA", "BETA", "GAMMA", "MANUAL"};
 		
 		startMood		= new JComboBox(moods);
 		targetMood		= new JComboBox(moods);
@@ -231,7 +231,7 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 		if( mood == "GAMMA" )
 			return 30;
 		
-		return 0;
+		return 1;
 	}
 	
 	private Integer getMoodNameID(Integer freqLeft, Integer freqRight) {
@@ -264,8 +264,8 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 			return 4;
 		}
 		
-//		return "UNKNOWN";
-		return null;
+		return 5;
+//		return null;
 	}
 	
 	/**
