@@ -182,13 +182,20 @@ public class BinauralBeatBox {
 		/**
 		 * Methode f�r das �bermalen des Animationsfensters
 		 */
-		Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl()
-		.getGraphics();
-		Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf
-		.getVirtualizationPnl().getSize().width, mf
-		.getVirtualizationPnl().getSize().height);
-		rec.setColor(Color.GRAY);
-		rec.fill(rectangle);
+		if(mf.getVirtualizationPnl()!=null)
+		{
+			Graphics2D rec = (Graphics2D) mf.getVirtualizationPnl()
+			.getGraphics();
+			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf
+					.getVirtualizationPnl().getSize().width, mf
+					.getVirtualizationPnl().getSize().height);
+			rec.setColor(Color.GRAY);
+			rec.fill(rectangle);
+		}
+		else
+		{
+			//nichts
+		}
 	}
 	
 	public static void animationUpdateFreq(int[] curFreq, Mood curMood) {
@@ -224,7 +231,7 @@ public class BinauralBeatBox {
 			if (sw != null) {
 				animation.finish(true);
 				animation = null;
-				// uebermalt alte animation falls mal pause gedrueckt wurde
+				// uebermalt alte animation 
 				defaultPaint();
 				isPause = false;
 				sw.stopSession(true);

@@ -28,15 +28,23 @@ public class AnimationFreq extends Animation {
 	//Konstruktor
 	public AnimationFreq (int [] freq, JPanel pnl)
 	{
-		super(pnl);
-		super.setFreq(freq);
-		super.setAniFreq(false);
-		isFinished = false;
-		y = new int[360]; 
-		x = new int[360];
-		//Initialisierung - checkSize muss im Konstruktor initialisiert sein !!! (wegen resizing)
-		checkResize = 0;
-		init();
+			super(pnl);
+			super.setFreq(freq);
+			super.setAniFreq(false);
+			if(pnl.getGraphics() != null)
+			{
+				isFinished = false;
+				y = new int[360]; 
+				x = new int[360];
+				//Initialisierung - checkSize muss im Konstruktor initialisiert sein !!! (wegen resizing)
+				checkResize = 0;
+				init();
+			}
+			else
+			{
+				animationPnl = null;
+				//nichts
+			}
 	}
 
 	protected void sin (boolean set)
@@ -174,10 +182,16 @@ public class AnimationFreq extends Animation {
 		else 	
 		{
 			//Animation wird uebermalt und gestoppt
-			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, width, height);
-			animationPnl.setColor(Color.GRAY);
-			animationPnl.fill(rectangle);
-			animation.stop();
+			if(animationPnl != null)
+			{
+				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, width, height);
+				animationPnl.setColor(Color.GRAY);
+				animationPnl.fill(rectangle);
+			}
+			else{
+				//nichts
+			}
+			//animation.stop();
 			isFinished = true;
 			return true;
 		}
