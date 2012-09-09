@@ -221,6 +221,7 @@ public class BinauralBeatBox {
 		if (fileManager.getActiveSession() != null) {
 			if (sw != null) {
 				animation.finish(true);
+				animation = null;
 				// uebermalt alte animation falls mal pause gedrueckt wurde
 				defaultPaint();
 				isPause = false;
