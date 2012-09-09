@@ -69,7 +69,7 @@ public class EditorController {
 		
 
 		if(s != null) {
-			System.out.println("Session wird an SessionEditorPanel uebergeben");
+			TestAndAnalyze.Printer.printSession(s, "", "EditorController");
 			editorPnl	= new SessionEditorPanel(s);
 		} else {
 			editorPnl	= new SessionEditorPanel();

@@ -79,6 +79,9 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 	}
 	
 	public SegmentPanel(String title, Segment s) {
+		if(s != null)
+			TestAndAnalyze.Printer.printSegment(s, "", "SegmentPanel");
+		
 		setBorder(  new TitledBorder(title) );
 
 		initBasicElements();
