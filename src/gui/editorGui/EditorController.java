@@ -114,7 +114,10 @@ public class EditorController {
 	private Session getTempSession() {
 		try {
 			MainFrame.cleanMessage();
-			return editorPnl.getValues();
+			
+			Session tmp = editorPnl.getValues();
+			TestAndAnalyze.Printer.printSession(tmp, "EditorController.getTempSession");
+			return tmp;
 		} catch (IllegalArgumentException e) {
 			MainFrame.showMessage( e.getMessage() );
 		}
@@ -144,6 +147,7 @@ public class EditorController {
 				
 				if(s != null) {
 					addNewSession(s);
+					stopPlayer();
 					mainFrame.setPlayerLayout();
 					fileManager.writeCategories(fileManager.getCategories());
 				}
@@ -157,6 +161,7 @@ public class EditorController {
 				
 				if(s != null) {
 					addNewSession(s);
+					stopPlayer();
 					mainFrame.setPlayerLayout();
 					fileManager.writeCategories(fileManager.getCategories());
 
@@ -190,6 +195,7 @@ public class EditorController {
 		cancelBtnAl = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				stopPlayer();
 				mainFrame.setPlayerLayout();
 			}
 		};
@@ -207,8 +213,7 @@ public class EditorController {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				Session tempSession = getTempSession();
-				
-				System.out.println(tempSession);
+//				TestAndAnalyze.Printer.printSession(tempSession, "initEditorPlayer:PLAY_BUTTON");
 				
 				if (tempSession != null) {
 					if (((ToggleButton) ae.getSource()).isSelected()) {
@@ -232,13 +237,7 @@ public class EditorController {
 		playerPnl.addListenerToElement(PlayerPanel.STOP_BUTTON, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// STOP:
-//				if (asdfileManager.getActiveSession() != null) {
-					if (sw != null) {
-						sw.stopSession(true);
-						sw = null;
-					}
-//				}
+				stopPlayer();
 			}
 		});
 		
@@ -278,5 +277,12 @@ public class EditorController {
 			}
 			
 		});
+	}
+	
+	private void stopPlayer() {
+		if(sw != null) {
+			sw.stopSession(true);
+			sw = null;
+		}
 	}
 }
