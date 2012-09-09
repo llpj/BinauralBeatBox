@@ -194,7 +194,8 @@ public class AnimationFreq extends Animation {
 			else{
 				//nichts
 			}
-			animation.stop();
+			if(animation != null)
+				animation.stop();
 			isFinished = true;
 			return true;
 		}
