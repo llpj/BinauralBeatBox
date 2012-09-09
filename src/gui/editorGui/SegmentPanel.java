@@ -161,7 +161,8 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 	 * Initialisierung von allen Elementen des Causual Mode
 	 */
 	private void initBasicElements() {
-		String[] moods = {"DELTA", "THETA", "ALPHA", "BETA", "GAMMA", "MANUAL"};
+//		String[] moods = {"DELTA", "THETA", "ALPHA", "BETA", "GAMMA", "MANUAL"};
+		String[] moods = {"Traumloser Schlaf", "Leichter Schlaf", "Entspannung", "Hellwach", "Geistige Höchstleistung", "MANUAL"};
 		
 		startMood		= new JComboBox(moods);
 		targetMood		= new JComboBox(moods);

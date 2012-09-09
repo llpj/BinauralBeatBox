@@ -119,6 +119,8 @@ public class SegmentEditorPanel extends JPanel {
 					segmentList.set(index-1, sp);
 					updateSegmentPane();
 				}
+				
+				TestAndAnalyze.Printer.printSession(getValues(new Session()), "", "SegmentEditorPanel.createAlForMoveUpBtn");
 			}
 		};
 	}
@@ -143,6 +145,7 @@ public class SegmentEditorPanel extends JPanel {
 					segmentList.set(index+1, sp);
 					updateSegmentPane();
 				}
+				TestAndAnalyze.Printer.printSession(getValues(new Session()), "", "SegmentEditorPanel.createAlForMoveDownBtn");
 			}
 		};
 	}
@@ -162,6 +165,8 @@ public class SegmentEditorPanel extends JPanel {
 
 				updateTitleOfSegmentPnl();
 				updateSegmentPane();
+				
+				TestAndAnalyze.Printer.printSession(getValues(new Session()), "", "SegmentEditorPanel.createAlForRemoveBtn");
 			}
 		};
 	}
