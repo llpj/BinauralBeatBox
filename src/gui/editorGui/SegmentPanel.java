@@ -220,19 +220,19 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 		rightFreqPnl.add(targetRightFreq);
 	}
 	
-	private Integer getMoodFreq(String mood) {
-		if( mood == "DELTA" )
+	private Integer getMoodFreq(Integer mood) {
+		if( mood == 0 )
 			return 1;
-		if( mood == "THETA" )
+		if( mood == 1 )
 			return 4;
-		if( mood == "ALPHA" )
+		if( mood == 2 )
 			return 8;
-		if( mood == "BETA" )
+		if( mood == 3 )
 			return 13;
-		if( mood == "GAMMA" )
+		if( mood == 4 )
 			return 30;
 		
-		return 1;
+		return null;
 	}
 	
 	private Integer getMoodNameID(Integer freqLeft, Integer freqRight) {
@@ -248,19 +248,19 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 //		Test Ausgabe
 //		System.out.println("delta freq: "+freq);
 		
-		if (freqLeft < 4 && freqRight < 4) {
+		if (freqLeft == 1 && freqRight == 3) {
 //			return "DELTA";
 			return 0;
-		} else if ((freqLeft >= 4 && freqLeft < 8) && (freqRight >= 4 && freqRight < 8)) {
+		} else if (freqLeft == 4 && freqRight == 6) {
 //			return "THETA";
 			return 1;
-		} else if ((freqLeft >= 8 && freqLeft <= 13) && (freqRight >= 8 && freqRight <= 13)){
+		} else if (freqLeft == 8 && freqRight == 10){
 //			return "ALPHA";
 			return 2;
-		} else if ((freqLeft > 13 && freqLeft <= 30) && (freqRight > 13 && freqRight <= 30)) {
+		} else if (freqLeft == 13 && freqRight == 15) {
 //			return "BETA";
 			return 3;
-		} else if ((freqLeft > 30) && (freqRight > 30)) {
+		} else if (freqLeft == 30 && freqRight == 32) {
 //			return "GAMMA";
 			return 4;
 		}
@@ -400,8 +400,11 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 			@Override
 			public void itemStateChanged(ItemEvent ie) {
 				if(ie.getStateChange() == ItemEvent.SELECTED) {
-					startLeftFreq.setValue( getMoodFreq( ie.getItem().toString() ) );
-					startRightFreq.setValue( (Integer)startLeftFreq.getValue() + 2 );
+					Integer id = ((JComboBox)ie.getSource()).getSelectedIndex();
+					if( getMoodFreq(id) != null) {
+						startLeftFreq.setValue( getMoodFreq(id) );
+						startRightFreq.setValue( (Integer)startLeftFreq.getValue() + 2 );
+					}
 				}
 			}
 		});
@@ -410,8 +413,11 @@ public class SegmentPanel extends JPanel implements ActionListenerAddable  {
 			@Override
 			public void itemStateChanged(ItemEvent ie) {
 				if(ie.getStateChange() == ItemEvent.SELECTED) {
-					targetLeftFreq.setValue( getMoodFreq( ie.getItem().toString() ) );
-					targetRightFreq.setValue( (Integer)targetLeftFreq.getValue() + 2 );
+					Integer id = ((JComboBox)ie.getSource()).getSelectedIndex();
+					if( getMoodFreq(id) != null	 ) {
+						targetLeftFreq.setValue( getMoodFreq(id) );
+						targetRightFreq.setValue( (Integer)targetLeftFreq.getValue() + 2 );
+					}
 				}
 			}
 		});
