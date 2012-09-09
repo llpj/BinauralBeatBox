@@ -112,6 +112,8 @@ public class AnimationFreq extends Animation {
 		width = pnl.getSize().width; // muss ueber Dimension gemacht werden, da Punkte und Pixel nicht vergleichbar waeren
 		height = pnl.getSize().height;
 		animationPnl = (Graphics2D) pnl.getGraphics();
+		if(animationPnl == null)
+			return;
 		img = animationPnl.getDeviceConfiguration().createCompatibleImage(width, height, Transparency.BITMASK);
 		xPos = 0;
 		checkResize++;

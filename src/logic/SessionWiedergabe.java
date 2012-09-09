@@ -49,7 +49,7 @@ public class SessionWiedergabe implements Runnable{
 	
 	private Thread	t;
 	private boolean pause;
-	private boolean animation; //true, wenn SessionWiedergabe mit Animation zusammenarbeitet
+	private static boolean animation; //true, wenn SessionWiedergabe mit Animation zusammenarbeitet
 
 	private final static int BUFFER = 4096;
 
@@ -200,11 +200,14 @@ public class SessionWiedergabe implements Runnable{
 			
 			playerPnl.setValueOfTimBar((int) posX);
 			
-			if(animation) {
+			System.out.println(animation);
+			synchronized (this) {
+			if( isAnimation() ) {
 				if (checkFrequence()==true) {
 					System.out.println("FREQUENZAENDERUNG");
 					BinauralBeatBox.animationUpdateFreq(getCurFreq(), getCurMood());
 				}
+			}
 			}
 			
 			byte[] data = new byte[BUFFER];
@@ -362,5 +365,14 @@ public class SessionWiedergabe implements Runnable{
 	
 	public void setPlayerPanel(PlayerPanel pp) {
 		playerPnl = pp;
+	}
+	
+	public static void setAnimation(boolean on) {
+		animation = on;
+		System.out.println("setAnimation:\t"+animation);
+	}
+	
+	public static boolean isAnimation() {
+		return animation;
 	}
 }

@@ -19,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.tree.DefaultTreeCellEditor.EditorContainer;
 
+import management.BinauralBeatBox;
+
 public class MainFrame extends JFrame {
 	
 	/**
@@ -101,10 +103,12 @@ public class MainFrame extends JFrame {
 	
 	private void changeLayout() {
 		if(openBtn.isSelected()) {
+			logic.SessionWiedergabe.setAnimation(true);
 			playerLayout();
 			//groesse festlegen, damit animationsflaeche gross genug ist
 			setSize( new Dimension(getSize().width,500) );
 		} else {
+			logic.SessionWiedergabe.setAnimation(false);
 			miniPlayerLayout();
 		}
 	}

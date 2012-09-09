@@ -45,7 +45,7 @@ public class BinauralBeatBox {
 	private static Animation animation;
 
 	private static FileManager fileManager;
-	private static SessionWiedergabe sw;
+	public static SessionWiedergabe sw;
 	private int tmpBalance = 0;
 
 	// ueberprueft ob pause gedrueckt wurde
@@ -92,7 +92,7 @@ public class BinauralBeatBox {
 		mf.addComponentListener(new ComponentListener() {
 			// Diese Methode wird aufgerufen, wenn JFrame max-/minimiert wird
 			public void componentResized(ComponentEvent evt) {
-				if (animation != null) {
+				if (animation != null && sw.isAnimation()) {
 					Component c = (Component) evt.getSource();
 
 					// Neuer size
@@ -189,8 +189,10 @@ public class BinauralBeatBox {
 			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, mf
 					.getVirtualizationPnl().getSize().width, mf
 					.getVirtualizationPnl().getSize().height);
-			rec.setColor(Color.GRAY);
-			rec.fill(rectangle);
+			if(rec != null) {
+				rec.setColor(Color.GRAY);
+				rec.fill(rectangle);
+			}
 		}
 		else
 		{
@@ -202,7 +204,7 @@ public class BinauralBeatBox {
 		if( animation != null ) {
 			if (animation.isAniFreq()==false) {
 				animation.setFreq(curFreq);
-				if(staticThis != null)
+				if(staticThis != null && SessionWiedergabe.isAnimation())
 					staticThis.defaultPaint();
 				//defaultPaint();
 				animation.init();
