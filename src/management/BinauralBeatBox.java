@@ -219,25 +219,31 @@ public class BinauralBeatBox {
 	
 	public static void animationFinish(){
 			System.out.println("2.\tanimationFinish()");
-			if (animation != null)
+			
+			System.out.println("animationFinish().animation\t"+animation);
+			
+			if (animation != null) {
 				animation.finish(true);
+			}
 			animation = null;
 			System.out.println("Animation:\t"+animation);
 			sw = null;
 	}
 	
 	private void stopPlayer() {
+		System.out.println("BinBeatBox.stopPlayer()");
 		if (fileManager.getActiveSession() != null) {
 			if (sw != null) {
 				sw.stopSession(true);
 				sw = null;
 			}
 			
-			if(animation != null)
-				animation.finish(true);
-				animation = null;
-				// uebermalt alte animation 
-				defaultPaint();
+			animationFinish();
+//			if(animation != null)
+//				animation.finish(true);
+//				animation = null;
+//				// uebermalt alte animation 
+//				defaultPaint();
 				isPause = false;
 		}
 	}

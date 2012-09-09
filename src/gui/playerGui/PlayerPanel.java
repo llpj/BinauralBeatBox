@@ -131,10 +131,10 @@ public class PlayerPanel extends JPanel implements ActionListenerAddable {
 	}
 	
 	public void setPlayButtonSelected(boolean selected) {
-		System.out.println("playBtn.isSelected()\t"+playBtn.isSelected());
-		System.out.println("boolean selected\t"+selected);
+//		System.out.println("playBtn.isSelected()\t"+playBtn.isSelected());
+//		System.out.println("boolean selected\t"+selected);
 		playBtn.setSelected(selected);
-		System.out.println("playBtn.isSelected()\t"+playBtn.isSelected());
+//		System.out.println("playBtn.isSelected()\t"+playBtn.isSelected());
 	}
 
 //	private void calculateProgessBarPos(Point p) {

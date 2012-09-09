@@ -181,6 +181,7 @@ public class AnimationFreq extends Animation {
 		}
 		else 	
 		{
+			System.out.println("3.\tfinish");
 			//Animation wird uebermalt und gestoppt
 			if(animationPnl != null)
 			{
@@ -191,7 +192,7 @@ public class AnimationFreq extends Animation {
 			else{
 				//nichts
 			}
-			//animation.stop();
+			animation.stop();
 			isFinished = true;
 			return true;
 		}
