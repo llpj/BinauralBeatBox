@@ -209,10 +209,12 @@ public class BinauralBeatBox {
 	}
 	
 	public static void animationFinish(){
-			if (sw != null) {
+			System.out.println("2.\tanimationFinish()");
+			if (animation != null)
 				animation.finish(true);
-				sw = null;
-			}
+			animation = null;
+			System.out.println("Animation:\t"+animation);
+			sw = null;
 	}
 
 	private void initListenerForPlayerPanel() {

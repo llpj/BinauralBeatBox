@@ -218,6 +218,7 @@ public class SessionWiedergabe implements Runnable{
 			
 		}
 		if(animation) {
+			System.out.println("1.\tBinauralBeatBox.animationFinish();");
 			BinauralBeatBox.animationFinish();
 		}
 		stopSession(false);
