@@ -114,6 +114,9 @@ public class AnimationFreq extends Animation {
 		animationPnl = (Graphics2D) pnl.getGraphics();
 		if(animationPnl == null)
 			return;
+		
+		if(width == 0 || height == 0)
+			return;
 		img = animationPnl.getDeviceConfiguration().createCompatibleImage(width, height, Transparency.BITMASK);
 		xPos = 0;
 		checkResize++;

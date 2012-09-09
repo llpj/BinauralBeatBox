@@ -45,8 +45,9 @@ public class MainFrame extends JFrame {
 		staticThis = this;
 		playerPnl			= new PlayerPanel();
 		listPnl				= new SessionListPanel();
-		virtualizationPnl	= new JPanel();
-		virtualizationPnl.setBackground(Color.GRAY);
+//		virtualizationPnl	= new JPanel();
+//		virtualizationPnl.setBackground(Color.GRAY);
+		initVirtPnl();
 		openBtn				= new ToggleButton("^", "v", true);
 		
 		openBtn.addActionListener( new ActionListener() {
@@ -73,7 +74,7 @@ public class MainFrame extends JFrame {
 		GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
 
-		virtualizationPnl.setSize(400, 500);
+//		virtualizationPnl.setSize(400, 500);
 		GuiFunctionLib.addGridBagContainer(this, gbl, virtualizationPnl,0, 0, 1, 1, 1, 1);
 //		GuiFunctionLib.addGridBagContainer(this, gbl, virtualizationPnl,0, 0, 1, 1, 1, 0, GridBagConstraints.BOTH);
 		GuiFunctionLib.addGridBagContainer(this, gbl, openBtn,			0, 1, 3, 1, 0, 0);
@@ -103,12 +104,13 @@ public class MainFrame extends JFrame {
 	
 	private void changeLayout() {
 		if(openBtn.isSelected()) {
-			logic.SessionWiedergabe.setAnimation(true);
+//			initVirtPnl();
 			playerLayout();
 			//groesse festlegen, damit animationsflaeche gross genug ist
 			setSize( new Dimension(getSize().width,500) );
 		} else {
 			logic.SessionWiedergabe.setAnimation(false);
+//			virtualizationPnl = null;
 			miniPlayerLayout();
 		}
 	}
@@ -133,6 +135,8 @@ public class MainFrame extends JFrame {
 	 * @return JPanel
 	 */
 	public JPanel getVirtualizationPnl() {
+		if(virtualizationPnl == null)
+			initVirtPnl();
 		return virtualizationPnl;
 	}
 	
@@ -218,5 +222,11 @@ public class MainFrame extends JFrame {
 				}
 			});
 		}
+	}
+	
+	private JPanel initVirtPnl() {
+		virtualizationPnl	= new JPanel();
+		virtualizationPnl.setBackground(Color.GRAY);
+		return virtualizationPnl;
 	}
 }
